@@ -30,6 +30,8 @@
     --info-dot:#3D8BFF;
     --manual:#8A4FD1;
     --manual-bg:#F2E9FB;
+    --mgr:#0E7C86;
+    --mgr-bg:#DDF3F4;
     --radius-sm:8px;
     --radius-md:14px;
     --radius-lg:24px;
@@ -199,6 +201,12 @@
   .day-cell .dow{font-size:10px; font-weight:700; color:var(--text-3);}
   .day-cell .dnum{font-size:14px; font-weight:800;}
   .day-cell .dhrs{font-size:9.5px; font-weight:700; color:var(--brand); background:var(--brand-tint); border-radius:6px; padding:1px 5px; min-width:26px; text-align:center;}
+  .day-cell .dtypes{display:flex; gap:2px; min-height:5px; margin-top:1px; flex-wrap:wrap; justify-content:center;}
+  .dtypes .tdot{width:5px; height:5px; border-radius:50%; flex:0 0 auto;}
+  .dtypes .tdot.punch{background:var(--brand);}
+  .dtypes .tdot.manual{background:var(--manual);}
+  .dtypes .tdot.mgr{background:var(--mgr);}
+  .dtypes .tdot.missed{background:var(--negative);}
   .day-cell .dhrs.zero{color:var(--text-3); background:transparent;}
   .day-cell.selected{border-color:var(--brand); background:var(--brand-tint);}
   .day-cell.today .dnum{color:var(--brand);}
@@ -212,6 +220,17 @@
   .week-total-bar{ margin:10px 16px 0; padding:12px 14px; background:var(--card); border:1px solid var(--border); border-radius:14px; display:flex; justify-content:space-between; align-items:center; }
   .week-total-bar .wt-label{font-size:12px; color:var(--text-3); font-weight:600;}
   .week-total-bar .wt-val{font-size:18px; font-weight:800; margin-top:1px; font-family:'Poppins',sans-serif;}
+  .mgr-comment-bar{
+    margin:8px 16px 0; padding:11px 13px; border-radius:12px; background:var(--critical-bg);
+    border:1px solid var(--critical); color:var(--critical); font-size:12px; font-weight:600;
+    display:flex; align-items:flex-start; gap:8px; line-height:1.45;
+  }
+  .mgr-comment-bar b{font-weight:800;}
+  .future-note{
+    margin-top:6px; padding:11px 13px; border-radius:12px; background:var(--bg);
+    border:1px dashed var(--border); color:var(--text-3); font-size:12px; font-weight:600;
+    display:flex; align-items:center; gap:8px;
+  }
 
   .entry-row{ display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--border); border-left:4px solid var(--brand); border-radius:12px; padding:12px 14px; margin-bottom:8px; }
   .entry-row.manual{border-left-color:var(--manual); background:linear-gradient(0deg,var(--manual-bg),var(--manual-bg)),var(--card);}
@@ -223,14 +242,24 @@
   .entry-row.locked .er-time{color:var(--text-2);}
   .badge.locked-badge{color:var(--text-3); background:#E9EDEB; display:inline-flex; align-items:center; gap:3px;}
   .badge.punch-badge{color:var(--brand); background:var(--brand-tint); display:inline-flex; align-items:center; gap:3px;}
-  .badge.corrected-badge{color:var(--critical); background:var(--critical-bg); display:inline-flex; align-items:center; gap:3px;}
-  .entry-row.corrected{border-left-color:var(--critical); background:linear-gradient(0deg,var(--critical-bg),var(--critical-bg)),var(--card);}
+  .badge.mgr-badge{color:var(--mgr); background:var(--mgr-bg); display:inline-flex; align-items:center; gap:3px;}
+  .entry-row.mgr-edited{border-left-color:var(--mgr); background:linear-gradient(0deg,var(--mgr-bg),var(--mgr-bg)),var(--card);}
+  .mgr-line{font-size:10.5px; color:var(--mgr); font-weight:700; margin-top:3px; display:flex; align-items:center; gap:4px;}
+  .day-cell.mgr-day{border-color:var(--mgr); position:relative;}
+  .day-cell.mgr-day::after{
+    content:""; position:absolute; top:-4px; right:-3px; width:9px; height:9px; border-radius:50%;
+    background:var(--mgr); border:1.5px solid #fff;
+  }
   .entry-legend{display:flex; flex-wrap:wrap; gap:8px 14px; padding:2px 2px 12px;}
   .entry-legend span{display:flex; align-items:center; gap:5px; font-size:10.5px; font-weight:600; color:var(--text-3);}
   .entry-legend i{width:9px; height:9px; border-radius:3px; flex:0 0 auto;}
   .entry-legend i.punch{background:var(--brand);}
   .entry-legend i.manual{background:var(--manual);}
-  .entry-legend i.corrected{background:var(--critical);}
+  .entry-legend i.mgr{background:var(--mgr);}
+  .entry-legend i.missed{background:var(--negative);}
+  .week-legend{padding:10px 16px 2px; gap:6px 12px;}
+  .week-legend span{font-size:9.5px;}
+  .week-legend i{width:8px; height:8px; border-radius:50%;}
   .entry-row .er-time{font-size:13.5px; font-weight:700;}
   .entry-row .er-type{font-size:11.5px; color:var(--text-3); margin-top:1px; display:flex; align-items:center; gap:6px;}
   .entry-row .er-hrs{margin-left:auto; font-weight:800; font-size:13.5px; color:var(--brand); text-align:right;}
@@ -407,6 +436,13 @@
     display:flex; align-items:center; justify-content:center; border:1.5px solid #fff; font-family:'Inter',sans-serif;
   }
   .req-actions{display:flex; gap:8px; margin-top:12px;}
+  /* Request cards run a touch smaller than default list rows */
+  .req-card .lr-title{font-size:12.5px;}
+  .req-card .lr-sub{font-size:11px; line-height:1.4;}
+  .req-card .lr-icon{width:32px; height:32px;}
+  .req-card .badge{font-size:9.5px; padding:2px 7px;}
+  .req-card .req-act{padding:8px; font-size:11.5px;}
+  .req-card .sentback-note{font-size:10.5px; padding:7px 9px;}
   .req-act{
     flex:1; padding:9px; border-radius:9px; border:1.5px solid var(--border); background:#fff;
     color:var(--text); font-weight:700; font-size:12.5px; cursor:pointer; font-family:'Inter',sans-serif;
@@ -478,7 +514,7 @@
   <div class="phone-screen" id="phoneScreen">
     <div class="notch"></div>
     <div class="status-bar">
-      <span id="clockTime">9:41</span>
+      <span id="clockTime"></span>
       <div class="status-icons">
         <svg width="17" height="11" viewBox="0 0 17 11" fill="none"><rect x="0" y="6" width="3" height="5" rx="0.5" fill="currentColor"/><rect x="4.5" y="4" width="3" height="7" rx="0.5" fill="currentColor"/><rect x="9" y="2" width="3" height="9" rx="0.5" fill="currentColor"/><rect x="13.5" y="0" width="3" height="11" rx="0.5" fill="currentColor"/></svg>
         <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><path d="M7.5 2.2C10 2.2 12.2 3.2 14 5L12.7 6.4C11.2 5 9.5 4.2 7.5 4.2S3.8 5 2.3 6.4L1 5C2.8 3.2 5 2.2 7.5 2.2ZM7.5 6.4C8.7 6.4 9.8 6.9 10.6 7.7L7.5 11L4.4 7.7C5.2 6.9 6.3 6.4 7.5 6.4Z" fill="currentColor"/></svg>
@@ -565,6 +601,15 @@ function fmtRange(a,b){ if(sameDate(a,b)) return fmtHuman(a); return `${fmtHuman
 function daysLabel(hours){ const d = Math.round((hours/8)*10)/10; return `${d.toFixed(1)} ${d===1?'Day':'Days'}`; }
 
 const TODAY = new Date();
+/* status-bar clock: 12-hour like a phone lock screen, e.g. 6:33 */
+function nowClock(){
+  const d = new Date();
+  let h = d.getHours(); const m = String(d.getMinutes()).padStart(2,'0');
+  h = h % 12; if(h===0) h = 12;
+  return `${h}:${m}`;
+}
+/* keep the status-bar clock current every 15s */
+setInterval(()=>{ const el = document.getElementById('clockTime'); if(el) el.textContent = nowClock(); }, 15000);
 
 /* ---------------- Mock data ---------------- */
 const TIME_TYPES = ['Regular Hours Worked','Overtime','On-Call','Training','Travel Time'];
@@ -581,14 +626,23 @@ let weekSubs = {};
 
 let entries = {}; // dateISO -> [{id,type,in,out,outReason,hours,costCenter,jobDiff,source}]
 (function seedEntries(){
+  // CURRENT week (Not yet submitted). Placed within this week (Sun..yesterday),
+  // leaving TODAY with no entry so the Home check-in countdown runs cleanly.
+  // No missed checkout here — that's demonstrated on an earlier week.
   const wkStart = startOfWeek(TODAY);
-  const mon = addDays(wkStart,1), tue = addDays(wkStart,2), wed = addDays(wkStart,3);
-  // Mon: a normal completed check in / check out (locked)
-  entries[fmtISO(mon)] = [{id:cuid(),type:'Regular Hours Worked',in:'08:00',out:'16:30',outReason:'Out',hours:8,costCenter:COST_CENTERS[0],jobDiff:'None',source:'checkin',fromPunch:true}];
-  // Tue: checked in but never checked out — flagged, resolved via a manual correction
-  entries[fmtISO(tue)] = [{id:cuid(),type:'Regular Hours Worked',in:'08:00',out:null,outReason:'Out',hours:0,costCenter:COST_CENTERS[0],jobDiff:'None',source:'checkin',fromPunch:true}];
-  // Wed: a manual entry (editable + deletable)
-  entries[fmtISO(wed)] = [{id:cuid(),type:'Regular Hours Worked',in:'08:00',out:'16:30',outReason:'Out',hours:8,costCenter:COST_CENTERS[0],jobDiff:'None',source:'manual',fromPunch:false}];
+  const todayIdx = TODAY.getDay(); // 0=Sun .. 6=Sat
+  const dayISO = i => fmtISO(addDays(wkStart, i));
+  const put = (i, entry) => { entries[dayISO(i)] = [entry]; };
+
+  const queue = [
+    // completed punch
+    {id:cuid(),type:'Regular Hours Worked',in:'08:00',out:'16:30',outReason:'Out',hours:8,costCenter:COST_CENTERS[0],jobDiff:'None',source:'checkin',fromPunch:true},
+    // a manual entry
+    {id:cuid(),type:'Regular Hours Worked',in:'08:00',out:'16:30',outReason:'Out',hours:8,costCenter:COST_CENTERS[0],jobDiff:'None',source:'manual',fromPunch:false},
+  ];
+  // Fill starting YESTERDAY, backwards, so today stays empty for the countdown.
+  let i = todayIdx - 1;
+  for(const entry of queue){ if(i < 0) break; put(i, entry); i--; }
 })();
 
 let toRequests = [];
@@ -611,22 +665,45 @@ let toRequests = [];
   const thisWk = startOfWeek(TODAY);
   const wk = n => fmtISO(addDays(thisWk, n*7));
 
-  // Fill a past week (Mon–Fri) with completed check in/out entries so the
-  // timesheet actually shows data when opened from the Requests tab.
-  function fillWeek(offset){
+  // Fill a past week (Mon–Fri) with completed check in/out entries. Options:
+  //  manualDow  – make this weekday a MANUAL entry
+  //  missedDows – array of weekdays that are MISSED checkouts (no out time)
+  //  mgrDow     – make this weekday a MANAGER-EDITED entry
+  function fillWeek(offset, opts={}){
+    const {manualDow, missedDows=[], mgrDow} = opts;
     const start = addDays(thisWk, offset*7);
     for(let dow=1; dow<=5; dow++){ // Mon..Fri
       const d = fmtISO(addDays(start, dow));
-      if(!entries[d]) entries[d] = [];
-      entries[d].push({id:cuid(), type:'Regular Hours Worked', in:'08:00', out:'16:30',
-        outReason:'Out', hours:8, costCenter:COST_CENTERS[0], jobDiff:'None', source:'checkin', fromPunch:true});
+      if(entries[d] && entries[d].length) continue; // don't stack onto demo data
+      if(missedDows.includes(dow)){
+        entries[d] = [{id:cuid(), type:'Regular Hours Worked', in:'08:00', out:null,
+          outReason:'Out', hours:0, costCenter:COST_CENTERS[0], jobDiff:'None', source:'checkin', fromPunch:true}];
+      } else if(dow===mgrDow){
+        entries[d] = [{id:cuid(), type:'Overtime', in:'08:00', out:'18:00',
+          outReason:'Out', hours:10, costCenter:COST_CENTERS[0], jobDiff:'None', source:'manual', fromPunch:false,
+          mgrEdit:{by:'Daniel Okafor', when:'before submitting', note:'Approved 2h overtime for the shift extension.', from:{type:'Regular Hours Worked', in:'08:00', out:'16:30', hours:8}}}];
+      } else {
+        const isManual = dow===manualDow;
+        entries[d] = [{id:cuid(), type:'Regular Hours Worked', in:'08:00', out:'16:30',
+          outReason:'Out', hours:8, costCenter:COST_CENTERS[0], jobDiff:'None',
+          source: isManual ? 'manual' : 'checkin', fromPunch: !isManual}];
+      }
     }
   }
-  fillWeek(-1); fillWeek(-2); fillWeek(-3);
+  // Weeks -1..-4, contiguous, immediately before the current week.
+  //  -1 (Jul 12-18): approved, with a MANAGER-EDITED day (Wed)
+  //  -2: sent back
+  //  -3: denied
+  //  -4 (Jun 21-27): two MISSED checkouts (Tue & Thu)
+  fillWeek(-1, {mgrDow:3});
+  fillWeek(-2);
+  fillWeek(-3);
+  fillWeek(-4, {missedDows:[2,4]});
 
-  weekSubs[wk(-1)] = {status:'approved',  submittedLabel:'Mon, last week',   decidedLabel:'approved by Daniel Okafor', managerComment:'', snapshot:snapshotWeekAt(-1)};
-  weekSubs[wk(-2)] = {status:'sentback',  submittedLabel:'2 weeks ago',      decidedLabel:'sent back by Daniel Okafor', managerComment:'Thursday looks short — did you log the afternoon shift?', snapshot:snapshotWeekAt(-2)};
-  weekSubs[wk(-3)] = {status:'denied',    submittedLabel:'3 weeks ago',      decidedLabel:'denied by Daniel Okafor', managerComment:'Overtime not pre-approved for this week.', snapshot:snapshotWeekAt(-3)};
+  weekSubs[wk(-1)] = {status:'approved',  submittedLabel:'submitted last week',    decidedLabel:'approved by Daniel Okafor', managerComment:'', snapshot:snapshotWeekAt(-1)};
+  weekSubs[wk(-2)] = {status:'sentback',  submittedLabel:'submitted 2 weeks ago',  decidedLabel:'sent back by Daniel Okafor', managerComment:'Thursday looks short — did you log the afternoon shift?', snapshot:snapshotWeekAt(-2)};
+  weekSubs[wk(-3)] = {status:'denied',    submittedLabel:'submitted 3 weeks ago',  decidedLabel:'denied by Daniel Okafor', managerComment:'Overtime not pre-approved for this week.', snapshot:snapshotWeekAt(-3)};
+  // -4 is NOT submitted — it has unresolved missed checkouts to fix first.
 })();
 /* snapshot of a given past week, used as the submitted baseline */
 function snapshotWeekAt(offset){
@@ -695,7 +772,7 @@ let todDraft = {type:TIMEOFF_TYPES[6], dailyHours:8, comment:'', perDay:{}, show
 
 /* ---------------- Render root ---------------- */
 function render(){
-  document.getElementById('clockTime').textContent = new Date().toTimeString().slice(0,5);
+  document.getElementById('clockTime').textContent = nowClock();
   const header = document.getElementById('appHeader');
   const nav = document.getElementById('bottomNav');
   if(!state.authed){
@@ -929,8 +1006,6 @@ setInterval(()=>{
   if(!state.authed || !state.checkedIn) return;
   const home = document.getElementById('punchElapsed');
   if(home) home.textContent = elapsedLabel();
-  const row = document.getElementById('inProgressElapsed');
-  if(row) row.textContent = sessionLabel();
 }, 1000);
 
 /* ================= TIME (Enter & Submit) ================= */
@@ -952,6 +1027,7 @@ function snapshotWeek(){
   return snap;
 }
 function weekChangedSince(snap){
+  if(!snap) return false;
   for(const d of weekDates()){
     const iso = fmtISO(d);
     const cur = (entries[iso]||[]).map(entryFingerprint);
@@ -961,6 +1037,9 @@ function weekChangedSince(snap){
   return false;
 }
 function weekStatus(){
+  // An unresolved missed checkout can't sit in an approved week — it must be
+  // fixed first, so surface it as Sent back regardless of any stored status.
+  if(weekMissedOutDay()) return {key:'sentback', label:'Sent back · missing check out', cls:'sentback'};
   const sub = weekSubs[currentWeekKey()];
   if(!sub) return {key:'none', label:'Not yet submitted', cls:'pending'};
   if(weekChangedSince(sub.snapshot)) return {key:'edited', label:'Edited · resubmit', cls:'sentback'};
@@ -972,7 +1051,7 @@ function weekStatus(){
 /* The version of an entry as it was last submitted, or null if it wasn't in that submission */
 function submittedVersionOf(dISO, entryId){
   const sub = weekSubs[weekKeyFor(dISO)];
-  if(!sub || !entryId) return null;
+  if(!sub || !sub.snapshot || !entryId) return null;
   return (sub.snapshot[dISO]||[]).find(e=>e.id===entryId) || null;
 }
 function weekIsSubmitted(dISO){ return !!weekSubs[weekKeyFor(dISO)]; }
@@ -987,6 +1066,7 @@ function screenTime(){
   const selDate = new Date(dISO+'T00:00:00');
   const wkSt = weekStatus();
   const missedToday = missedOutEntry(dISO);
+  const isFuture = new Date(dISO+'T00:00:00') > new Date(fmtISO(TODAY)+'T00:00:00');
   return `
     <div style="padding:14px 16px 0;">
       <button class="btn-secondary" style="display:flex; align-items:center; justify-content:center; gap:7px; color:var(--brand); border-color:var(--brand);" onclick="openMonthlyTimesheet()">
@@ -1004,30 +1084,42 @@ function screenTime(){
         const t=dayTotal(iso);
         const sel = iso===state.selectedDay;
         const isToday = sameDate(d,TODAY);
-        return `<div class="day-cell ${sel?'selected':''} ${isToday?'today':''} ${missedOutEntry(iso)?'flagged':''}" onclick="selectDay('${iso}')">
+        return `<div class="day-cell ${sel?'selected':''} ${isToday?'today':''} ${missedOutEntry(iso)?'flagged':''} ${mgrEditedEntry(iso)?'mgr-day':''}" onclick="selectDay('${iso}')">
           <div class="dow">${DOW[d.getDay()]}</div>
           <div class="dnum">${d.getDate()}</div>
           <div class="dhrs ${t===0?'zero':''}">${t===0?'–':t.toFixed(1)}</div>
+          <div class="dtypes">${dayTypeDots(iso)}</div>
         </div>`;
       }).join('')}
+    </div>
+    <div class="entry-legend week-legend">
+      <span><i class="punch"></i> Punched</span>
+      <span><i class="manual"></i> Manual</span>
+      <span><i class="mgr"></i> Manager edited</span>
+      <span><i class="missed"></i> Missed check out</span>
     </div>
     <div class="week-total-bar">
       <div>
         <div class="wt-label">Week total</div>
         <div class="wt-val">${weekTotal().toFixed(1)} hrs</div>
-        ${wkSt.key!=='none' ? `<div class="helper" style="margin-top:2px;">Submitted ${weekSubs[currentWeekKey()].submittedLabel}</div>`:''}
+        ${weekSubs[currentWeekKey()] ? `<div class="helper" style="margin-top:2px;">Submitted ${weekSubs[currentWeekKey()].submittedLabel}</div>`:''}
       </div>
       <span class="badge ${wkSt.cls}">${wkSt.label}</span>
     </div>
+    ${(function(){
+      const sub = weekSubs[currentWeekKey()];
+      if(sub && (sub.status==='sentback' || sub.status==='denied') && sub.managerComment){
+        const verb = sub.status==='denied' ? 'Denied' : 'Sent back';
+        return `<div class="mgr-comment-bar">
+          ${svg('info',13)}
+          <div><b>${verb} by ${MANAGER.name}:</b> ${sub.managerComment}</div>
+        </div>`;
+      }
+      return '';
+    })()}
 
     <div class="section">
       <div class="section-title">${fmtHuman(selDate)}</div>
-      ${dayEntries.length ? `<div class="entry-legend">
-        <span><i class="punch"></i> Punched (check in/out)</span>
-        <span><i class="corrected"></i> Punch · corrected</span>
-        <span><i class="manual"></i> Manual entry</span>
-      </div>` : ''}
-      ${openCheckInRow(dISO)}
       ${dayEntries.length ? dayEntries.map(e=>{
         const missed = !e.out;
         // Completed check in/out entries are locked. An unresolved one stays
@@ -1035,42 +1127,44 @@ function screenTime(){
         const locked = e.source === 'checkin' && !missed;
         // Entry origin drives the row's look and its badge:
         //  - punch: real mobile check in/out (locked)
-        //  - corrected: punch that had its missed checkout completed manually
-        //  - manual: created from scratch via Add New
+        //  - manual: created from scratch, or a resolved missed checkout
         const kind = missed ? 'missed'
+                   : e.mgrEdit ? 'mgr'
                    : e.source === 'checkin' ? 'punch'
-                   : e.fromPunch ? 'corrected'
                    : 'manual';
-        const rowClass = kind==='manual' ? 'manual'
-                       : kind==='corrected' ? 'corrected'
+        const rowClass = kind==='mgr' ? 'mgr-edited'
+                       : kind==='manual' ? 'manual'
                        : locked ? 'locked' : '';
         const badge = {
           missed:    `<div class="badge sentback"     style="margin-top:4px;">Missed check out</div>`,
+          mgr:       `<div class="badge mgr-badge"    style="margin-top:4px;">${svg('user',9)} Manager edited</div>`,
           punch:     `<div class="badge punch-badge"  style="margin-top:4px;">${svg('smartphone',9)} Punched</div>`,
-          corrected: `<div class="badge corrected-badge" style="margin-top:4px;">${svg('smartphone',9)} Punch · corrected</div>`,
           manual:    `<div class="badge manual"       style="margin-top:4px;">${svg('edit',9)} Manual</div>`
         }[kind];
         return `
-        <div class="entry-row ${rowClass} ${missed?'flagged':''}" onclick="${locked ? 'lockedEntryTap()' : `openSheet('addEntry', {dateISO:'${dISO}', entryId:'${e.id}'})`}">
+        <div class="entry-row ${rowClass} ${missed?'flagged':''}" onclick="${(isFuture||locked) ? (isFuture?'futureDayTap()':'lockedEntryTap()') : `openSheet('addEntry', {dateISO:'${dISO}', entryId:'${e.id}'})`}">
           <div style="flex:1; min-width:0;">
             <div class="er-time">${to12(e.in)} – ${missed ? '<span style="color:var(--negative);">--:--</span>' : to12(e.out)}</div>
             <div class="er-type">${e.type}${missed ? ' · check out not recorded' : (e.outReason?' · '+e.outReason:'')}</div>
+            ${e.mgrEdit ? `<div class="mgr-line">${svg('user',10)} ${e.mgrEdit.by} · was ${e.mgrEdit.from.type}, ${to12(e.mgrEdit.from.in)}–${to12(e.mgrEdit.from.out)}</div>` : ''}
           </div>
           <div class="er-hrs" style="${missed?'color:var(--negative);':''}">
             ${missed ? svg('flag',15) : e.hours.toFixed(1)+' h'}
             ${badge}
           </div>
         </div>`;
-      }).join('') : (hasOpenCheckIn(dISO) ? '' : `
+      }).join('') : `
         <div class="empty-state">
           ${svg('calendarOff',36)}
           <p>No entries for this day</p>
         </div>
-      `)}
+      `}
       ${missedToday ? `<div class="helper" style="color:var(--negative); font-weight:700; margin:-2px 0 10px 2px;">Check out was never recorded. Use <b>Complete Check Out</b> below to correct it.</div>` : ''}
-      <button class="btn-secondary" style="margin-top:6px; display:flex; align-items:center; justify-content:center; gap:6px; ${missedToday?'color:var(--negative); border-color:var(--negative);':''}" onclick="openSheet('addEntry', {dateISO:'${dISO}'${missedToday?`, entryId:'${missedToday.id}'`:''}})">
+      ${isFuture
+        ? `<div class="future-note">${svg('calendar',15)} You can't log time for a future date.</div>`
+        : `<button class="btn-secondary" style="margin-top:6px; display:flex; align-items:center; justify-content:center; gap:6px; ${missedToday?'color:var(--negative); border-color:var(--negative);':''}" onclick="openSheet('addEntry', {dateISO:'${dISO}'${missedToday?`, entryId:'${missedToday.id}'`:''}})">
         ${missedToday ? svg('flag',16)+' Complete Check Out' : svg('plus',16)+' Add New'}
-      </button>
+      </button>`}
     </div>
 
     <div style="padding:8px 16px 4px;">
@@ -1091,21 +1185,9 @@ function hasOpenCheckIn(dISO){
   return state.checkedIn && dISO === fmtISO(TODAY);
 }
 function openCheckInRow(dISO){
-  if(!hasOpenCheckIn(dISO)) return '';
-  return `
-    <div class="entry-row inprogress">
-      <div style="flex:1; min-width:0;">
-        <div class="er-time">${to12(state.checkInTime)} <span style="color:var(--text-3); font-weight:600;">· in progress</span></div>
-        <div class="er-type">Regular Hours Worked · checked in</div>
-      </div>
-      <div class="er-hrs" style="text-align:right;">
-        <span id="inProgressElapsed" style="font-variant-numeric:tabular-nums;">${sessionLabel()}</span>
-        <div class="punch-live" style="justify-content:flex-end;"><span class="blip"></span>Running</div>
-      </div>
-    </div>
-    <button class="btn-secondary" style="margin-bottom:10px; display:flex; align-items:center; justify-content:center; gap:7px; color:var(--brand); border-color:var(--brand);" onclick="goCheckOut()">
-      ${svg('check',15)} Check Out
-    </button>`;
+  // Check in / check out is done on the Home screen only. Enter Time just lists
+  // logged entries, so we render nothing here for an in-progress check-in.
+  return '';
 }
 /* Today's check in/out is done from the Home screen */
 function goCheckOut(){
@@ -1116,12 +1198,25 @@ function goCheckOut(){
 function lockedEntryTap(){
   toast("Check in / check out entries can't be edited — use Add New for a correction", 'info');
 }
+function futureDayTap(){
+  toast("You can't log time for a future date", 'warn');
+}
 function to12(t){ if(!t) return '--'; const [h,m]=t.split(':').map(Number); const ap = h>=12?'PM':'AM'; const hh = ((h+11)%12)+1; return `${hh}:${String(m).padStart(2,'0')} ${ap}`; }
-function shiftWeek(n){ state.weekOffset+=n; render(); }
+function shiftWeek(n){
+  state.weekOffset += n;
+  // Default the selected day to this week's Monday, so the detail heading below
+  // always matches the week shown. On the current week, keep today selected.
+  const wkStart = addDays(startOfWeek(TODAY), state.weekOffset*7);
+  const monday = addDays(wkStart, 1);
+  state.selectedDay = state.weekOffset===0 ? fmtISO(TODAY) : fmtISO(monday);
+  render();
+}
 function selectDay(iso){ state.selectedDay=iso; render(); }
 function submitWeek(){
-  if(state.checkedIn){
-    toast('You have an open check-in · check out before submitting','warn');
+  // An open check-in is always for today, so it can only affect the current week.
+  if(state.checkedIn && state.weekOffset===0){
+    toast("You're still checked in — check out on Home first, then submit",'warn');
+    setTab('home');
     return;
   }
   const missedDay = weekMissedOutDay();
@@ -1206,6 +1301,23 @@ function findOverlap(dISO, inT, outT, ignoreId){
 }
 /* An entry that was checked in but never checked out */
 function missedOutEntry(dISO){ return (entries[dISO]||[]).find(e=>!e.out) || null; }
+function mgrEditedEntry(dISO){ return (entries[dISO]||[]).find(e=>e.mgrEdit) || null; }
+/* One colored dot per entry-type present on a day, matching the legend:
+   punch=blue, manual=purple, manager=teal, missed=red. */
+function dayTypeKinds(dISO){
+  const kinds = new Set();
+  for(const e of (entries[dISO]||[])){
+    if(!e.out) kinds.add('missed');
+    else if(e.mgrEdit) kinds.add('mgr');
+    else if(e.source==='checkin') kinds.add('punch');
+    else kinds.add('manual');
+  }
+  // stable, meaningful order
+  return ['missed','mgr','punch','manual'].filter(k=>kinds.has(k));
+}
+function dayTypeDots(dISO){
+  return dayTypeKinds(dISO).map(k=>`<i class="tdot ${k}"></i>`).join('');
+}
 function weekMissedOutDay(){
   for(const d of weekDates()){ if(missedOutEntry(fmtISO(d))) return d; }
   return null;
@@ -1223,6 +1335,12 @@ function cmpRow(label, oldVal, newVal){
 }
 function sheetAddEntry(ctx){
   const dISO = ctx.dateISO;
+  // Never allow logging time for a future date, whatever path opened this.
+  if(new Date(dISO+'T00:00:00') > new Date(fmtISO(TODAY)+'T00:00:00')){
+    closeSheet();
+    futureDayTap();
+    return;
+  }
   const existing = ctx.entryId ? (entries[dISO]||[]).find(e=>e.id===ctx.entryId) : null;
   if(!entryDraft || entryDraft.dateISO!==dISO || entryDraft.entryId!==(ctx.entryId||null)){
     if(existing){
@@ -1258,9 +1376,23 @@ function sheetAddEntry(ctx){
   const prev = submittedVersionOf(dISO, entryDraft.entryId);
   const addedAfterSubmit = !prev && existing && weekIsSubmitted(dISO);
   const blocked = over || !!clash || badOrder;
+  // Manager edits never apply to an unmatched/missed check-in — resolving those
+  // is the employee's job alone, so suppress any manager banner while resolving.
+  const mgr = (existing && existing.mgrEdit && !entryDraft.resolving && existing.out) ? existing.mgrEdit : null;
   document.getElementById('sheetTitle').textContent = entryDraft.resolving ? 'Complete Check Out' : existing ? 'Edit Time Entry' : 'Enter Time';
   document.getElementById('sheetBody').innerHTML = `
     <div style="font-size:12.5px; color:var(--text-3); font-weight:700; margin-bottom:14px;">${fmtHuman(new Date(dISO+'T00:00:00'))}</div>
+    ${mgr ? `
+      <div class="kv-card" style="background:var(--mgr-bg); border-color:var(--mgr);">
+        <div style="font-size:11px; font-weight:800; color:var(--mgr); text-transform:uppercase; letter-spacing:.03em; margin-bottom:8px;">
+          ${svg('user',12)} Modified by ${mgr.by} · ${mgr.when}
+        </div>
+        ${cmpRow('Time Type', mgr.from.type, existing.type)}
+        ${cmpRow('Time In',   to12(mgr.from.in),  to12(existing.in))}
+        ${cmpRow('Time Out',  to12(mgr.from.out), to12(existing.out))}
+        ${cmpRow('Hours',     mgr.from.hours.toFixed(2), existing.hours.toFixed(2))}
+        ${mgr.note ? `<div class="helper" style="margin-top:6px; color:var(--text-2);">"${mgr.note}"</div>` : ''}
+      </div>` : ''}
     ${entryDraft.resolving ? `
       <div class="kv-card" style="background:var(--negative-bg); border-color:var(--negative);">
         <div style="font-size:11.5px; font-weight:700; color:var(--negative);">
@@ -2149,7 +2281,7 @@ function reqCard(it){
   const meta = reqStatusMeta(it.status);
   const icon = it.kind==='timesheet' ? 'clock' : 'calendar';
   return `
-    <div class="card" style="padding:14px; margin-bottom:10px; ${(it.status==='sentback'||it.status==='denied')?'border-color:var(--critical); border-left:4px solid var(--critical);':''}">
+    <div class="card req-card" style="padding:13px; margin-bottom:10px; ${(it.status==='sentback'||it.status==='denied')?'border-color:var(--critical); border-left:4px solid var(--critical);':''}">
       <div style="display:flex; align-items:flex-start; gap:12px;">
         <div class="lr-icon" style="background:var(--brand-tint); color:var(--brand);">${svg(icon,16)}</div>
         <div style="flex:1; min-width:0;">
@@ -2210,6 +2342,7 @@ function reqCancelTimeOff(id){
 }
 function reqOpenTimesheet(wkKey){
   state.weekOffset = weekOffsetFor(wkKey);
+  state.selectedDay = fmtISO(addDays(new Date(wkKey+'T00:00:00'), 1)); // that week's Monday
   setTab('time');
 }
 const SHEETS = {
