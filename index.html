@@ -286,6 +286,31 @@
   .seg-row{display:flex; gap:8px;}
   .seg{flex:1; padding:11px; border-radius:10px; border:1.5px solid var(--border); background:#fff; color:var(--text-2); font-weight:700; font-size:12.5px; cursor:pointer; font-family:'Inter',sans-serif;}
   .seg.active{border-color:var(--sick); background:var(--sick-bg); color:var(--sick);}
+  /* Weekly bulk entry */
+  .we-row{border:1.5px solid var(--border); border-radius:12px; padding:11px 12px; margin-bottom:8px;}
+  .we-row.on{border-color:var(--brand); background:var(--brand-tint);}
+  .we-row.locked{background:var(--bg); opacity:.75;}
+  .we-day{display:flex; align-items:center; gap:11px;}
+  .we-check{width:22px; display:flex; justify-content:center; color:var(--brand); flex:0 0 auto; cursor:pointer;}
+  .we-check .we-empty{width:16px; height:16px; border:2px solid var(--border); border-radius:50%; display:block;}
+  .we-day > div[onclick]{cursor:pointer;}
+  .we-dow{font-size:13.5px; font-weight:700;}
+  .we-tag{font-size:9.5px; font-weight:700; color:var(--text-3); background:var(--bg); border:1px solid var(--border); border-radius:5px; padding:1px 5px; margin-left:4px;}
+  .we-meta{font-size:11px; color:var(--text-3); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .we-right{display:flex; align-items:center; gap:4px; flex:0 0 auto; color:var(--text-3);}
+  .we-hrs{font-size:12px; font-weight:800; color:var(--brand);}
+  .we-hrs.bad{color:var(--negative);}
+  .we-total{display:flex; justify-content:space-between; align-items:center; padding:12px 4px 2px; font-size:13px; font-weight:700; color:var(--text-2); border-top:1px solid var(--border); margin-top:6px;}
+  .we-total b{font-size:16px; color:var(--brand); font-family:'Poppins',sans-serif;}
+  .we-weektotal{display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border:1px solid var(--border); border-radius:12px; background:var(--card); margin-bottom:12px;}
+  .we-weektotal .wt-label{font-size:11px; color:var(--text-3); font-weight:700;}
+  .we-weektotal .wt-big{font-size:18px; font-weight:800; font-family:'Poppins',sans-serif; color:var(--brand);}
+  .ws-day{display:flex; align-items:center; gap:10px; border:1.5px solid var(--border); border-radius:12px; padding:12px; margin-bottom:8px; cursor:pointer;}
+  .ws-day:active{background:var(--brand-tint); border-color:var(--brand);}
+  .ws-daynav{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .ws-daynav button{background:var(--card); border:1px solid var(--border); width:34px; height:34px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; flex:0 0 auto; color:var(--text);}
+  .ws-daynav button:disabled{opacity:.35; cursor:default;}
+  .ws-dn-label{flex:1;}
   .punch-actions button.danger-outline{background:#fff; color:var(--negative); border:1.5px solid var(--negative);}
 
   .entry-row{ display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--border); border-left:4px solid var(--brand); border-radius:12px; padding:12px 14px; margin-bottom:8px; }
@@ -1232,9 +1257,12 @@ function screenTime(){
   const timeOffToday = timeOffForDate(dISO);
   const isFuture = new Date(dISO+'T00:00:00') > new Date(fmtISO(TODAY)+'T00:00:00');
   return `
-    <div style="padding:14px 16px 0;">
-      <button class="btn-secondary" style="display:flex; align-items:center; justify-content:center; gap:7px; color:var(--brand); border-color:var(--brand);" onclick="openMonthlyTimesheet()">
-        ${svg('calendar',16)} View Monthly Timesheet
+    <div style="padding:14px 16px 0; display:flex; gap:8px;">
+      <button class="btn-secondary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; color:var(--brand); border-color:var(--brand);" onclick="openWeekEntry()">
+        ${svg('clock',16)} Weekly Timesheet
+      </button>
+      <button class="btn-secondary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="openMonthlyTimesheet()">
+        ${svg('calendar',16)} Monthly Timesheet
       </button>
     </div>
     <div class="week-nav">
@@ -1600,7 +1628,7 @@ function sheetAddEntry(ctx){
         outVal = addMins(existing.in, 480);
         if(timeToMin(outVal) <= timeToMin(existing.in)) outVal = '23:59';
       }
-      entryDraft = {dateISO:dISO, entryId:ctx.entryId, type:existing.type, in:existing.in, out:outVal, outReason:existing.outReason, costCenter:existing.costCenter, jobDiff:existing.jobDiff, source:existing.source, fromPunch:!!existing.fromPunch, resolving:!existing.out};
+      entryDraft = {dateISO:dISO, entryId:ctx.entryId, type:existing.type, in:existing.in, out:outVal, outReason:existing.outReason, costCenter:existing.costCenter, jobDiff:existing.jobDiff, source:existing.source, fromPunch:!!existing.fromPunch, resolving:!existing.out, fromWeek:!!ctx.fromWeek};
     } else {
       // Start a new entry after the last checkout of the day so it can't sit on
       // top of time already logged. First entry of the day falls back to 08:00.
@@ -1609,7 +1637,7 @@ function sheetAddEntry(ctx){
       let endAt = lastOut ? addMins(lastOut, 60) : '16:00';
       // Out must stay after In, so don't let the default roll past midnight
       if(timeToMin(endAt) <= timeToMin(startAt)) endAt = '23:59';
-      entryDraft = {dateISO:dISO, entryId:null, type:'Regular Hours Worked', in:startAt, out:endAt, outReason:'Out', costCenter:COST_CENTERS[0], jobDiff:'None', source:null, fromPunch:false};
+      entryDraft = {dateISO:dISO, entryId:null, type:'Regular Hours Worked', in:startAt, out:endAt, outReason:'Out', costCenter:COST_CENTERS[0], jobDiff:'None', source:null, fromPunch:false, fromWeek:!!ctx.fromWeek};
     }
   }
   // Out must come after In on the same day
@@ -1692,12 +1720,20 @@ function sheetAddEntry(ctx){
       <select onchange="entryDraft.outReason=this.value">${OUT_REASONS.map(r=>`<option ${r===entryDraft.outReason?'selected':''}>${r}</option>`).join('')}</select>
     </div>
     <div class="field">
-      <label>Calculated Hours</label>
-      <div class="field-static" style="${(over||badOrder)?'color:var(--negative);':''}">${badOrder ? '—' : fmtHrs(hrs)+' h'+(hrs>0 ? ` (${Math.round(hrs*60)} min)` : '')}</div>
+      <div style="display:flex; gap:10px;">
+        <div style="flex:1;">
+          <label>Calculated Hours</label>
+          <div class="field-static" style="${(over||badOrder)?'color:var(--negative);':''}">${badOrder ? '—' : fmtHrs(hrs)+' h'+(hrs>0 ? ` (${Math.round(hrs*60)} min)` : '')}</div>
+        </div>
+        <div style="flex:1;">
+          <label>Total Hours (Day)</label>
+          <div class="field-static" style="${over?'color:var(--negative);':''}">${badOrder ? '—' : fmtHrs(dayTotalNew)+' h'}</div>
+        </div>
+      </div>
       ${badOrder
         ? `<div class="helper" style="color:var(--negative); font-weight:700;">Cannot calculate — the Out time (${to12(entryDraft.out)}) is not after the In time (${to12(entryDraft.in)}).</div>`
         : `<div class="helper" style="${over?'color:var(--negative); font-weight:700;':''}">
-             ${otherHours>0 ? `Already logged today: ${otherHours.toFixed(2)} hrs · ` : ''}Day total: ${dayTotalNew.toFixed(2)} / ${MAX_DAY_HOURS} hrs${over?` — exceeds the ${MAX_DAY_HOURS}-hour daily limit` : ''}
+             ${otherHours>0 ? `Already logged today: ${fmtHrs(otherHours)} h · ` : ''}Daily limit: ${MAX_DAY_HOURS} hrs${over?` — exceeded` : ''}
            </div>`}
       ${clash ? `<div class="helper" style="color:var(--negative); font-weight:700;">Overlaps an existing entry (${to12(clash.in)} – ${to12(clash.out)}). Start this entry at or after ${to12(clash.out)}.</div>` : ''}
     </div>
@@ -1727,28 +1763,34 @@ function saveEntryFromDraft(){
   }
   const hours = calcHours(entryDraft.in, entryDraft.out);
   // Guard: entries for a single day must not total more than MAX_DAY_HOURS.
-  // Exclude the entry being edited so an edit doesn't count its own old value.
   const otherHours = (entries[dISO]||[]).reduce((s,e)=> e.id===entryDraft.entryId ? s : s+e.hours, 0);
   if(otherHours + hours > MAX_DAY_HOURS + 1e-9){
     toast(`Day total would be ${(otherHours+hours).toFixed(2)} hrs · max ${MAX_DAY_HOURS} hrs per day`,'warn');
     return;
   }
-  // Guard: an entry may not sit on top of time already logged that day
   const clash = findOverlap(dISO, entryDraft.in, entryDraft.out, entryDraft.entryId);
   if(clash){
     toast(`Overlaps ${to12(clash.in)} – ${to12(clash.out)} · start at or after ${to12(clash.out)}`,'warn');
     return;
   }
+  const fromWeek = entryDraft.fromWeek && weekEditReturn;
   if(!entries[dISO]) entries[dISO]=[];
   if(entryDraft.entryId){
     const idx = entries[dISO].findIndex(e=>e.id===entryDraft.entryId);
-    // Resolving a missed check out is a manual correction, so record it as such
     const src = entryDraft.resolving ? 'manual' : entries[dISO][idx].source;
     entries[dISO][idx] = {...entries[dISO][idx], type:entryDraft.type, in:entryDraft.in, out:entryDraft.out, outReason:entryDraft.outReason, hours, costCenter:entryDraft.costCenter, jobDiff:entryDraft.jobDiff, source:src};
   } else {
     entries[dISO].push({id:cuid(), type:entryDraft.type, in:entryDraft.in, out:entryDraft.out, outReason:entryDraft.outReason, hours, costCenter:entryDraft.costCenter, jobDiff:entryDraft.jobDiff, source:'manual', fromPunch:false});
   }
   entryDraft = null;
+  if(fromWeek){
+    // Return to the weekly timesheet's day view with the entry saved
+    weekSheetDay = weekEditReturn;
+    weekEditReturn = null;
+    openSheet('weekEntry');
+    toast('Entry saved','success');
+    return;
+  }
   closeSheet();
   render();
   toast('Entry saved','success');
@@ -2513,6 +2555,135 @@ function profileRow(icon,label){
 }
 
 /* ---- Monthly timesheet ---- */
+/* ---- Weekly Timesheet (per-day review + entry) ---- */
+let weekSheetDay = null; // ISO of the day open in the day editor, null = summary
+function openWeekEntry(){
+  // Only an APPROVED week is locked from editing.
+  const sub = weekSubs[currentWeekKey()];
+  if(sub && sub.status==='approved'){
+    toast('This week is approved and can no longer be edited','info');
+    return;
+  }
+  weekSheetDay = null;
+  openSheet('weekEntry');
+}
+/* working days of the viewed week that are editable (past/today, not leave) */
+function weekSheetDays(){
+  const todayISO = fmtISO(TODAY);
+  return weekDates().filter(d=>{
+    const dow=d.getDay();
+    if(dow===0||dow===6) return false;
+    return fmtISO(d) <= todayISO;
+  }).map(d=>fmtISO(d));
+}
+function sheetWeekEntry(){
+  if(weekSheetDay){ renderWeekDayEditor(); return; }
+  const days = weekSheetDays();
+  let weekTotalH = 0;
+  const rowsHtml = days.map(iso=>{
+    const d = new Date(iso+'T00:00:00');
+    const to = timeOffForDate(iso);
+    const list = entries[iso]||[];
+    const dayH = list.reduce((s,e)=>s+e.hours,0);
+    weekTotalH += dayH;
+    const typeSummary = to ? `${to.type} · Time Off`
+      : list.length ? [...new Set(list.map(e=>e.type))].join(', ')
+      : 'No entries yet';
+    return `
+      <div class="ws-day" onclick="${to?'':`openWeekSheetDay('${iso}')`}">
+        <div style="flex:1; min-width:0;">
+          <div class="we-dow">${DOW[d.getDay()]}, ${MON[d.getMonth()].slice(0,3)} ${d.getDate()}</div>
+          <div class="we-meta">${typeSummary}${list.length?` · ${list.length} entr${list.length>1?'ies':'y'}`:''}</div>
+        </div>
+        <div class="we-right">
+          ${to ? `<span class="hw-val off">Off</span>`
+               : `<span class="we-hrs">${dayH>0?fmtHrs(dayH)+' h':'–'}</span>${svg('chevronRight',16)}`}
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('sheetTitle').textContent = 'Weekly Timesheet';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="we-weektotal">
+      <div><div class="wt-label">Week total</div><div class="wt-big">${fmtHrs(weekTotalH)} h</div></div>
+      <div style="text-align:right;"><div class="wt-label">Days with time</div><div class="wt-big">${days.filter(i=>(entries[i]||[]).length||timeOffForDate(i)).length}/${days.length}</div></div>
+    </div>
+    ${rowsHtml || '<div class="helper" style="text-align:center; padding:12px 0;">No working days available this week.</div>'}
+  `;
+  document.getElementById('sheetFooter').style.display='block';
+  document.getElementById('sheetFooter').innerHTML = `
+    <button class="btn-primary" onclick="closeSheet(); render();">Done</button>
+  `;
+}
+function openWeekSheetDay(iso){ weekSheetDay = iso; sheetWeekEntry(); }
+function weekDayNav(dir){
+  const days = weekSheetDays().filter(i=>!timeOffForDate(i));
+  const idx = days.indexOf(weekSheetDay);
+  const next = days[idx+dir];
+  if(next){ weekSheetDay = next; sheetWeekEntry(); }
+}
+function renderWeekDayEditor(){
+  const iso = weekSheetDay;
+  const d = new Date(iso+'T00:00:00');
+  const days = weekSheetDays().filter(i=>!timeOffForDate(i));
+  const idx = days.indexOf(iso);
+  const list = entries[iso]||[];
+  const dayH = list.reduce((s,e)=>s+e.hours,0);
+  const allDays = weekSheetDays();
+  const weekH = allDays.reduce((s,i)=> s + (entries[i]||[]).reduce((x,e)=>x+e.hours,0), 0);
+  document.getElementById('sheetTitle').textContent = 'Weekly Timesheet';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="ws-daynav">
+      <button ${idx<=0?'disabled':''} onclick="weekDayNav(-1)">${svg('chevronLeft',16)}</button>
+      <div class="ws-dn-label">
+        <div class="we-dow" style="text-align:center;">${DOW[d.getDay()]}, ${MON[d.getMonth()].slice(0,3)} ${d.getDate()}</div>
+        <div class="we-meta" style="text-align:center;">${list.length ? list.length+' entr'+(list.length>1?'ies':'y') : 'No entries yet'}</div>
+      </div>
+      <button ${idx>=days.length-1?'disabled':''} onclick="weekDayNav(1)">${svg('chevronRight',16)}</button>
+    </div>
+    <div class="we-weektotal" style="margin-bottom:12px; justify-content:center;">
+      <div style="text-align:center;"><div class="wt-label">Total Hours</div><div class="wt-big">${fmtHrs(dayH)} h</div></div>
+    </div>
+    ${list.length ? list.map(e=>{
+      const missed = !e.out;
+      const editable = !(e.source==='checkin' && !missed);
+      return `
+      <div class="entry-row ${e.source==='manual'?'manual':''} ${missed?'flagged':''}" style="margin:0 0 8px;" onclick="${editable?`editWeekDayEntry('${iso}','${e.id}')`:'lockedEntryTap()'}">
+        <div style="flex:1; min-width:0;">
+          <div class="er-time">${to12(e.in)} – ${missed?'<span style=\"color:var(--negative);\">--:--</span>':to12(e.out)}</div>
+          <div class="er-type">${e.type}${e.outReason?' · '+e.outReason:''}</div>
+        </div>
+        <div class="er-hrs">${missed?svg('flag',15):fmtHrs(e.hours)+' h'}</div>
+      </div>`;
+    }).join('') : `<div class="empty-state" style="padding:18px 0;">${svg('calendarOff',30)}<p>No entries for this day yet</p></div>`}
+    <button class="btn-secondary" style="margin-top:4px; display:flex; align-items:center; justify-content:center; gap:6px; color:var(--brand); border-color:var(--brand);" onclick="addWeekDayEntry('${iso}')">
+      ${svg('plus',15)} Add Entry
+    </button>
+  `;
+  document.getElementById('sheetFooter').style.display='block';
+  document.getElementById('sheetFooter').innerHTML = `
+    <button class="btn-secondary" onclick="weekSheetDay=null; sheetWeekEntry();">${svg('chevronLeft',14)} Back to Week</button>
+  `;
+}
+let weekEditReturn = null;
+function addWeekDayEntry(iso){
+  weekEditReturn = iso;
+  const lastOut = nextStartFor(iso);
+  const startAt = lastOut || '08:00';
+  // Default span: 8h for a fresh day, else 1h after the last block — clamped to 23:59
+  const startMin = timeToMin(startAt);
+  const span = lastOut ? 60 : 480;
+  const endMin = Math.min(startMin + span, 23*60+59);
+  const endAt = `${String(Math.floor(endMin/60)).padStart(2,'0')}:${String(endMin%60).padStart(2,'0')}`;
+  entryDraft = {dateISO:iso, entryId:null, fromWeek:true,
+    type:'Regular Hours Worked', in:startAt, out:endAt, outReason:'Out',
+    costCenter:COST_CENTERS[0], jobDiff:'None', source:null, fromPunch:false};
+  openSheet('addEntry', {dateISO:iso, fromWeek:true});
+}
+function editWeekDayEntry(iso, entryId){
+  weekEditReturn = iso;
+  openSheet('addEntry', {dateISO:iso, entryId, fromWeek:true});
+}
+
 function openMonthlyTimesheet(){
   // open on the month the user is currently looking at
   const wd = weekDates();
@@ -2822,6 +2993,7 @@ function sheetConfirmCancelSick(ctx){
 const SHEETS = {
   addEntry: sheetAddEntry,
   monthlyTimesheet: sheetMonthlyTimesheet,
+  weekEntry: sheetWeekEntry,
   checkoutMeal: sheetCheckoutMeal,
   timeOffDetails: sheetTimeOffDetails,
   balances: sheetBalances,
@@ -2840,6 +3012,13 @@ function openSheet(name, ctx={}){
   document.getElementById('sheetOverlay').classList.add('open');
 }
 function closeSheet(){
+  // If the user backs out of a week-day entry editor, return to that day's view
+  if(state.sheet==='addEntry' && entryDraft && entryDraft.fromWeek && weekEditReturn){
+    weekSheetDay = weekEditReturn;
+    weekEditReturn = null; entryDraft = null;
+    openSheet('weekEntry');
+    return;
+  }
   document.getElementById('sheetOverlay').classList.remove('open');
   state.sheet=null;
   entryDraft=null;
