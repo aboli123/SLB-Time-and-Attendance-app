@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0014DC">
-<title>SLB · Time &amp; Leave Tracking — Employee App</title>
+<title>SLB · Time &amp; Attendance Tracking — Employee App</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -32,6 +32,8 @@
     --manual-bg:#F2E9FB;
     --mgr:#0E7C86;
     --mgr-bg:#DDF3F4;
+    --sick:#C77700;
+    --sick-bg:#FCF2E0;
     --radius-sm:8px;
     --radius-md:14px;
     --radius-lg:24px;
@@ -207,6 +209,9 @@
   .dtypes .tdot.manual{background:var(--manual);}
   .dtypes .tdot.mgr{background:var(--mgr);}
   .dtypes .tdot.missed{background:var(--negative);}
+  .dtypes .tdot.timeoff{background:var(--positive);}
+  .day-cell.timeoff-day{border-color:var(--positive); background:var(--positive-bg);}
+  .day-cell .dhrs.off{color:var(--positive); background:#fff; display:inline-flex; align-items:center; gap:2px; font-size:8.5px; padding:1px 4px;}
   .day-cell .dhrs.zero{color:var(--text-3); background:transparent;}
   .day-cell.selected{border-color:var(--brand); background:var(--brand-tint);}
   .day-cell.today .dnum{color:var(--brand);}
@@ -231,6 +236,57 @@
     border:1px dashed var(--border); color:var(--text-3); font-size:12px; font-weight:600;
     display:flex; align-items:center; gap:8px;
   }
+  .today-punch{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:12px 14px; border-radius:14px; margin-bottom:12px;
+  }
+  .today-punch.in{background:var(--positive-bg); border:1px solid var(--positive);}
+  .today-punch.out{background:var(--brand-tint); border:1px solid var(--brand);}
+  .today-punch.none{background:var(--bg); border:1px dashed var(--border); color:var(--text-3);}
+  .today-punch .tp-label{font-size:13px; font-weight:800; font-family:'Poppins',sans-serif;}
+  .today-punch .tp-sub{font-size:11px; color:var(--text-3); font-weight:600; margin-top:1px;}
+  .today-punch .tp-timer{text-align:right; font-size:19px; font-weight:800; font-variant-numeric:tabular-nums; font-family:'Poppins',sans-serif; color:var(--positive); display:flex; flex-direction:column; align-items:flex-end; gap:2px;}
+  .today-punch.out .tp-timer{color:var(--brand);}
+  .today-punch.none svg{color:var(--text-3);}
+  .timeoff-card{
+    display:flex; align-items:center; gap:12px; padding:14px;
+    border-radius:14px; background:var(--positive-bg); border:1px solid var(--positive); margin-bottom:12px;
+  }
+  .timeoff-card .to-icon{width:36px; height:36px; border-radius:10px; background:#fff; color:var(--positive); display:flex; align-items:center; justify-content:center; flex:0 0 auto;}
+  .timeoff-card .to-title{font-size:14px; font-weight:800; font-family:'Poppins',sans-serif;}
+  .timeoff-card .to-sub{font-size:11.5px; color:var(--text-3); font-weight:600; margin-top:1px;}
+
+  /* Home: this week strip */
+  .home-week{display:flex; gap:5px;}
+  .hw-day{flex:1; background:var(--card); border:1.5px solid var(--border); border-radius:12px; padding:8px 2px; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer;}
+  .hw-day.today{border-color:var(--brand); background:var(--brand-tint);}
+  .hw-dow{font-size:9.5px; font-weight:700; color:var(--text-3);}
+  .hw-num{font-size:14px; font-weight:800; font-family:'Poppins',sans-serif;}
+  .hw-val{font-size:9.5px; font-weight:800; color:var(--brand); background:var(--brand-tint); border-radius:5px; padding:1px 4px; min-width:24px; text-align:center;}
+  .hw-val.zero{color:var(--text-3); background:transparent;}
+  .hw-val.off{color:var(--positive); background:var(--positive-bg);}
+  .hw-val.miss{color:#fff; background:var(--negative);}
+  /* Home: quick time off */
+  .quick-to{display:flex; gap:8px;}
+  .quick-to button{flex:1; padding:12px; border-radius:12px; border:1.5px solid var(--border); background:var(--card); color:var(--text); font-weight:700; font-size:13px; cursor:pointer; font-family:'Inter',sans-serif; display:flex; align-items:center; justify-content:center; gap:6px;}
+  .quick-to button:active{background:var(--brand-tint); border-color:var(--brand);}
+  /* Home: take action rows */
+  .act-row{display:flex; align-items:center; gap:12px; padding:12px 4px; cursor:pointer; border-bottom:1px solid var(--border);}
+  .act-row:last-child{border-bottom:none;}
+  .act-row:active{opacity:.7;}
+  .act-ico{width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex:0 0 auto;}
+  .act-title{font-size:13.5px; font-weight:700;}
+  .act-sub{font-size:11.5px; color:var(--text-3); margin-top:1px;}
+  .act-cta{color:var(--text-3); flex:0 0 auto;}
+  /* Sick leave state */
+  .punch-circle.sick{background:#fff; outline:2px solid var(--sick); border:5px solid var(--sick-bg); box-shadow:0 8px 20px rgba(199,119,0,.18); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;}
+  .status-chip.sick{background:var(--sick-bg); color:var(--sick);}
+  .status-chip.sick .dot{background:var(--sick);}
+  .attend-card.sick{border-top:3px solid var(--sick);}
+  .seg-row{display:flex; gap:8px;}
+  .seg{flex:1; padding:11px; border-radius:10px; border:1.5px solid var(--border); background:#fff; color:var(--text-2); font-weight:700; font-size:12.5px; cursor:pointer; font-family:'Inter',sans-serif;}
+  .seg.active{border-color:var(--sick); background:var(--sick-bg); color:var(--sick);}
+  .punch-actions button.danger-outline{background:#fff; color:var(--negative); border:1.5px solid var(--negative);}
 
   .entry-row{ display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--border); border-left:4px solid var(--brand); border-radius:12px; padding:12px 14px; margin-bottom:8px; }
   .entry-row.manual{border-left-color:var(--manual); background:linear-gradient(0deg,var(--manual-bg),var(--manual-bg)),var(--card);}
@@ -257,6 +313,7 @@
   .entry-legend i.manual{background:var(--manual);}
   .entry-legend i.mgr{background:var(--mgr);}
   .entry-legend i.missed{background:var(--negative);}
+  .entry-legend i.timeoff{background:var(--positive);}
   .week-legend{padding:10px 16px 2px; gap:6px 12px;}
   .week-legend span{font-size:9.5px;}
   .week-legend i{width:8px; height:8px; border-radius:50%;}
@@ -507,7 +564,7 @@
 <body>
 
 <div class="rig-label">
-  <h1>SLB · Time &amp; Leave Tracking — Employee App</h1>
+  <h1>SLB · Time &amp; Attendance Tracking — Employee App</h1>
 </div>
 
 <div class="phone">
@@ -648,16 +705,24 @@ let entries = {}; // dateISO -> [{id,type,in,out,outReason,hours,costCenter,jobD
 let toRequests = [];
 (function seedTimeOff(){
   const base = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
-  const d1s = addDays(base,7), d1e = addDays(base,8);
-  toRequests.push(mkRequest(d1s,d1e,'Vacation',8,'approved','Family trip'));
-  const d2 = addDays(base,15);
+  // Past approved leave (already taken) — employee can only view, not edit/cancel
+  const pas = addDays(TODAY,-12), pae = addDays(TODAY,-11);
+  toRequests.push(mkRequest(pas,pae,'Vacation',8,'approved','Long weekend'));
+  // Upcoming approved leave — employee CAN edit or cancel
+  const fas = addDays(TODAY,10), fae = addDays(TODAY,11);
+  toRequests.push(mkRequest(fas,fae,'Vacation',8,'approved','Family trip'));
+  // Sent back (needs changes)
+  const d2 = addDays(TODAY,6);
   toRequests.push(mkRequest(d2,d2,'Personal',8,'sentback','Please confirm coverage'));
-  const d3s = addDays(base,22), d3e = addDays(base,23);
+  // Awaiting approval
+  const d3s = addDays(TODAY,14), d3e = addDays(TODAY,15);
   toRequests.push(mkRequest(d3s,d3e,'Sick',8,'awaiting',''));
-  // A closed request: leave already taken, fully resolved, no action needed
-  const cs = addDays(base,-20), ce = addDays(base,-19);
+  // Closed (fully resolved, historical)
+  const cs = addDays(TODAY,-25), ce = addDays(TODAY,-24);
   toRequests.push(mkRequest(cs,ce,'Vacation',8,'closed','Completed'));
 })();
+/* An approved request in the past is read-only; upcoming is editable/cancellable */
+function requestIsPast(r){ return r.end < fmtISO(TODAY); }
 
 /* Example submitted weekly timesheets showing each manager response. Keyed by
    the week's Sunday. snapshot omitted for seeds (only used for edit-diffing). */
@@ -670,11 +735,12 @@ let toRequests = [];
   //  missedDows – array of weekdays that are MISSED checkouts (no out time)
   //  mgrDow     – make this weekday a MANAGER-EDITED entry
   function fillWeek(offset, opts={}){
-    const {manualDow, missedDows=[], mgrDow} = opts;
+    const {manualDow, missedDows=[], mgrDow, shortDow} = opts;
     const start = addDays(thisWk, offset*7);
     for(let dow=1; dow<=5; dow++){ // Mon..Fri
       const d = fmtISO(addDays(start, dow));
       if(entries[d] && entries[d].length) continue; // don't stack onto demo data
+      if(timeOffForDate(d)) continue;               // leave days need no time entry
       if(missedDows.includes(dow)){
         entries[d] = [{id:cuid(), type:'Regular Hours Worked', in:'08:00', out:null,
           outReason:'Out', hours:0, costCenter:COST_CENTERS[0], jobDiff:'None', source:'checkin', fromPunch:true}];
@@ -682,6 +748,10 @@ let toRequests = [];
         entries[d] = [{id:cuid(), type:'Overtime', in:'08:00', out:'18:00',
           outReason:'Out', hours:10, costCenter:COST_CENTERS[0], jobDiff:'None', source:'manual', fromPunch:false,
           mgrEdit:{by:'Daniel Okafor', when:'before submitting', note:'Approved 2h overtime for the shift extension.', from:{type:'Regular Hours Worked', in:'08:00', out:'16:30', hours:8}}}];
+      } else if(dow===shortDow){
+        // A short day — the reason a week was sent back (e.g. an afternoon shift not logged)
+        entries[d] = [{id:cuid(), type:'Regular Hours Worked', in:'08:00', out:'12:00',
+          outReason:'Out', hours:4, costCenter:COST_CENTERS[0], jobDiff:'None', source:'checkin', fromPunch:true}];
       } else {
         const isManual = dow===manualDow;
         entries[d] = [{id:cuid(), type:'Regular Hours Worked', in:'08:00', out:'16:30',
@@ -691,17 +761,17 @@ let toRequests = [];
     }
   }
   // Weeks -1..-4, contiguous, immediately before the current week.
-  //  -1 (Jul 12-18): approved, with a MANAGER-EDITED day (Wed)
-  //  -2: sent back
+  //  -1 (Jul 12-18): approved, with a MANAGER-EDITED day (Wed) + a MANUAL day (Mon)
+  //  -2 (Jul 5-11): sent back — Thursday is SHORT (4h), matching the manager note
   //  -3: denied
   //  -4 (Jun 21-27): two MISSED checkouts (Tue & Thu)
-  fillWeek(-1, {mgrDow:3});
+  fillWeek(-1, {mgrDow:3, manualDow:1});
   fillWeek(-2);
   fillWeek(-3);
   fillWeek(-4, {missedDows:[2,4]});
 
   weekSubs[wk(-1)] = {status:'approved',  submittedLabel:'submitted last week',    decidedLabel:'approved by Daniel Okafor', managerComment:'', snapshot:snapshotWeekAt(-1)};
-  weekSubs[wk(-2)] = {status:'sentback',  submittedLabel:'submitted 2 weeks ago',  decidedLabel:'sent back by Daniel Okafor', managerComment:'Thursday looks short — did you log the afternoon shift?', snapshot:snapshotWeekAt(-2)};
+  weekSubs[wk(-2)] = {status:'sentback',  submittedLabel:'submitted 2 weeks ago',  decidedLabel:'sent back by Daniel Okafor', managerComment:'Correct the leave reason for Jul 9–10.', snapshot:snapshotWeekAt(-2)};
   weekSubs[wk(-3)] = {status:'denied',    submittedLabel:'submitted 3 weeks ago',  decidedLabel:'denied by Daniel Okafor', managerComment:'Overtime not pre-approved for this week.', snapshot:snapshotWeekAt(-3)};
   // -4 is NOT submitted — it has unresolved missed checkouts to fix first.
 })();
@@ -733,9 +803,12 @@ const BALANCES = [
   {plan:'Personal', hours:16},
 ];
 const MANAGER = {name:'Daniel Okafor', title:'Retail Operations Manager', initials:'DO', email:'d.okafor@slb.com'};
-const TEAM = [  {name:'Jordan Alvarez', dates:'Jul 18 – Jul 19', type:'Vacation'},
-  {name:'Priya Nair', dates:'Jul 22', type:'Personal'},
-  {name:'Sam Whitfield', dates:'Jul 24 – Jul 25', type:'Sick'},
+const TEAM = [
+  // start/end are ISO; the view shows only entries ending today or later.
+  {name:'Jordan Alvarez', start:'2026-07-02', end:'2026-07-03', type:'Vacation'},  // PAST — filtered out
+  {name:'Maria Santos',   start:'2026-07-20', end:'2026-07-20', type:'Personal'},  // today
+  {name:'Priya Nair',     start:'2026-07-22', end:'2026-07-22', type:'Personal'},  // future
+  {name:'Sam Whitfield',  start:'2026-07-24', end:'2026-07-25', type:'Sick'},      // future
 ];
 
 /* ---------------- App state ---------------- */
@@ -768,7 +841,7 @@ let entryDraft = null;
 let spinnerWhich = null;
 
 /* draft state for Time Off Details */
-let todDraft = {type:TIMEOFF_TYPES[6], dailyHours:8, comment:'', perDay:{}, showBalance:false};
+let todDraft = {type:TIMEOFF_TYPES[6], dailyHours:8, duration:'full', halfPeriod:'first', comment:'', perDay:{}, showBalance:false};
 
 /* ---------------- Render root ---------------- */
 function render(){
@@ -798,7 +871,7 @@ function screenLogin(){
     <div class="login">
       <div class="login-top">
         <div class="login-logo"><img src="${SLB_LOGO}" alt="SLB" /></div>
-        <h1>Time &amp; Leave Tracking</h1>
+        <h1>Time &amp; Attendance Tracking</h1>
         <div class="login-sub">Track your time, check in and out, and manage your time off.</div>
       </div>
       <div class="login-bottom">
@@ -847,7 +920,6 @@ function renderBottomNav(){
     {id:'time', label:'Time', icon:'clock'},
     {id:'timeoff', label:'Time Off', icon:'calendar'},
     {id:'requests', label:'Requests', icon:'inbox'},
-    {id:'profile', label:'Profile', icon:'user'},
   ];
   const sentBack = inboxItems().length;
   document.getElementById('bottomNav').innerHTML = items.map(it=>`
@@ -867,18 +939,18 @@ function renderHeader(){
     time:{eyebrow:'Time Tracking', title:'Enter Time'},
     timeoff:{eyebrow:'Personal', title: state.todSubtab==='request' ? 'Request Time Off':'Manage Time Off'},
     requests:{eyebrow:'Personal', title: state.reqInbox ? 'Inbox' : 'My Requests'},
-    profile:{eyebrow:'Account', title:'Profile'}
+    profile:{eyebrow:'Account', title:'Profile', back:true}
   };
   const t = titles[state.tab];
   document.getElementById('appHeader').innerHTML = `
-    <div class="slb-mark" title="SLB">
-      <img src="${SLB_LOGO}" alt="SLB" />
-    </div>
+    ${t.back
+      ? `<div class="slb-mark" onclick="setTab('home')" style="cursor:pointer;" title="Back">${svg('chevronLeft',20)}</div>`
+      : `<div class="slb-mark" title="SLB"><img src="${SLB_LOGO}" alt="SLB" /></div>`}
     <div class="htitle">
       ${t.eyebrow ? `<div class="h-eyebrow">${t.eyebrow}</div>` : ''}
       <h2>${t.title}</h2>
     </div>
-    <div class="avatar">SM</div>
+    ${t.back ? `<div style="width:38px;"></div>` : `<div class="avatar" onclick="setTab('profile')" style="cursor:pointer;" title="View profile">SM</div>`}
   `;
 }
 
@@ -894,6 +966,40 @@ function renderScreen(){
 
 /* ================= HOME ================= */
 function screenHome(){
+  // If today has a sick-leave request, the punch card switches to a leave state.
+  const sickToday = toRequests.find(r=> r.status!=='denied' && r.type==='Sick'
+    && r.days.some(dd=>dd.date===fmtISO(TODAY)));
+  if(sickToday){
+    const half = sickToday.dailyHours <= 4;
+    const halfLabel = sickToday.halfPeriod==='second' ? 'Second half · PM' : 'First half · AM';
+    const durLabel = half ? `Half day · ${halfLabel}` : 'Full day';
+    return `
+    <div class="attend-card sick" style="margin-top:16px;">
+      <div class="attend-head">
+        <div>
+          <div class="a-label">Today</div>
+          <div class="a-date">${fmtHuman(TODAY)}</div>
+        </div>
+        <span class="status-chip sick"><span class="dot"></span>On Sick Leave</span>
+      </div>
+      <div class="punch-wrap">
+        <div class="punch-circle sick" style="cursor:default;">
+          <div style="color:var(--sick);">${svg('calendarOff',34)}</div>
+          <div class="punch-cta" style="color:var(--sick); margin-top:2px;">Sick Leave</div>
+        </div>
+        <div class="punch-sub">Check in / check out is disabled while you're on leave today.</div>
+        <div class="punch-actions">
+          <button class="danger-outline" onclick="cancelSickToday('${sickToday.id}')">${svg('trash',15)} Cancel Sick Leave</button>
+        </div>
+      </div>
+      <div class="meta-row">
+        <div><div class="ml">Leave Type</div><div class="mv">Sick · ${durLabel}</div></div>
+        <div><div class="ml">Status</div><div class="mv">Awaiting approval</div></div>
+      </div>
+    </div>
+    ${homeAfterCard()}`;
+  }
+
   const phase = state.checkedIn ? 'in' : (state.checkedOut ? 'out' : 'none');
   const pillClass = phase==='in' ? '' : phase==='out' ? 'done' : 'off';
   const pillText  = phase==='in' ? 'Checked in' : phase==='out' ? 'Checked out' : 'Not checked in';
@@ -938,6 +1044,39 @@ function screenHome(){
         <div><div class="ml">Cost Center</div><div class="mv">CC-100</div></div>
       </div>
     </div>
+    ${homeAfterCard()}`;
+}
+/* The home content below the punch/leave card — shared by both states. */
+function homeAfterCard(){
+  return `
+    <div class="section" style="padding:16px 16px 0;">
+      <div class="section-title" style="padding:0 0 8px;">This Week</div>
+      <div class="home-week">
+        ${weekDatesFor(0).map(d=>{
+          const iso = fmtISO(d);
+          const isToday = sameDate(d, TODAY);
+          const to = timeOffForDate(iso);
+          const t = dayTotal(iso);
+          const missed = !!missedOutEntry(iso);
+          return `<div class="hw-day ${isToday?'today':''}" onclick="openWeekDay('${iso}')">
+            <div class="hw-dow">${DOW[d.getDay()]}</div>
+            <div class="hw-num">${d.getDate()}</div>
+            ${to ? `<div class="hw-val off">Off</div>`
+              : missed ? `<div class="hw-val miss">!</div>`
+              : t>0 ? `<div class="hw-val">${fmtHrs(t)}</div>`
+              : `<div class="hw-val zero">–</div>`}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="section" style="padding:16px 16px 0;">
+      <div class="section-title" style="padding:0 0 8px;">Quick Time Off</div>
+      <div class="quick-to">
+        <button onclick="quickTimeOff('Sick', 0)">${svg('calendarOff',15)} Sick today</button>
+        <button onclick="quickTimeOff('Personal', 1)">${svg('calendar',15)} Off tomorrow</button>
+      </div>
+    </div>
 
     <div class="section-title" style="padding:18px 16px 0;">Quick Access</div>
     <div class="tile-grid">
@@ -948,15 +1087,31 @@ function screenHome(){
     </div>
 
     <div class="section" style="padding-top:0;">
-      <div class="section-title">Recent Activity</div>
+      <div class="section-title">Take Action</div>
       <div class="card">
-        ${activityRow('checkCircle','#1E8A4C','Week submitted for approval','Sent to manager · Mon–Wed logged')}
-        ${activityRow('calendar','#3D8BFF','Vacation request approved', fmtRange(new Date(toRequests[0].start), new Date(toRequests[0].end)))}
-        ${activityRow('bell','#C77700','Time off request sent back','Personal · needs your update')}
+        ${(function(){
+          const acts = pendingActions();
+          if(!acts.length) return `<div class="helper" style="text-align:center; padding:10px 0;">${svg('checkCircle',18)} You're all caught up — nothing needs action</div>`;
+          return acts.map(a=>`
+            <div class="act-row" onclick="${a.onclick}">
+              <div class="act-ico" style="background:${a.color}1A; color:${a.color};">${svg(a.icon,16)}</div>
+              <div style="flex:1; min-width:0;">
+                <div class="act-title">${a.title}</div>
+                <div class="act-sub">${a.sub}</div>
+              </div>
+              <div class="act-cta">${svg('chevronRight',16)}</div>
+            </div>`).join('');
+        })()}
       </div>
     </div>
   `;
 }
+function openWeekDay(iso){
+  state.weekOffset = weekOffsetFor(iso);
+  state.selectedDay = iso;
+  setTab('time');
+}
+function weekDatesFor(off){ const s=addDays(startOfWeek(TODAY), off*7); return [...Array(7)].map((_,i)=>addDays(s,i)); }
 function tile(icon,label,color,handlerRef){
   const id = 't_'+Math.random().toString(36).slice(2,7);
   window[id]=handlerRef;
@@ -1006,6 +1161,8 @@ setInterval(()=>{
   if(!state.authed || !state.checkedIn) return;
   const home = document.getElementById('punchElapsed');
   if(home) home.textContent = elapsedLabel();
+  const et = document.getElementById('entryPunchTimer');
+  if(et) et.textContent = elapsedLabel();
 }, 1000);
 
 /* ================= TIME (Enter & Submit) ================= */
@@ -1037,10 +1194,16 @@ function weekChangedSince(snap){
   return false;
 }
 function weekStatus(){
-  // An unresolved missed checkout can't sit in an approved week — it must be
-  // fixed first, so surface it as Sent back regardless of any stored status.
-  if(weekMissedOutDay()) return {key:'sentback', label:'Sent back · missing check out', cls:'sentback'};
   const sub = weekSubs[currentWeekKey()];
+  const hasMissed = !!weekMissedOutDay();
+  // A missing checkout blocks submission. If the week was never submitted, show
+  // "Not yet submitted" (with the flag); if it was submitted, it can't stay
+  // approved over a broken entry, so surface it as "Sent back".
+  if(hasMissed){
+    return sub
+      ? {key:'sentback', label:'Sent back · missing check out', cls:'sentback'}
+      : {key:'none-missed', label:'Not yet submitted · fix missing check out', cls:'sentback'};
+  }
   if(!sub) return {key:'none', label:'Not yet submitted', cls:'pending'};
   if(weekChangedSince(sub.snapshot)) return {key:'edited', label:'Edited · resubmit', cls:'sentback'};
   if(sub.status==='approved') return {key:'approved', label:'Approved', cls:'approved'};
@@ -1066,6 +1229,7 @@ function screenTime(){
   const selDate = new Date(dISO+'T00:00:00');
   const wkSt = weekStatus();
   const missedToday = missedOutEntry(dISO);
+  const timeOffToday = timeOffForDate(dISO);
   const isFuture = new Date(dISO+'T00:00:00') > new Date(fmtISO(TODAY)+'T00:00:00');
   return `
     <div style="padding:14px 16px 0;">
@@ -1084,11 +1248,14 @@ function screenTime(){
         const t=dayTotal(iso);
         const sel = iso===state.selectedDay;
         const isToday = sameDate(d,TODAY);
-        return `<div class="day-cell ${sel?'selected':''} ${isToday?'today':''} ${missedOutEntry(iso)?'flagged':''} ${mgrEditedEntry(iso)?'mgr-day':''}" onclick="selectDay('${iso}')">
+        const isTimeOff = !!timeOffForDate(iso);
+        return `<div class="day-cell ${sel?'selected':''} ${isToday?'today':''} ${missedOutEntry(iso)?'flagged':''} ${mgrEditedEntry(iso)?'mgr-day':''} ${isTimeOff?'timeoff-day':''}" onclick="selectDay('${iso}')">
           <div class="dow">${DOW[d.getDay()]}</div>
           <div class="dnum">${d.getDate()}</div>
-          <div class="dhrs ${t===0?'zero':''}">${t===0?'–':t.toFixed(1)}</div>
-          <div class="dtypes">${dayTypeDots(iso)}</div>
+          ${isTimeOff
+            ? `<div class="dhrs off">${svg('calendar',10)} Off</div>`
+            : `<div class="dhrs ${t===0?'zero':''}">${t===0?'–':fmtHrs(t)}</div>`}
+          <div class="dtypes">${isTimeOff ? '<i class="tdot timeoff"></i>' : dayTypeDots(iso)}</div>
         </div>`;
       }).join('')}
     </div>
@@ -1097,11 +1264,12 @@ function screenTime(){
       <span><i class="manual"></i> Manual</span>
       <span><i class="mgr"></i> Manager edited</span>
       <span><i class="missed"></i> Missed check out</span>
+      <span><i class="timeoff"></i> Time off</span>
     </div>
     <div class="week-total-bar">
       <div>
         <div class="wt-label">Week total</div>
-        <div class="wt-val">${weekTotal().toFixed(1)} hrs</div>
+        <div class="wt-val">${fmtHrs(weekTotal())} hrs</div>
         ${weekSubs[currentWeekKey()] ? `<div class="helper" style="margin-top:2px;">Submitted ${weekSubs[currentWeekKey()].submittedLabel}</div>`:''}
       </div>
       <span class="badge ${wkSt.cls}">${wkSt.label}</span>
@@ -1120,11 +1288,39 @@ function screenTime(){
 
     <div class="section">
       <div class="section-title">${fmtHuman(selDate)}</div>
-      ${dayEntries.length ? dayEntries.map(e=>{
+      ${dISO===fmtISO(TODAY) ? (
+        state.checkedIn
+          ? `<div class="today-punch in">
+               <div><div class="tp-label">Checked in · ${to12(state.checkInTime)}</div><div class="tp-sub">Time on the clock today</div></div>
+               <div class="tp-timer"><span id="entryPunchTimer">${elapsedLabel()}</span><span class="punch-live"><span class="blip"></span>Running</span></div>
+             </div>`
+          : state.checkedOut
+          ? `<div class="today-punch out">
+               <div><div class="tp-label">Checked out · ${to12(state.checkOutTime)}</div><div class="tp-sub">Total logged today</div></div>
+               <div class="tp-timer"><span>${elapsedLabel()}</span></div>
+             </div>`
+          : `<div class="today-punch none">
+               <div><div class="tp-label">Not yet punched in</div><div class="tp-sub">Check in from the Home screen to start the clock</div></div>
+               ${svg('clock',20)}
+             </div>`
+      ) : ''}
+      ${timeOffToday ? `
+        <div class="timeoff-card">
+          <div class="to-icon">${svg('calendar',18)}</div>
+          <div style="flex:1;">
+            <div class="to-title">${timeOffToday.type} · Time Off</div>
+            <div class="to-sub">Approved leave — no time entry needed for this day</div>
+          </div>
+          <span class="badge approved">Approved</span>
+        </div>
+      ` : ''}
+      ${timeOffToday ? '' : `${dayEntries.length ? dayEntries.map(e=>{
         const missed = !e.out;
         // Completed check in/out entries are locked. An unresolved one stays
-        // editable so it can be fixed by a manual correction.
-        const locked = e.source === 'checkin' && !missed;
+        // editable so it can be fixed by a manual correction. Additionally, once
+        // a week is APPROVED the employee can no longer edit any of its entries.
+        const weekApproved = wkSt.key === 'approved';
+        const locked = weekApproved || (e.source === 'checkin' && !missed);
         // Entry origin drives the row's look and its badge:
         //  - punch: real mobile check in/out (locked)
         //  - manual: created from scratch, or a resolved missed checkout
@@ -1142,14 +1338,14 @@ function screenTime(){
           manual:    `<div class="badge manual"       style="margin-top:4px;">${svg('edit',9)} Manual</div>`
         }[kind];
         return `
-        <div class="entry-row ${rowClass} ${missed?'flagged':''}" onclick="${(isFuture||locked) ? (isFuture?'futureDayTap()':'lockedEntryTap()') : `openSheet('addEntry', {dateISO:'${dISO}', entryId:'${e.id}'})`}">
+        <div class="entry-row ${rowClass} ${missed?'flagged':''}" onclick="${(isFuture||locked) ? (isFuture?'futureDayTap()':(weekApproved?'approvedEntryTap()':'lockedEntryTap()')) : `openSheet('addEntry', {dateISO:'${dISO}', entryId:'${e.id}'})`}">
           <div style="flex:1; min-width:0;">
             <div class="er-time">${to12(e.in)} – ${missed ? '<span style="color:var(--negative);">--:--</span>' : to12(e.out)}</div>
             <div class="er-type">${e.type}${missed ? ' · check out not recorded' : (e.outReason?' · '+e.outReason:'')}</div>
             ${e.mgrEdit ? `<div class="mgr-line">${svg('user',10)} ${e.mgrEdit.by} · was ${e.mgrEdit.from.type}, ${to12(e.mgrEdit.from.in)}–${to12(e.mgrEdit.from.out)}</div>` : ''}
           </div>
           <div class="er-hrs" style="${missed?'color:var(--negative);':''}">
-            ${missed ? svg('flag',15) : e.hours.toFixed(1)+' h'}
+            ${missed ? svg('flag',15) : fmtHrs(e.hours)+' h'}
             ${badge}
           </div>
         </div>`;
@@ -1162,14 +1358,17 @@ function screenTime(){
       ${missedToday ? `<div class="helper" style="color:var(--negative); font-weight:700; margin:-2px 0 10px 2px;">Check out was never recorded. Use <b>Complete Check Out</b> below to correct it.</div>` : ''}
       ${isFuture
         ? `<div class="future-note">${svg('calendar',15)} You can't log time for a future date.</div>`
-        : `<button class="btn-secondary" style="margin-top:6px; display:flex; align-items:center; justify-content:center; gap:6px; ${missedToday?'color:var(--negative); border-color:var(--negative);':''}" onclick="openSheet('addEntry', {dateISO:'${dISO}'${missedToday?`, entryId:'${missedToday.id}'`:''}})">
+        : wkSt.key==='approved'
+        ? `<div class="future-note">${svg('lock',15)} This week is approved and can no longer be edited.</div>`
+        : `<button class="btn-secondary" style="margin-top:6px; display:flex; align-items:center; justify-content:center; gap:6px; ${missedToday?'color:var(--negative); border-color:var(--negative);':''}" onclick="${missedToday ? `openSheet('addEntry', {dateISO:'${dISO}', entryId:'${missedToday.id}'})` : `addNewForDay('${dISO}')`}">
         ${missedToday ? svg('flag',16)+' Complete Check Out' : svg('plus',16)+' Add New'}
-      </button>`}
+      </button>`}`}
     </div>
 
     <div style="padding:8px 16px 4px;">
-      <button class="btn-primary" ${(wkSt.key==='submitted'||wkSt.key==='approved')?'disabled':''} onclick="submitWeek()">
-        ${wkSt.key==='submitted' ? 'Submitted for Approval'
+      <button class="btn-primary" ${(state.weekOffset>0 || wkSt.key==='submitted'||wkSt.key==='approved')?'disabled':''} onclick="submitWeek()">
+        ${state.weekOffset>0 ? 'Future week'
+          : wkSt.key==='submitted' ? 'Submitted for Approval'
           : wkSt.key==='approved' ? 'Approved'
           : wkSt.key==='edited' ? 'Resubmit This Week'
           : wkSt.key==='denied' ? 'Revise &amp; Resubmit'
@@ -1195,11 +1394,25 @@ function goCheckOut(){
   render();
   openSheet('checkoutMeal');
 }
+/* Add New on the CURRENT day depends on punch state:
+   - if checked in and not yet checked out -> must check out first (go to Home)
+   - otherwise -> open a new entry (its In defaults to after the last check out) */
+function addNewForDay(dISO){
+  if(dISO === fmtISO(TODAY) && state.checkedIn && !state.checkedOut){
+    toast("Check out first, then add a new entry", 'warn');
+    goCheckOut();
+    return;
+  }
+  openSheet('addEntry', {dateISO:dISO});
+}
 function lockedEntryTap(){
   toast("Check in / check out entries can't be edited — use Add New for a correction", 'info');
 }
 function futureDayTap(){
   toast("You can't log time for a future date", 'warn');
+}
+function approvedEntryTap(){
+  toast("This week is approved — entries can no longer be edited", 'info');
 }
 function to12(t){ if(!t) return '--'; const [h,m]=t.split(':').map(Number); const ap = h>=12?'PM':'AM'; const hh = ((h+11)%12)+1; return `${hh}:${String(m).padStart(2,'0')} ${ap}`; }
 function shiftWeek(n){
@@ -1227,6 +1440,32 @@ function submitWeek(){
     return;
   }
   if(weekTotal()===0){ toast('Add at least one time entry before submitting','warn'); return; }
+  // Every working day (Mon–Fri) that has already occurred must have a completed
+  // entry. Future days and weekends are exempt. A day with an entry that has no
+  // check out is already caught by the missed-checkout guard above.
+  const todayISO = fmtISO(TODAY);
+  // Every working day (Mon–Fri) in the week must have an entry or approved leave.
+  // Future days are NOT exempt — a week that still has upcoming working days can't
+  // be submitted until the whole week is complete.
+  const missingDay = weekDates().find(d=>{
+    const dow = d.getDay();
+    if(dow===0 || dow===6) return false;         // skip Sat/Sun
+    const iso = fmtISO(d);
+    if(timeOffForDate(iso)) return false;        // approved leave needs no entry
+    return (entries[iso]||[]).length === 0;      // no entry at all
+  });
+  if(missingDay){
+    const iso = fmtISO(missingDay);
+    if(iso > todayISO){
+      // A working day still ahead — the week isn't finished yet.
+      toast(`This week isn't complete yet`,'warn');
+      return;
+    }
+    state.selectedDay = iso;
+    render();
+    toast(`No time entry for ${fmtHuman(missingDay)} · complete all working days before submitting`,'warn');
+    return;
+  }
   const now = new Date();
   const resubmit = !!weekSubs[currentWeekKey()];
   weekSubs[currentWeekKey()] = {
@@ -1248,6 +1487,17 @@ function calcHours(inT,outT){
   let mins = (oh*60+om)-(ih*60+im);
   if(mins<0) mins+=24*60;
   return mins/60;
+}
+/* Format a duration as hours.minutes for display, e.g.
+   1 min -> "0.01", 3 min -> "0.03", 30 min -> "0.30", 59 min -> "0.59",
+   60 min -> "1.00", 2h 15m -> "2.15". The part after the dot is MINUTES,
+   not a decimal fraction. Any non-zero duration shows a non-zero value. */
+function fmtHrs(hours){
+  let total = Math.round(hours*60);          // total minutes
+  if(total < 0) total = 0;
+  const h = Math.floor(total/60);
+  const m = total % 60;
+  return `${h}.${String(m).padStart(2,'0')}`;
 }
 /* "Jul 12 – 18, 2026" · "Jun 28 – Jul 4, 2026" · "Dec 28, 2025 – Jan 3, 2026" */
 function weekLabel(wd){
@@ -1443,7 +1693,7 @@ function sheetAddEntry(ctx){
     </div>
     <div class="field">
       <label>Calculated Hours</label>
-      <div class="field-static" style="${(over||badOrder)?'color:var(--negative);':''}">${badOrder ? '—' : hrs.toFixed(2)+' hrs'}</div>
+      <div class="field-static" style="${(over||badOrder)?'color:var(--negative);':''}">${badOrder ? '—' : fmtHrs(hrs)+' h'+(hrs>0 ? ` (${Math.round(hrs*60)} min)` : '')}</div>
       ${badOrder
         ? `<div class="helper" style="color:var(--negative); font-weight:700;">Cannot calculate — the Out time (${to12(entryDraft.out)}) is not after the In time (${to12(entryDraft.in)}).</div>`
         : `<div class="helper" style="${over?'color:var(--negative); font-weight:700;':''}">
@@ -1532,9 +1782,8 @@ function openTimeSpinner(which){
   const [h24,m] = val.split(':').map(Number);
   const ampm = h24>=12 ? 'PM':'AM';
   let h12 = h24%12; if(h12===0) h12=12;
-  const minuteRounded = Math.round(m/5)*5 % 60;
   const hourIdx = h12-1;
-  const minIdx = minuteRounded/5;
+  const minIdx = m; // 1-minute resolution
   const ampmIdx = ampm==='AM'?0:1;
   document.getElementById('sheetTitle').textContent = which==='in' ? 'Set Time In' : 'Set Time Out';
   document.getElementById('sheetBody').innerHTML = `
@@ -1544,7 +1793,7 @@ function openTimeSpinner(which){
         <div class="spinner-highlight"></div>
         ${buildSpinnerCol('sp_hour', Array.from({length:12},(_,i)=>i+1))}
         <div class="spinner-colon">:</div>
-        ${buildSpinnerCol('sp_min', Array.from({length:12},(_,i)=>String(i*5).padStart(2,'0')))}
+        ${buildSpinnerCol('sp_min', Array.from({length:60},(_,i)=>String(i).padStart(2,'0')))}
         <div class="spinner-col spinner-ampm" id="sp_ampm">
           <div class="spinner-col-pad"></div>
           <div class="spinner-item">AM</div>
@@ -1570,10 +1819,10 @@ function openTimeSpinner(which){
 function cancelTimeSpinner(){ sheetAddEntry({dateISO:entryDraft.dateISO, entryId:entryDraft.entryId}); }
 function confirmTimeSpinner(){
   const hourIdx = Math.min(Math.max(readSpinnerIndex('sp_hour'),0),11);
-  const minIdx = Math.min(Math.max(readSpinnerIndex('sp_min'),0),11);
+  const minIdx = Math.min(Math.max(readSpinnerIndex('sp_min'),0),59);
   const ampmIdx = Math.min(Math.max(readSpinnerIndex('sp_ampm'),0),1);
   const hour12 = hourIdx+1;
-  const minute = minIdx*5;
+  const minute = minIdx;
   const ampm = ampmIdx>=1 ? 'PM':'AM';
   let hour24 = hour12%12; if(ampm==='PM') hour24+=12;
   entryDraft[spinnerWhich] = `${String(hour24).padStart(2,'0')}:${String(minute).padStart(2,'0')}`;
@@ -1620,6 +1869,13 @@ function monthMatrix(anchor){
   return weeks;
 }
 function statusForDate(iso){ for(const r of toRequests){ if(r.days.some(dd=>dd.date===iso)) return r.status; } return null; }
+/* Approved/closed time off covering a given day, for display on Enter Time */
+function timeOffForDate(iso){
+  for(const r of toRequests){
+    if((r.status==='approved'||r.status==='closed') && r.days.some(dd=>dd.date===iso)) return r;
+  }
+  return null;
+}
 function requestForDate(iso){ return toRequests.find(r=>r.days.some(dd=>dd.date===iso)); }
 
 function screenTimeOff(){
@@ -1732,8 +1988,8 @@ function selectedDatesList(){
 function openTimeOffDetails(){
   const dates = selectedDatesList();
   if(!dates.length) return;
-  todDraft = {type:TIMEOFF_TYPES[6], dailyHours:8, comment:'', perDay:{}, showBalance:false};
-  dates.forEach(d=>todDraft.perDay[d]={type:todDraft.type, hours:todDraft.dailyHours});
+  todDraft = {type:TIMEOFF_TYPES[6], dailyHours:8, duration:'full', halfPeriod:'first', comment:'', perDay:{}, showBalance:false};
+  dates.forEach(d=>todDraft.perDay[d]={type:todDraft.type, hours:todDraft.dailyHours, duration:'full', halfPeriod:'first'});
   openSheet('timeOffDetails', {dates});
 }
 function sheetTimeOffDetails(ctx){
@@ -1751,9 +2007,20 @@ function sheetTimeOffDetails(ctx){
       </select>
     </div>
     <div class="field">
-      <label>Hours (Daily)</label>
-      <input type="number" id="td_hours" min="0" max="24" step="0.5" value="${todDraft.dailyHours}" onchange="updateDraftHours(this.value, ${JSON.stringify(dates).replace(/"/g,'&quot;')})">
+      <label>Duration</label>
+      <div class="seg-row" id="td_dur">
+        <button class="seg ${todDraft.duration==='full'?'active':''}" onclick="setTodDuration('full', ${JSON.stringify(dates).replace(/"/g,'&quot;')})">Full day · 8h</button>
+        <button class="seg ${todDraft.duration==='half'?'active':''}" onclick="setTodDuration('half', ${JSON.stringify(dates).replace(/"/g,'&quot;')})">Half day · 4h</button>
+      </div>
     </div>
+    ${todDraft.duration==='half' ? `
+    <div class="field">
+      <label>Which half</label>
+      <div class="seg-row" id="td_half">
+        <button class="seg ${todDraft.halfPeriod==='first'?'active':''}" onclick="setTodHalf('first', ${JSON.stringify(dates).replace(/"/g,'&quot;')})">First half · AM</button>
+        <button class="seg ${todDraft.halfPeriod==='second'?'active':''}" onclick="setTodHalf('second', ${JSON.stringify(dates).replace(/"/g,'&quot;')})">Second half · PM</button>
+      </div>
+    </div>` : ''}
     <div class="accordion-toggle" onclick="toggleEditDays()">
       <span>${svg('edit',14)} Edit Individual Days</span>
       ${svg('chevronDown',16)}
@@ -1764,7 +2031,7 @@ function sheetTimeOffDetails(ctx){
           <div class="day-chip" onclick="openEditSingleDay('${d}', ${JSON.stringify(dates).replace(/"/g,'&quot;')})">
             <div class="dc-left">
               <div class="dc-date">${fmtHuman(new Date(d+'T00:00:00'))}</div>
-              <div class="dc-meta">${todDraft.perDay[d].type} · ${todDraft.perDay[d].hours} hrs</div>
+              <div class="dc-meta">${todDraft.perDay[d].type} · ${todDraft.perDay[d].duration==='half' ? `Half day (${todDraft.perDay[d].halfPeriod==='first'?'AM':'PM'})` : 'Full day'}</div>
             </div>
             <div class="dc-chevron">${svg('chevronRight',16)}</div>
           </div>
@@ -1794,6 +2061,17 @@ function sheetTimeOffDetails(ctx){
   footer.innerHTML = `<button class="btn-primary" onclick="submitTimeOffRequest(${JSON.stringify(dates).replace(/"/g,'&quot;')})">Submit Request</button>`;
 }
 function updateDraftType(val,dates){ todDraft.type=val; dates.forEach(d=>todDraft.perDay[d].type=val); refreshDetailsSheet(dates); }
+function setTodDuration(dur, dates){
+  todDraft.duration = dur;
+  todDraft.dailyHours = dur==='half' ? 4 : 8;
+  dates.forEach(d=>{ todDraft.perDay[d].hours=todDraft.dailyHours; todDraft.perDay[d].duration=dur; todDraft.perDay[d].halfPeriod=todDraft.halfPeriod; });
+  refreshDetailsSheet(dates);
+}
+function setTodHalf(period, dates){
+  todDraft.halfPeriod = period;
+  dates.forEach(d=>todDraft.perDay[d].halfPeriod=period);
+  refreshDetailsSheet(dates);
+}
 function updateDraftHours(val,dates){ todDraft.dailyHours=parseFloat(val)||0; dates.forEach(d=>todDraft.perDay[d].hours=todDraft.dailyHours); refreshDetailsSheet(dates); }
 function refreshDetailsSheet(dates){ sheetTimeOffDetails({dates}); }
 function toggleEditDays(){ document.getElementById('editDaysBody').classList.toggle('hidden'); }
@@ -1806,28 +2084,128 @@ function openEditSingleDay(dateISO, dates){
     <div style="font-size:13px; font-weight:800; margin-bottom:14px;">${fmtHuman(new Date(dateISO+'T00:00:00'))}</div>
     <div class="field">
       <label>Type of Time Off</label>
-      <select id="ed_type">${TIMEOFF_TYPES.map(t=>`<option ${t===cur.type?'selected':''}>${t}</option>`).join('')}</select>
+      <select id="ed_type" onchange="todDraft.perDay['${dateISO}'].type=this.value">${TIMEOFF_TYPES.map(t=>`<option ${t===cur.type?'selected':''}>${t}</option>`).join('')}</select>
     </div>
     <div class="field">
-      <label>Hours</label>
-      <input type="number" id="ed_hours" min="0" max="24" step="0.5" value="${cur.hours}">
+      <label>Duration</label>
+      <div class="seg-row">
+        <button class="seg ${(cur.duration||'full')==='full'?'active':''}" onclick="setSingleDayDur('${dateISO}','full',${JSON.stringify(dates).replace(/"/g,'&quot;')})">Full day · 8h</button>
+        <button class="seg ${cur.duration==='half'?'active':''}" onclick="setSingleDayDur('${dateISO}','half',${JSON.stringify(dates).replace(/"/g,'&quot;')})">Half day · 4h</button>
+      </div>
     </div>
+    ${cur.duration==='half' ? `
+    <div class="field">
+      <label>Which half</label>
+      <div class="seg-row">
+        <button class="seg ${(cur.halfPeriod||'first')==='first'?'active':''}" onclick="setSingleDayHalf('${dateISO}','first',${JSON.stringify(dates).replace(/"/g,'&quot;')})">First half · AM</button>
+        <button class="seg ${cur.halfPeriod==='second'?'active':''}" onclick="setSingleDayHalf('${dateISO}','second',${JSON.stringify(dates).replace(/"/g,'&quot;')})">Second half · PM</button>
+      </div>
+    </div>` : ''}
   `;
   document.getElementById('sheetFooter').innerHTML = `
-    <button class="btn-primary" onclick="saveSingleDay('${dateISO}', ${JSON.stringify(dates).replace(/"/g,'&quot;')})">Save Day</button>
+    <button class="btn-primary" onclick="refreshDetailsSheet(${JSON.stringify(dates).replace(/"/g,'&quot;')})">Done</button>
   `;
 }
-function saveSingleDay(dateISO,dates){
-  todDraft.perDay[dateISO] = {type:document.getElementById('ed_type').value, hours:parseFloat(document.getElementById('ed_hours').value)||0};
-  refreshDetailsSheet(dates);
+function setSingleDayDur(dateISO, dur, dates){
+  const p = todDraft.perDay[dateISO];
+  p.duration = dur; p.hours = dur==='half' ? 4 : 8;
+  if(dur==='half' && !p.halfPeriod) p.halfPeriod='first';
+  openEditSingleDay(dateISO, dates);
+}
+function setSingleDayHalf(dateISO, period, dates){
+  todDraft.perDay[dateISO].halfPeriod = period;
+  openEditSingleDay(dateISO, dates);
 }
 function submitTimeOffRequest(dates){
-  const days = dates.map(d=>({date:d, type:todDraft.perDay[d].type, hours:todDraft.perDay[d].hours}));
-  toRequests.push({id:cuid(), start:dates[0], end:dates[dates.length-1], type:todDraft.type, dailyHours:todDraft.dailyHours, status:'awaiting', days, comment: document.getElementById('td_comment')?.value||''});
+  const days = dates.map(d=>({date:d, type:todDraft.perDay[d].type, hours:todDraft.perDay[d].hours, duration:todDraft.perDay[d].duration, halfPeriod:todDraft.perDay[d].halfPeriod}));
+  toRequests.push({id:cuid(), start:dates[0], end:dates[dates.length-1], type:todDraft.type, dailyHours:todDraft.dailyHours, duration:todDraft.duration, halfPeriod:todDraft.halfPeriod, status:'awaiting', days, comment: document.getElementById('td_comment')?.value||''});
   state.todSelectedDays=[]; state.todRangeStart=''; state.todRangeEnd='';
   closeSheet();
   document.getElementById('screenContent').innerHTML = screenTimeOff();
   toast('Request submitted for approval','success');
+}
+/* Actions the employee should take, most-urgent first. Each routes somewhere. */
+function pendingActions(){
+  const acts = [];
+  for(const it of inboxItems()){
+    if(it.kind==='timesheet'){
+      acts.push({icon:'clock', color:'#C0362C',
+        title:(it.status==='denied'?'Timesheet denied':'Timesheet sent back'),
+        sub:'Tap to review and fix', onclick:`reqOpenTimesheet('${it.ref.wkKey}')`});
+    } else {
+      acts.push({icon:'calendar', color:'#C0362C',
+        title:(it.status==='denied'?'Time off denied':'Time off sent back'),
+        sub:it.title+' · tap to update', onclick:`reqEditTimeOff('${it.id}')`});
+    }
+  }
+  for(let off=-4; off<=0; off++){
+    const wkStart = addDays(startOfWeek(TODAY), off*7);
+    const key = fmtISO(wkStart);
+    if(weekSubs[key]) continue;
+    const days = [...Array(7)].map((_,i)=>addDays(wkStart,i));
+    if(!days.some(d=>(entries[fmtISO(d)]||[]).length)) continue;
+    const label = weekLabel(days);
+    if(days.some(d=>missedOutEntry(fmtISO(d)))){
+      acts.push({icon:'flag', color:'#C77700', title:'Fix missing check out',
+        sub:label+' · resolve to submit', onclick:`openWeek(${off})`});
+      continue;
+    }
+    // only prompt to submit if every working day (Mon–Fri) is complete
+    const todayISO = fmtISO(TODAY);
+    const incomplete = days.some(d=>{
+      const dow=d.getDay(); if(dow===0||dow===6) return false;
+      const iso=fmtISO(d);
+      if(timeOffForDate(iso)) return false;
+      return (entries[iso]||[]).length===0;
+    });
+    if(!incomplete){
+      acts.push({icon:'checkCircle', color:'#1E8A4C', title:'Submit week for approval',
+        sub:label+' · ready to submit', onclick:`openWeek(${off})`});
+    }
+  }
+  return acts;
+}
+function openWeek(off){
+  state.weekOffset = off;
+  const monday = addDays(startOfWeek(TODAY), off*7 + 1);
+  state.selectedDay = off===0 ? fmtISO(TODAY) : fmtISO(monday);
+  setTab('time');
+}
+/* One-tap time off for a preset (e.g. sick today, off tomorrow) */
+function quickTimeOff(type, offsetDays){
+  const d = fmtISO(addDays(TODAY, offsetDays));
+  if(toRequests.some(r=> r.status!=='denied' && r.days.some(dd=>dd.date===d))){
+    toast('You already have time off requested for that day','warn');
+    return;
+  }
+  // Sick today and Off tomorrow both open a confirm sheet with duration choice
+  if(type==='Sick' && offsetDays===0){
+    quickLeaveDraft = {type:'Sick', offset:0, hours:8, duration:'full', halfPeriod:'first'};
+    openSheet('quickLeave');
+    return;
+  }
+  if(offsetDays===1){
+    quickLeaveDraft = {type, offset:1, hours:8, duration:'full', halfPeriod:'first'};
+    openSheet('quickLeave');
+    return;
+  }
+  toRequests.push({id:cuid(), start:d, end:d, type, dailyHours:8,
+    status:'awaiting', days:[{date:d, type, hours:8}], comment:''});
+  renderBottomNav();
+  render();
+  const when = offsetDays===0 ? 'today' : offsetDays===1 ? 'tomorrow' : fmtHuman(new Date(d+'T00:00:00'));
+  toast(`${type} time off requested for ${when}`,'success');
+}
+let quickLeaveDraft = {type:'Sick', offset:0, hours:8, duration:'full', halfPeriod:'first'};
+/* Apply a sick-leave for today (half=4h or full=8h) and reflect it on Home */
+function cancelSickToday(id){
+  openSheet('confirmCancelSick', {reqId:id});
+}
+function doCancelSick(id){
+  toRequests = toRequests.filter(r=>r.id!==id);
+  closeSheet();
+  setTab('home');
+  toast('Sick leave cancelled — you can check in again','success');
 }
 
 /* ---- Balances sheet ---- */
@@ -1847,14 +2225,23 @@ function sheetBalances(){
 }
 /* ---- Teams sheet ---- */
 function sheetTeams(){
-  document.getElementById('sheetTitle').textContent='Upcoming Team Absences';
+  document.getElementById('sheetTitle').textContent='Upcoming Team Time Off';
+  const todayISO = fmtISO(TODAY);
+  // show only absences that are ongoing (today falls within) or upcoming
+  const visible = TEAM.filter(t => t.end >= todayISO).sort((a,b)=> a.start < b.start ? -1 : 1);
+  const fmtRange = (s,e) => {
+    const sd = new Date(s+'T00:00:00'), ed = new Date(e+'T00:00:00');
+    const one = s===e;
+    return one ? fmtHuman(sd) : `${fmtHuman(sd)} – ${fmtHuman(ed)}`;
+  };
   document.getElementById('sheetBody').innerHTML = `
+    <div class="helper" style="margin:0 0 10px;">Current and upcoming time off across your team.</div>
     <div class="kv-card">
-      ${TEAM.map(t=>`
+      ${visible.length ? visible.map(t=>`
         <div class="team-row">
           <div class="t-avatar">${t.name.split(' ').map(n=>n[0]).join('')}</div>
-          <div><div class="t-name">${t.name}</div><div class="t-dates">${t.dates} · ${t.type}</div></div>
-        </div>`).join('')}
+          <div><div class="t-name">${t.name}</div><div class="t-dates">${fmtRange(t.start,t.end)} · ${t.type}</div></div>
+        </div>`).join('') : `<div class="helper" style="text-align:center; padding:8px 0;">No upcoming team time off</div>`}
     </div>
   `;
   document.getElementById('sheetFooter').style.display='none';
@@ -1972,7 +2359,8 @@ function sheetEditTimeOff(ctx){
     </div>
   `;
   document.getElementById('sheetFooter').style.display='block';
-  document.getElementById('sheetFooter').innerHTML = r.status==='closed'
+  const readOnly = r.status==='closed' || (r.status==='approved' && requestIsPast(r));
+  document.getElementById('sheetFooter').innerHTML = readOnly
     ? `<button class="btn-secondary" onclick="closeSheet()">Close</button>`
     : `
     <div class="btn-row" style="padding:0 0 0;">
@@ -2171,7 +2559,7 @@ function sheetMonthlyTimesheet(){
     <div class="kv-card" style="display:flex; justify-content:space-between; align-items:center;">
       <div>
         <div style="font-size:11.5px; color:var(--text-3); font-weight:700;">${MON[state.tsMonth]} ${state.tsYear} total</div>
-        <div style="font-size:19px; font-weight:800; color:var(--brand); font-family:'Poppins',sans-serif;">${monthHours.toFixed(1)} hrs</div>
+        <div style="font-size:19px; font-weight:800; color:var(--brand); font-family:'Poppins',sans-serif;">${fmtHrs(monthHours)} hrs</div>
       </div>
       <div style="text-align:right;">
         <div style="font-size:11.5px; color:var(--text-3); font-weight:700;">Days worked</div>
@@ -2189,7 +2577,7 @@ function sheetMonthlyTimesheet(){
         const wknd = d.getDay()===0 || d.getDay()===6;
         return `<div class="ts-day ${h>0?'has':''} ${isToday?'today':''} ${wknd?'weekend':''}" onclick="openDayFromTimesheet('${iso}')">
           <div class="tsd-num">${d.getDate()}</div>
-          <div class="tsd-hrs">${h>0 ? h.toFixed(1) : ''}</div>
+          <div class="tsd-hrs">${h>0 ? fmtHrs(h) : ''}</div>
         </div>`;
       }).join('')}
     </div>
@@ -2310,6 +2698,10 @@ function reqActions(it){
         <button class="req-act danger" onclick="reqCancelTimeOff('${it.id}')">${svg('trash',13)} Withdraw</button>`;
     }
     if(it.status==='approved'){
+      const r = toRequests.find(x=>x.id===it.id);
+      if(r && requestIsPast(r)){
+        return `<button class="req-act" onclick="reqViewTimeOff('${it.id}')">${svg('check',13)} View details</button>`;
+      }
       return `
         <button class="req-act" onclick="reqEditTimeOff('${it.id}')">${svg('edit',13)} Edit</button>
         <button class="req-act danger" onclick="reqCancelTimeOff('${it.id}')">${svg('trash',13)} Cancel</button>`;
@@ -2345,6 +2737,88 @@ function reqOpenTimesheet(wkKey){
   state.selectedDay = fmtISO(addDays(new Date(wkKey+'T00:00:00'), 1)); // that week's Monday
   setTab('time');
 }
+function sheetQuickLeave(){
+  const q = quickLeaveDraft;
+  const dISO = fmtISO(addDays(TODAY, q.offset));
+  const whenLabel = q.offset===0 ? 'Today' : 'Tomorrow';
+  const isSick = q.type==='Sick';
+  document.getElementById('sheetTitle').textContent = `${q.type} · ${whenLabel}`;
+  document.getElementById('sheetBody').innerHTML = `
+    <div style="font-size:12.5px; color:var(--text-3); font-weight:700; margin-bottom:14px;">${fmtHuman(new Date(dISO+'T00:00:00'))}</div>
+    ${isSick && q.offset===0 ? `
+    <div class="kv-card" style="background:var(--sick-bg); border-color:var(--sick);">
+      <div style="font-size:12.5px; font-weight:700; color:var(--sick); display:flex; gap:7px; align-items:flex-start;">
+        ${svg('info',14)} Applying sick leave for today will disable check in / check out. You can cancel it anytime.
+      </div>
+    </div>` : ''}
+    <div class="field">
+      <label>Type of Time Off</label>
+      <select onchange="quickLeaveDraft.type=this.value; sheetQuickLeave()">
+        ${TIMEOFF_TYPES.map(t=>`<option ${t===q.type?'selected':''}>${t}</option>`).join('')}
+      </select>
+    </div>
+    <div class="field">
+      <label>Duration</label>
+      <div class="seg-row">
+        <button class="seg ${q.duration==='full'?'active':''}" onclick="setQuickDur('full')">Full day · 8h</button>
+        <button class="seg ${q.duration==='half'?'active':''}" onclick="setQuickDur('half')">Half day · 4h</button>
+      </div>
+    </div>
+    ${q.duration==='half' ? `
+    <div class="field">
+      <label>Which half</label>
+      <div class="seg-row">
+        <button class="seg ${q.halfPeriod==='first'?'active':''}" onclick="setQuickHalf('first')">First half · AM</button>
+        <button class="seg ${q.halfPeriod==='second'?'active':''}" onclick="setQuickHalf('second')">Second half · PM</button>
+      </div>
+    </div>` : ''}
+    <div class="field">
+      <label>Comment <span style="font-weight:500;color:var(--text-3);">(optional)</span></label>
+      <textarea id="ql_comment" placeholder="Add a note for your approver...">${q.comment||''}</textarea>
+    </div>
+  `;
+  document.getElementById('sheetFooter').style.display='block';
+  document.getElementById('sheetFooter').innerHTML = `
+    <div class="btn-row" style="padding:0;">
+      <button class="btn-secondary" onclick="closeSheet()">Cancel</button>
+      <button class="btn-primary" onclick="submitQuickLeave()">Submit for Approval</button>
+    </div>
+  `;
+}
+function setQuickDur(dur){ quickLeaveDraft.duration=dur; quickLeaveDraft.hours = dur==='half'?4:8; sheetQuickLeave(); }
+function setQuickHalf(p){ quickLeaveDraft.halfPeriod=p; sheetQuickLeave(); }
+function submitQuickLeave(){
+  const q = quickLeaveDraft;
+  const dISO = fmtISO(addDays(TODAY, q.offset));
+  q.comment = document.getElementById('ql_comment')?.value || '';
+  if(toRequests.some(r=> r.status!=='denied' && r.days.some(dd=>dd.date===dISO))){
+    toast('You already have time off requested for that day','warn'); return;
+  }
+  toRequests.push({id:cuid(), start:dISO, end:dISO, type:q.type, dailyHours:q.hours, duration:q.duration, halfPeriod:q.halfPeriod,
+    status:'awaiting', days:[{date:dISO, type:q.type, hours:q.hours, duration:q.duration, halfPeriod:q.halfPeriod}], comment:q.comment});
+  closeSheet();
+  // Sick today puts the employee on leave (disables punch); other cases just file the request
+  if(q.type==='Sick' && q.offset===0){ state.checkedIn=false; state.checkedOut=false; }
+  renderBottomNav();
+  setTab(q.type==='Sick' && q.offset===0 ? 'home' : 'timeoff');
+  const when = q.offset===0 ? 'today' : 'tomorrow';
+  toast(`${q.type} time off submitted for ${when}`,'success');
+}
+function sheetConfirmCancelSick(ctx){
+  document.getElementById('sheetTitle').textContent = 'Cancel Sick Leave?';
+  document.getElementById('sheetBody').innerHTML = `
+    <div style="font-size:13.5px; color:var(--text-2); line-height:1.5; padding:4px 0 6px;">
+      This will remove today's sick leave request. Your check in / check out will be re-enabled so you can punch in as normal.
+    </div>
+  `;
+  document.getElementById('sheetFooter').style.display='block';
+  document.getElementById('sheetFooter').innerHTML = `
+    <div class="btn-row" style="padding:0;">
+      <button class="btn-secondary" onclick="closeSheet()">Keep Leave</button>
+      <button class="btn-danger-outline" onclick="doCancelSick('${ctx.reqId}')">Cancel Sick Leave</button>
+    </div>
+  `;
+}
 const SHEETS = {
   addEntry: sheetAddEntry,
   monthlyTimesheet: sheetMonthlyTimesheet,
@@ -2355,6 +2829,8 @@ const SHEETS = {
   actionsMenu: sheetActionsMenu,
   editTimeOff: sheetEditTimeOff,
   editIndividualDays: sheetEditIndividualDays,
+  quickLeave: sheetQuickLeave,
+  confirmCancelSick: sheetConfirmCancelSick,
 };
 function openSheet(name, ctx={}){
   state.sheet = name; state.sheetCtx = ctx;
