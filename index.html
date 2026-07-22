@@ -311,6 +311,11 @@
   .ws-daynav button{background:var(--card); border:1px solid var(--border); width:34px; height:34px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; flex:0 0 auto; color:var(--text);}
   .ws-daynav button:disabled{opacity:.35; cursor:default;}
   .ws-dn-label{flex:1;}
+  .sel-days{padding:2px 16px 6px;}
+  .sel-days-title{font-size:11px; font-weight:800; color:var(--text-3); text-transform:uppercase; letter-spacing:.03em; margin-bottom:6px;}
+  .sel-days-chips{display:flex; flex-wrap:wrap; gap:6px;}
+  .sel-chip{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--brand); background:var(--brand-tint); border:1px solid var(--brand); border-radius:14px; padding:4px 9px; cursor:pointer;}
+  .sel-chip b{font-weight:800; opacity:.7;}
   .punch-actions button.danger-outline{background:#fff; color:var(--negative); border:1.5px solid var(--negative);}
 
   .entry-row{ display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--border); border-left:4px solid var(--brand); border-radius:12px; padding:12px 14px; margin-bottom:8px; }
@@ -695,7 +700,7 @@ setInterval(()=>{ const el = document.getElementById('clockTime'); if(el) el.tex
 
 /* ---------------- Mock data ---------------- */
 const TIME_TYPES = ['Regular Hours Worked','Overtime','On-Call','Training','Travel Time'];
-const OUT_REASONS = ['Out','Meal','Personal Break'];
+const OUT_REASONS = ['Travel','Site Change','Customer Visit','Training','Job Change','Emergency Work','Other'];
 const COST_CENTERS = ['CC-100 Retail Ops','CC-210 Distribution','CC-330 Support'];
 const JOB_DIFFS = ['None','Weekend Differential','Night Differential'];
 const TIMEOFF_TYPES = ['Bereavement','Floating Holiday','Jury Duty','Personal','Sick','Unpaid','Vacation'];
@@ -718,9 +723,9 @@ let entries = {}; // dateISO -> [{id,type,in,out,outReason,hours,costCenter,jobD
 
   const queue = [
     // completed punch
-    {id:cuid(),type:'Regular Hours Worked',in:'08:00',out:'16:30',outReason:'Out',hours:8,costCenter:COST_CENTERS[0],jobDiff:'None',source:'checkin',fromPunch:true},
+    {id:cuid(),type:'Regular Hours Worked',in:'08:00',out:'16:30',outReason:'Site Change',hours:8,costCenter:COST_CENTERS[0],jobDiff:'None',source:'checkin',fromPunch:true},
     // a manual entry
-    {id:cuid(),type:'Regular Hours Worked',in:'08:00',out:'16:30',outReason:'Out',hours:8,costCenter:COST_CENTERS[0],jobDiff:'None',source:'manual',fromPunch:false},
+    {id:cuid(),type:'Regular Hours Worked',in:'08:00',out:'16:30',outReason:'Site Change',hours:8,costCenter:COST_CENTERS[0],jobDiff:'None',source:'manual',fromPunch:false},
   ];
   // Fill starting YESTERDAY, backwards, so today stays empty for the countdown.
   let i = todayIdx - 1;
@@ -739,12 +744,11 @@ let toRequests = [];
   // Sent back (needs changes)
   const d2 = addDays(TODAY,6);
   toRequests.push(mkRequest(d2,d2,'Personal',8,'sentback','Please confirm coverage'));
-  // Awaiting approval
-  const d3s = addDays(TODAY,14), d3e = addDays(TODAY,15);
-  toRequests.push(mkRequest(d3s,d3e,'Sick',8,'awaiting',''));
-  // Closed (fully resolved, historical)
-  const cs = addDays(TODAY,-25), ce = addDays(TODAY,-24);
-  toRequests.push(mkRequest(cs,ce,'Vacation',8,'closed','Completed'));
+  // Closed: last month's leave — closed when time & time-off data was synced
+  // to SAP SuccessFactors at month end
+  const pm = new Date(TODAY.getFullYear(), TODAY.getMonth()-1, 10);
+  const cs = pm, ce = new Date(TODAY.getFullYear(), TODAY.getMonth()-1, 11);
+  toRequests.push(mkRequest(cs,ce,'Vacation',8,'closed','Closed — synced to SAP SuccessFactors at month end'));
 })();
 /* An approved request in the past is read-only; upcoming is editable/cancellable */
 function requestIsPast(r){ return r.end < fmtISO(TODAY); }
@@ -768,19 +772,19 @@ function requestIsPast(r){ return r.end < fmtISO(TODAY); }
       if(timeOffForDate(d)) continue;               // leave days need no time entry
       if(missedDows.includes(dow)){
         entries[d] = [{id:cuid(), type:'Regular Hours Worked', in:'08:00', out:null,
-          outReason:'Out', hours:0, costCenter:COST_CENTERS[0], jobDiff:'None', source:'checkin', fromPunch:true}];
+          outReason:'Site Change', hours:0, costCenter:COST_CENTERS[0], jobDiff:'None', source:'checkin', fromPunch:true}];
       } else if(dow===mgrDow){
         entries[d] = [{id:cuid(), type:'Overtime', in:'08:00', out:'18:00',
-          outReason:'Out', hours:10, costCenter:COST_CENTERS[0], jobDiff:'None', source:'manual', fromPunch:false,
+          outReason:'Site Change', hours:10, costCenter:COST_CENTERS[0], jobDiff:'None', source:'manual', fromPunch:false,
           mgrEdit:{by:'Daniel Okafor', when:'before submitting', note:'Approved 2h overtime for the shift extension.', from:{type:'Regular Hours Worked', in:'08:00', out:'16:30', hours:8}}}];
       } else if(dow===shortDow){
         // A short day — the reason a week was sent back (e.g. an afternoon shift not logged)
         entries[d] = [{id:cuid(), type:'Regular Hours Worked', in:'08:00', out:'12:00',
-          outReason:'Out', hours:4, costCenter:COST_CENTERS[0], jobDiff:'None', source:'checkin', fromPunch:true}];
+          outReason:'Site Change', hours:4, costCenter:COST_CENTERS[0], jobDiff:'None', source:'checkin', fromPunch:true}];
       } else {
         const isManual = dow===manualDow;
         entries[d] = [{id:cuid(), type:'Regular Hours Worked', in:'08:00', out:'16:30',
-          outReason:'Out', hours:8, costCenter:COST_CENTERS[0], jobDiff:'None',
+          outReason:'Site Change', hours:8, costCenter:COST_CENTERS[0], jobDiff:'None',
           source: isManual ? 'manual' : 'checkin', fromPunch: !isManual}];
       }
     }
@@ -808,8 +812,14 @@ function snapshotWeekAt(offset){
   return snap;
 }
 function mkRequest(start,end,type,dailyHours,status,comment){
+  // Weekends are excluded — the prototype works on a 5-day week, so Sat/Sun
+  // never count toward time-off days (e.g. Fri + Mon = 2 days, not 4).
   const days=[]; let cur=new Date(start);
-  while(cur<=end){ days.push({date:fmtISO(cur), type, hours:dailyHours}); cur=addDays(cur,1); }
+  while(cur<=end){
+    const dow=cur.getDay();
+    if(dow!==0 && dow!==6) days.push({date:fmtISO(cur), type, hours:dailyHours});
+    cur=addDays(cur,1);
+  }
   return {id:cuid(), start:fmtISO(start), end:fmtISO(end), type, dailyHours, status, days, comment: comment||''};
 }
 function cuid(){ return Math.random().toString(36).slice(2,9); }
@@ -818,7 +828,7 @@ const HOLIDAYS = {};
 (function seedHolidays(){
   const base = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
   HOLIDAYS[fmtISO(addDays(base,3))] = 'Company Holiday';
-  HOLIDAYS[fmtISO(addDays(base,18))] = 'Team member absence: J. Alvarez';
+  HOLIDAYS[fmtISO(addDays(TODAY,12))] = 'Regional Holiday';
 })();
 
 const BALANCES = [
@@ -830,10 +840,10 @@ const BALANCES = [
 const MANAGER = {name:'Daniel Okafor', title:'Retail Operations Manager', initials:'DO', email:'d.okafor@slb.com'};
 const TEAM = [
   // start/end are ISO; the view shows only entries ending today or later.
-  {name:'Jordan Alvarez', start:'2026-07-02', end:'2026-07-03', type:'Vacation'},  // PAST — filtered out
-  {name:'Maria Santos',   start:'2026-07-20', end:'2026-07-20', type:'Personal'},  // today
-  {name:'Priya Nair',     start:'2026-07-22', end:'2026-07-22', type:'Personal'},  // future
-  {name:'Sam Whitfield',  start:'2026-07-24', end:'2026-07-25', type:'Sick'},      // future
+  {name:'Jordan Alvarez', start:'2026-07-02', end:'2026-07-03', type:'Vacation'},          // PAST — filtered out
+  {name:'Maria Santos',   start:'2026-07-22', end:'2026-07-22', type:'Personal'},          // today (Wed)
+  {name:'Priya Nair',     start:'2026-07-23', end:'2026-07-23', type:'Floating Holiday'},  // Thu
+  {name:'Sam Whitfield',  start:'2026-07-27', end:'2026-07-28', type:'Vacation'},          // Mon–Tue
 ];
 
 /* ---------------- App state ---------------- */
@@ -1129,6 +1139,42 @@ function homeAfterCard(){
         })()}
       </div>
     </div>
+
+    <div class="section" style="padding-top:0;">
+      <div class="section-title">Upcoming Leave &amp; Holidays</div>
+      <div class="card">
+        ${(function(){
+          const todayISO = fmtISO(TODAY);
+          const items = [];
+          // company holidays ahead
+          for(const [iso,label] of Object.entries(HOLIDAYS)){
+            if(iso >= todayISO) items.push({iso, title:label, sub:'Company holiday', kind:'holiday'});
+          }
+          // the employee's own planned time off ahead
+          for(const r of toRequests){
+            if(r.status==='denied' || r.status==='closed') continue;
+            if(r.end < todayISO) continue;
+            const st = r.status==='approved' ? 'Approved' : r.status==='awaiting' ? 'Awaiting approval' : 'Sent back';
+            items.push({iso:r.start, title:`${r.type} · Time Off`, sub:st, kind:'leave', status:r.status, days:r.days.length});
+          }
+          items.sort((a,b)=> a.iso < b.iso ? -1 : 1);
+          if(!items.length) return `<div class="helper" style="text-align:center; padding:10px 0;">No upcoming leave or holidays</div>`;
+          return items.map(it=>{
+            const d = new Date(it.iso+'T00:00:00');
+            const dateLabel = `${DOW[d.getDay()]}, ${MON[d.getMonth()].slice(0,3)} ${d.getDate()}`;
+            const color = it.kind==='holiday' ? '#8A4FD1' : it.status==='approved' ? '#1E8A4C' : it.status==='awaiting' ? '#C77700' : '#C0362C';
+            return `
+            <div class="act-row" style="cursor:default;">
+              <div class="act-ico" style="background:${color}1A; color:${color};">${svg(it.kind==='holiday'?'calendar':'calendarOff',16)}</div>
+              <div style="flex:1; min-width:0;">
+                <div class="act-title">${it.title}</div>
+                <div class="act-sub">${dateLabel}${it.days>1?` · ${it.days} days`:''} · ${it.sub}</div>
+              </div>
+            </div>`;
+          }).join('');
+        })()}
+      </div>
+    </div>
   `;
 }
 function openWeekDay(iso){
@@ -1328,7 +1374,7 @@ function screenTime(){
                <div class="tp-timer"><span>${elapsedLabel()}</span></div>
              </div>`
           : `<div class="today-punch none">
-               <div><div class="tp-label">Not yet punched in</div><div class="tp-sub">Check in from the Home screen to start the clock</div></div>
+               <div><div class="tp-label">Not yet checked in</div><div class="tp-sub">Check in from the Home screen to start the clock</div></div>
                ${svg('clock',20)}
              </div>`
       ) : ''}
@@ -1468,6 +1514,13 @@ function submitWeek(){
     return;
   }
   if(weekTotal()===0){ toast('Add at least one time entry before submitting','warn'); return; }
+  // A sent-back or denied week must actually be changed before resubmission
+  const priorSub = weekSubs[currentWeekKey()];
+  if(priorSub && (priorSub.status==='sentback' || priorSub.status==='denied')
+     && !weekChangedSince(priorSub.snapshot)){
+    toast('Make the requested changes before resubmitting this week','warn');
+    return;
+  }
   // Every working day (Mon–Fri) that has already occurred must have a completed
   // entry. Future days and weekends are exempt. A day with an entry that has no
   // check out is already caught by the missed-checkout guard above.
@@ -1637,7 +1690,7 @@ function sheetAddEntry(ctx){
       let endAt = lastOut ? addMins(lastOut, 60) : '16:00';
       // Out must stay after In, so don't let the default roll past midnight
       if(timeToMin(endAt) <= timeToMin(startAt)) endAt = '23:59';
-      entryDraft = {dateISO:dISO, entryId:null, type:'Regular Hours Worked', in:startAt, out:endAt, outReason:'Out', costCenter:COST_CENTERS[0], jobDiff:'None', source:null, fromPunch:false, fromWeek:!!ctx.fromWeek};
+      entryDraft = {dateISO:dISO, entryId:null, type:'Regular Hours Worked', in:startAt, out:endAt, outReason:'Site Change', costCenter:COST_CENTERS[0], jobDiff:'None', source:null, fromPunch:false, fromWeek:!!ctx.fromWeek};
     }
   }
   // Out must come after In on the same day
@@ -1716,7 +1769,7 @@ function sheetAddEntry(ctx){
         ? `<div class="helper" style="margin:-8px 0 14px;">${svg('lock',11)} The recorded check-in time can't be changed${entryDraft.resolving?' — set the Out time only':''}.</div>`
         : `<div class="helper" style="margin:-8px 0 14px;">Tap a time to open the spinner picker</div>`}
     <div class="field">
-      <label>Out Reason</label>
+      <label>Reason</label>
       <select onchange="entryDraft.outReason=this.value">${OUT_REASONS.map(r=>`<option ${r===entryDraft.outReason?'selected':''}>${r}</option>`).join('')}</select>
     </div>
     <div class="field">
@@ -1890,7 +1943,7 @@ function doCheckOut(){
   const dISO = fmtISO(now);
   const outT = now.toTimeString().slice(0,5);
   if(!entries[dISO]) entries[dISO]=[];
-  entries[dISO].push({id:cuid(), type:'Regular Hours Worked', in:state.checkInTime, out:outT, outReason:'Out', hours:calcHours(state.checkInTime,outT), costCenter:COST_CENTERS[0], jobDiff:'None', source:'checkin', fromPunch:true});
+  entries[dISO].push({id:cuid(), type:'Regular Hours Worked', in:state.checkInTime, out:outT, outReason:'Site Change', hours:calcHours(state.checkInTime,outT), costCenter:COST_CENTERS[0], jobDiff:'None', source:'checkin', fromPunch:true});
   state.checkedIn=false; state.checkedOut=true; state.checkOutTime=outT; state.checkInDate=null;
   closeSheet(); render();
   toast('Checked out · entry added to today','success');
@@ -1967,6 +2020,16 @@ function screenRequestTimeOff(){
         <div class="legend-item"><span class="legend-swatch info"></span>Additional Info</div>
       </div>
     `}
+    ${state.todSelMode==='calendar' && state.todSelectedDays.length ? `
+    <div class="sel-days">
+      <div class="sel-days-title">Selected days (${state.todSelectedDays.length})</div>
+      <div class="sel-days-chips">
+        ${[...state.todSelectedDays].sort().map(d=>{
+          const dd=new Date(d+'T00:00:00');
+          return `<span class="sel-chip" onclick="toggleDay('${d}')">${DOW[dd.getDay()]}, ${MON[dd.getMonth()].slice(0,3)} ${dd.getDate()} <b>&times;</b></span>`;
+        }).join('')}
+      </div>
+    </div>` : ''}
     <div class="link-row">
       <button class="link-btn" onclick="openSheet('balances')">${svg('wallet',15)} View Balances</button>
       <button class="link-btn" onclick="openSheet('teams')">${svg('users',15)} View Teams</button>
@@ -2004,8 +2067,26 @@ function renderCalDay(d){
 function toggleDay(iso){
   const status = statusForDate(iso);
   if(status){ openManageEntryFromDate(iso); return; }
-  const i = state.todSelectedDays.indexOf(iso);
-  if(i>-1) state.todSelectedDays.splice(i,1); else state.todSelectedDays.push(iso);
+  const sel = state.todSelectedDays;
+  const i = sel.indexOf(iso);
+  if(i>-1){
+    // any selected day — including one in the middle of a range — can be unselected
+    sel.splice(i,1);
+  } else if(sel.length===1){
+    // second pick fills every day in between (working days only, skipping
+    // days that already carry a request)
+    let a=sel[0], b=iso; if(b<a){ const t=a; a=b; b=t; }
+    let cur=new Date(a+'T00:00:00'); const end=new Date(b+'T00:00:00');
+    const fill=[];
+    while(cur<=end){
+      const w=cur.getDay(); const cISO=fmtISO(cur);
+      if(w!==0 && w!==6 && !statusForDate(cISO)) fill.push(cISO);
+      cur=addDays(cur,1);
+    }
+    state.todSelectedDays = fill;
+  } else {
+    sel.push(iso);
+  }
   document.getElementById('screenContent').innerHTML = screenTimeOff();
 }
 function setSelMode(m){ state.todSelMode=m; state.todSelectedDays=[]; document.getElementById('screenContent').innerHTML=screenTimeOff(); }
@@ -2020,10 +2101,14 @@ function selectedDatesList(){
   if(state.todSelMode==='range'){
     if(!state.todRangeStart||!state.todRangeEnd) return [];
     const list=[]; let cur=new Date(state.todRangeStart+'T00:00:00'); const end=new Date(state.todRangeEnd+'T00:00:00');
-    while(cur<=end){ list.push(fmtISO(cur)); cur=addDays(cur,1); }
+    while(cur<=end){
+      const dow=cur.getDay();
+      if(dow!==0 && dow!==6) list.push(fmtISO(cur)); // skip weekends
+      cur=addDays(cur,1);
+    }
     return list;
   }
-  return [...state.todSelectedDays].sort();
+  return [...state.todSelectedDays].sort().filter(d=>{const w=new Date(d+'T00:00:00').getDay(); return w!==0 && w!==6;});
 }
 
 /* ---- Time Off Details sheet ---- */
@@ -2034,14 +2119,35 @@ function openTimeOffDetails(){
   dates.forEach(d=>todDraft.perDay[d]={type:todDraft.type, hours:todDraft.dailyHours, duration:'full', halfPeriod:'first'});
   openSheet('timeOffDetails', {dates});
 }
+/* Label for a set of selected dates: consecutive working days collapse into a
+   range ("Aug 25 – Aug 27"); non-consecutive picks are listed separately
+   ("Aug 25 – Aug 26 · Fri, Aug 28") so random selections show exactly. */
+function selectedDatesLabel(dates){
+  const sorted = [...dates].sort();
+  const nextWorkingISO = iso => {
+    let d = addDays(new Date(iso+'T00:00:00'),1);
+    while(d.getDay()===0 || d.getDay()===6) d = addDays(d,1);
+    return fmtISO(d);
+  };
+  const runs = [];
+  let run = [sorted[0]];
+  for(let i=1;i<sorted.length;i++){
+    if(sorted[i] === nextWorkingISO(run[run.length-1])) run.push(sorted[i]);
+    else { runs.push(run); run = [sorted[i]]; }
+  }
+  runs.push(run);
+  const fmtOne = iso => { const d=new Date(iso+'T00:00:00'); return `${DOW[d.getDay()]}, ${MON[d.getMonth()].slice(0,3)} ${d.getDate()}`; };
+  const fmtShort = iso => { const d=new Date(iso+'T00:00:00'); return `${MON[d.getMonth()].slice(0,3)} ${d.getDate()}`; };
+  return runs.map(r => r.length===1 ? fmtOne(r[0]) : `${fmtShort(r[0])} – ${fmtShort(r[r.length-1])}`).join(' · ');
+}
 function sheetTimeOffDetails(ctx){
   const dates = ctx.dates;
-  const start = new Date(dates[0]+'T00:00:00'), end = new Date(dates[dates.length-1]+'T00:00:00');
   document.getElementById('sheetTitle').textContent = 'Time Off Details';
   const totalHours = dates.reduce((s,d)=>s+ (todDraft.perDay[d]?.hours||0), 0);
   const bal = BALANCES.find(b=>b.plan.toLowerCase().includes(todDraft.type.toLowerCase())) || {plan:todDraft.type, hours: 0};
   document.getElementById('sheetBody').innerHTML = `
-    <div style="font-size:13px; font-weight:800; margin-bottom:14px;">${fmtRange(start,end)}</div>
+    <div style="font-size:13px; font-weight:800; margin-bottom:4px;">${selectedDatesLabel(dates)}</div>
+    <div class="helper" style="margin:0 0 12px;">${dates.length} day${dates.length>1?'s':''} selected</div>
     <div class="field">
       <label>Type of Time Off <span class="req">*</span></label>
       <select id="td_type" onchange="updateDraftType(this.value, ${JSON.stringify(dates).replace(/"/g,'&quot;')})">
@@ -2357,7 +2463,7 @@ function renderManageCalDay(d){
   const status = statusForDate(iso);
   const isToday = sameDate(d,TODAY);
   const hasInfo = !!HOLIDAYS[iso];
-  return `<div class="cal-day ${status||''} ${isToday?'today':''}" onclick="${status==='approved'?`openManageEntryFromDate('${iso}')`:''}" title="${HOLIDAYS[iso]||''}">
+  return `<div class="cal-day ${status||''} ${isToday?'today':''}" onclick="${status?`openManageEntryFromDate('${iso}')`:''}" title="${HOLIDAYS[iso]||''}">
     <div class="num-wrap">${d.getDate()}</div>
     ${hasInfo?'<div class="infodot"></div>':''}
   </div>`;
@@ -2392,8 +2498,13 @@ function sheetEditTimeOff(ctx){
   if(!r) return;
   document.getElementById('sheetTitle').textContent='Time Off Entries';
   document.getElementById('sheetBody').innerHTML = `
+    ${(r.status==='sentback'||r.status==='denied') && r.comment ? `
+      <div class="mgr-comment-bar" style="margin:0 0 12px;">
+        <div style="font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:.03em;">Manager comment</div>
+        <div style="margin-top:2px;">${r.comment}</div>
+      </div>` : ''}
     <div class="kv-card">
-      <div class="kv-row"><span class="kl">Request Amount</span><span class="kv">${daysLabel(r.days.reduce((s,d)=>s+d.hours,0))}</span></div>
+      <div class="kv-row"><span class="kl">Request Days</span><span class="kv">${daysLabel(r.days.reduce((s,d)=>s+d.hours,0))}</span></div>
       <div class="kv-row"><span class="kl">Status</span><span class="kv"><span class="badge ${r.status}">${statusLabel(r.status)}</span></span></div>
       <div class="kv-row"><span class="kl">Request Dates</span><span class="kv">${fmtRange(new Date(r.start+'T00:00:00'), new Date(r.end+'T00:00:00'))}</span></div>
       <div class="kv-row"><span class="kl">Type of Time Off</span><span class="kv">${r.type}</span></div>
@@ -2531,7 +2642,6 @@ function screenProfile(){
         </div>
         <span class="badge pending">Approver</span>
       </div>
-      <div class="helper" style="margin-top:6px;">Your time and time off requests are routed here for approval.</div>
     </div>
     <div class="section" style="padding-top:0;">
       <div class="section-title">Preferences</div>
@@ -2675,7 +2785,7 @@ function addWeekDayEntry(iso){
   const endMin = Math.min(startMin + span, 23*60+59);
   const endAt = `${String(Math.floor(endMin/60)).padStart(2,'0')}:${String(endMin%60).padStart(2,'0')}`;
   entryDraft = {dateISO:iso, entryId:null, fromWeek:true,
-    type:'Regular Hours Worked', in:startAt, out:endAt, outReason:'Out',
+    type:'Regular Hours Worked', in:startAt, out:endAt, outReason:'Site Change',
     costCenter:COST_CENTERS[0], jobDiff:'None', source:null, fromPunch:false};
   openSheet('addEntry', {dateISO:iso, fromWeek:true});
 }
