@@ -1044,8 +1044,10 @@ function screenHome(){
   const ctaText = phase==='in' ? 'Total Time Today'
                 : phase==='out' ? 'Total Time Today'
                 : 'Tap to Check In';
+  const manualToday = phase==='none' && manualEntriesToday();
   const subText = phase==='in' ? 'Checked in at '+state.checkInTime
                 : phase==='out' ? `Checked in ${state.checkInTime} · Checked out ${state.checkOutTime}`
+                : manualToday ? 'Time entered manually for today — punch in/out disabled'
                 : "Start tracking today's hours";
   return `
     <div class="attend-card" style="margin-top:16px;">
@@ -1197,7 +1199,15 @@ function activityRow(icon,color,title,sub){
     <div class="lr-body"><div class="lr-title">${title}</div><div class="lr-sub">${sub}</div></div>
   </div>`;
 }
+function manualEntriesToday(){
+  return (entries[fmtISO(TODAY)]||[]).some(e=>e.source==='manual');
+}
 function doCheckIn(){
+  // If today's time was entered manually, punch in/out is not allowed
+  if(manualEntriesToday()){
+    toast("You have manually entered your check in and check out time for today",'warn');
+    return;
+  }
   const now = new Date();
   state.checkedIn = true;
   state.checkedOut = false;
