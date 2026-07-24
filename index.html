@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0014DC">
-<title>SLB · Time &amp; Attendance Tracking — Manager App</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>SLB · Time &amp; Attendance Tracking — Employee App (iOS Native Concept)</title>
+<!-- System typography: SF Pro (native, no download) -->
 <style>
   :root{
     --brand:#0014DC;
@@ -70,7 +69,7 @@
   .notch{ position:absolute; top:0; left:50%; transform:translateX(-50%); width:120px; height:26px; background:#000; border-radius:0 0 16px 16px; z-index:50; }
   .status-bar{
     height:46px; flex:0 0 auto; display:flex; align-items:center; justify-content:space-between;
-    padding:0 26px; font-size:14px; font-weight:600; color:var(--text); background:var(--bg); font-family:'Inter',sans-serif;
+    padding:0 26px; font-size:14px; font-weight:600; color:var(--text); background:var(--bg); font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;
   }
   .status-icons{display:flex; align-items:center; gap:5px;}
 
@@ -89,18 +88,18 @@
     background:
       radial-gradient(120% 60% at 50% 0%, rgba(0,20,220,.10) 0%, rgba(0,20,220,0) 60%),
       var(--card);
-    font-family:'Inter',sans-serif;
+    font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;
   }
   .login-top{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;}
   .login-logo{width:76px; height:76px; border-radius:20px; overflow:hidden; box-shadow:0 10px 26px rgba(0,20,220,.28); margin-bottom:22px;}
   .login-logo img{width:100%; height:100%; display:block; object-fit:cover;}
-  .login h1{font-family:'Poppins',sans-serif; font-size:23px; font-weight:800; letter-spacing:-.02em;}
+  .login h1{font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif; font-size:23px; font-weight:800; letter-spacing:-.02em;}
   .login .login-sub{font-size:13.5px; color:var(--text-2); margin-top:8px; line-height:1.55; max-width:250px;}
   .login-bottom{flex:0 0 auto;}
   .sso-btn{
     width:100%; padding:15px; border-radius:12px; border:none; background:var(--brand); color:#fff;
     font-weight:700; font-size:15px; cursor:pointer; box-shadow:0 8px 18px rgba(0,20,220,.3);
-    display:flex; align-items:center; justify-content:center; gap:9px; font-family:'Poppins',sans-serif;
+    display:flex; align-items:center; justify-content:center; gap:9px; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;
   }
   .sso-btn:disabled{opacity:.75; cursor:default;}
   .sso-note{display:flex; align-items:center; justify-content:center; gap:6px; font-size:11.5px; color:var(--text-3); font-weight:600; margin-top:14px;}
@@ -111,26 +110,26 @@
   }
   @keyframes spin{to{transform:rotate(360deg);}}
   .app-header .htitle{flex:1; min-width:0;}
-  .app-header .htitle .h-eyebrow{font-size:11px; color:var(--brand); font-weight:700; text-transform:uppercase; letter-spacing:.03em; font-family:'Inter',sans-serif;}
+  .app-header .htitle .h-eyebrow{font-size:11px; color:var(--brand); font-weight:700; text-transform:uppercase; letter-spacing:.03em; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .app-header .htitle h2{font-size:18px; font-weight:700; letter-spacing:-.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .avatar{
     width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#0014DC,#3D5CFF);
     color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex:0 0 auto;
   }
 
-  .screen-content{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:24px; font-family:'Inter',sans-serif;}
+  .screen-content{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:24px; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .screen-content::-webkit-scrollbar{width:0;}
 
   .bottom-nav{ flex:0 0 auto; display:flex; background:var(--card); border-top:1px solid var(--border); padding:8px 4px 16px; position:relative; z-index:30; }
   .nav-item{ flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:4px 0; background:none; border:none; color:var(--text-3); cursor:pointer; }
   .nav-item svg{width:22px; height:22px;}
-  .nav-item span{font-size:10px; font-weight:600; font-family:'Inter',sans-serif;}
+  .nav-item span{font-size:10px; font-weight:600; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .nav-item{padding-left:0; padding-right:0;}
   .nav-item.active{color:var(--brand);}
   .home-indicator{ position:absolute; bottom:6px; left:50%; transform:translateX(-50%); width:120px; height:4px; background:#1D2D3E; border-radius:3px; opacity:.25; }
 
   .section{padding:16px;}
-  .section-title{font-size:12.5px; font-weight:700; color:var(--text-2); text-transform:uppercase; letter-spacing:.04em; margin-bottom:10px; font-family:'Poppins',sans-serif;}
+  .section-title{font-size:12.5px; font-weight:700; color:var(--text-2); text-transform:uppercase; letter-spacing:.04em; margin-bottom:10px; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .card{ background:var(--card); border-radius:var(--radius-md); box-shadow:var(--shadow-1); border:1px solid var(--border); padding:16px; }
   .card + .card{margin-top:12px;}
 
@@ -186,7 +185,7 @@
   .list-row .lr-body{flex:1; min-width:0;}
   .list-row .lr-title{font-size:13.5px; font-weight:700;}
   .list-row .lr-sub{font-size:12px; color:var(--text-3); margin-top:1px;}
-  .badge{font-size:10.5px; font-weight:800; padding:3px 9px; border-radius:20px; white-space:nowrap; font-family:'Inter',sans-serif;}
+  .badge{font-size:10.5px; font-weight:800; padding:3px 9px; border-radius:20px; white-space:nowrap; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .badge.approved{color:var(--positive); background:var(--positive-bg);}
   .badge.sentback{color:var(--critical); background:var(--critical-bg);}
   .badge.awaiting{color:var(--neutral); background:#EEF1F0;}
@@ -197,7 +196,7 @@
 
   .week-nav{display:flex; align-items:center; justify-content:space-between; padding:14px 16px 6px;}
   .week-nav button{background:var(--card); border:1px solid var(--border); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;}
-  .week-nav .wn-label{font-size:15px; font-weight:700; font-family:'Poppins',sans-serif;}
+  .week-nav .wn-label{font-size:15px; font-weight:700; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .week-strip{display:flex; gap:6px; padding:8px 16px 4px;}
   .day-cell{ flex:1; background:var(--card); border:1.5px solid var(--border); border-radius:14px; padding:8px 2px 9px; display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; }
   .day-cell .dow{font-size:10px; font-weight:700; color:var(--text-3);}
@@ -224,7 +223,7 @@
 
   .week-total-bar{ margin:10px 16px 0; padding:12px 14px; background:var(--card); border:1px solid var(--border); border-radius:14px; display:flex; justify-content:space-between; align-items:center; }
   .week-total-bar .wt-label{font-size:12px; color:var(--text-3); font-weight:600;}
-  .week-total-bar .wt-val{font-size:18px; font-weight:800; margin-top:1px; font-family:'Poppins',sans-serif;}
+  .week-total-bar .wt-val{font-size:18px; font-weight:800; margin-top:1px; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .mgr-comment-bar{
     margin:8px 16px 0; padding:11px 13px; border-radius:12px; background:var(--critical-bg);
     border:1px solid var(--critical); color:var(--critical); font-size:12px; font-weight:600;
@@ -243,9 +242,9 @@
   .today-punch.in{background:var(--positive-bg); border:1px solid var(--positive);}
   .today-punch.out{background:var(--brand-tint); border:1px solid var(--brand);}
   .today-punch.none{background:var(--bg); border:1px dashed var(--border); color:var(--text-3);}
-  .today-punch .tp-label{font-size:13px; font-weight:800; font-family:'Poppins',sans-serif;}
+  .today-punch .tp-label{font-size:13px; font-weight:800; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .today-punch .tp-sub{font-size:11px; color:var(--text-3); font-weight:600; margin-top:1px;}
-  .today-punch .tp-timer{text-align:right; font-size:19px; font-weight:800; font-variant-numeric:tabular-nums; font-family:'Poppins',sans-serif; color:var(--positive); display:flex; flex-direction:column; align-items:flex-end; gap:2px;}
+  .today-punch .tp-timer{text-align:right; font-size:19px; font-weight:800; font-variant-numeric:tabular-nums; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif; color:var(--positive); display:flex; flex-direction:column; align-items:flex-end; gap:2px;}
   .today-punch.out .tp-timer{color:var(--brand);}
   .today-punch.none svg{color:var(--text-3);}
   .timeoff-card{
@@ -253,7 +252,7 @@
     border-radius:14px; background:var(--positive-bg); border:1px solid var(--positive); margin-bottom:12px;
   }
   .timeoff-card .to-icon{width:36px; height:36px; border-radius:10px; background:#fff; color:var(--positive); display:flex; align-items:center; justify-content:center; flex:0 0 auto;}
-  .timeoff-card .to-title{font-size:14px; font-weight:800; font-family:'Poppins',sans-serif;}
+  .timeoff-card .to-title{font-size:14px; font-weight:800; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .timeoff-card .to-sub{font-size:11.5px; color:var(--text-3); font-weight:600; margin-top:1px;}
 
   /* Home: this week strip */
@@ -261,14 +260,14 @@
   .hw-day{flex:1; background:var(--card); border:1.5px solid var(--border); border-radius:12px; padding:8px 2px; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer;}
   .hw-day.today{border-color:var(--brand); background:var(--brand-tint);}
   .hw-dow{font-size:9.5px; font-weight:700; color:var(--text-3);}
-  .hw-num{font-size:14px; font-weight:800; font-family:'Poppins',sans-serif;}
+  .hw-num{font-size:14px; font-weight:800; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .hw-val{font-size:9.5px; font-weight:800; color:var(--brand); background:var(--brand-tint); border-radius:5px; padding:1px 4px; min-width:24px; text-align:center;}
   .hw-val.zero{color:var(--text-3); background:transparent;}
   .hw-val.off{color:var(--positive); background:var(--positive-bg);}
   .hw-val.miss{color:#fff; background:var(--negative);}
   /* Home: quick time off */
   .quick-to{display:flex; gap:8px;}
-  .quick-to button{flex:1; padding:12px; border-radius:12px; border:1.5px solid var(--border); background:var(--card); color:var(--text); font-weight:700; font-size:13px; cursor:pointer; font-family:'Inter',sans-serif; display:flex; align-items:center; justify-content:center; gap:6px;}
+  .quick-to button{flex:1; padding:12px; border-radius:12px; border:1.5px solid var(--border); background:var(--card); color:var(--text); font-weight:700; font-size:13px; cursor:pointer; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif; display:flex; align-items:center; justify-content:center; gap:6px;}
   .quick-to button:active{background:var(--brand-tint); border-color:var(--brand);}
   /* Home: take action rows */
   .act-row{display:flex; align-items:center; gap:12px; padding:12px 4px; cursor:pointer; border-bottom:1px solid var(--border);}
@@ -284,7 +283,7 @@
   .status-chip.sick .dot{background:var(--sick);}
   .attend-card.sick{border-top:3px solid var(--sick);}
   .seg-row{display:flex; gap:8px;}
-  .seg{flex:1; padding:11px; border-radius:10px; border:1.5px solid var(--border); background:#fff; color:var(--text-2); font-weight:700; font-size:12.5px; cursor:pointer; font-family:'Inter',sans-serif;}
+  .seg{flex:1; padding:11px; border-radius:10px; border:1.5px solid var(--border); background:#fff; color:var(--text-2); font-weight:700; font-size:12.5px; cursor:pointer; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .seg.active{border-color:var(--sick); background:var(--sick-bg); color:var(--sick);}
   /* Weekly bulk entry */
   .we-row{border:1.5px solid var(--border); border-radius:12px; padding:11px 12px; margin-bottom:8px;}
@@ -301,10 +300,10 @@
   .we-hrs{font-size:12px; font-weight:800; color:var(--brand);}
   .we-hrs.bad{color:var(--negative);}
   .we-total{display:flex; justify-content:space-between; align-items:center; padding:12px 4px 2px; font-size:13px; font-weight:700; color:var(--text-2); border-top:1px solid var(--border); margin-top:6px;}
-  .we-total b{font-size:16px; color:var(--brand); font-family:'Poppins',sans-serif;}
+  .we-total b{font-size:16px; color:var(--brand); font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .we-weektotal{display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border:1px solid var(--border); border-radius:12px; background:var(--card); margin-bottom:12px;}
   .we-weektotal .wt-label{font-size:11px; color:var(--text-3); font-weight:700;}
-  .we-weektotal .wt-big{font-size:18px; font-weight:800; font-family:'Poppins',sans-serif; color:var(--brand);}
+  .we-weektotal .wt-big{font-size:18px; font-weight:800; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif; color:var(--brand);}
   .ws-day{display:flex; align-items:center; gap:10px; border:1.5px solid var(--border); border-radius:12px; padding:12px; margin-bottom:8px; cursor:pointer;}
   .ws-day:active{background:var(--brand-tint); border-color:var(--brand);}
   .ws-daynav{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
@@ -316,18 +315,6 @@
   .sel-days-chips{display:flex; flex-wrap:wrap; gap:6px;}
   .sel-chip{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--brand); background:var(--brand-tint); border:1px solid var(--brand); border-radius:14px; padding:4px 9px; cursor:pointer;}
   .sel-chip b{font-weight:800; opacity:.7;}
-  .icon-toggle-btn{width:30px; height:30px; border-radius:8px; border:1.5px solid var(--border); background:#fff; color:var(--text-3); display:flex; align-items:center; justify-content:center; cursor:pointer;}
-  .icon-toggle-btn.active{border-color:var(--brand); background:var(--brand-tint); color:var(--brand);}
-  .filter-select{
-    width:100%; padding:9px 32px 9px 12px; border-radius:10px; border:1.5px solid var(--border);
-    font-size:12.5px; font-weight:700; font-family:'Inter',sans-serif; background:#fff; color:var(--text-2);
-    appearance:none; cursor:pointer;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230014DC' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
-    background-repeat:no-repeat; background-position:right 10px center; background-size:13px;
-    transition:border-color .15s;
-  }
-  .filter-select:focus{outline:2px solid var(--brand); outline-offset:1px; border-color:var(--brand);}
-  .filter-select:hover{border-color:var(--brand);}
   .punch-actions button.danger-outline{background:#fff; color:var(--negative); border:1.5px solid var(--negative);}
 
   .entry-row{ display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--border); border-left:4px solid var(--brand); border-radius:12px; padding:12px 14px; margin-bottom:8px; }
@@ -367,10 +354,10 @@
   .empty-state svg{width:40px; height:40px; margin-bottom:8px; opacity:.5;}
   .empty-state p{font-size:13px; font-weight:600;}
 
-  .btn-primary{ width:100%; padding:14px; border-radius:12px; border:none; background:var(--brand); color:#fff; font-weight:700; font-size:14.5px; cursor:pointer; box-shadow:0 6px 14px rgba(0,20,220,.28); font-family:'Poppins',sans-serif; }
+  .btn-primary{ width:100%; padding:14px; border-radius:12px; border:none; background:var(--brand); color:#fff; font-weight:700; font-size:14.5px; cursor:pointer; box-shadow:0 6px 14px rgba(0,20,220,.28); font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif; }
   .btn-primary:disabled{background:#C3CBC7; box-shadow:none; cursor:default;}
-  .btn-secondary{ width:100%; padding:13px; border-radius:12px; border:1.5px solid var(--border); background:#fff; color:var(--text); font-weight:700; font-size:14px; cursor:pointer; font-family:'Poppins',sans-serif; }
-  .btn-danger-outline{ width:100%; padding:13px; border-radius:12px; border:1.5px solid var(--negative); background:#fff; color:var(--negative); font-weight:700; font-size:14px; cursor:pointer; font-family:'Poppins',sans-serif; }
+  .btn-secondary{ width:100%; padding:13px; border-radius:12px; border:1.5px solid var(--border); background:#fff; color:var(--text); font-weight:700; font-size:14px; cursor:pointer; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif; }
+  .btn-danger-outline{ width:100%; padding:13px; border-radius:12px; border:1.5px solid var(--negative); background:#fff; color:var(--negative); font-weight:700; font-size:14px; cursor:pointer; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif; }
   .btn-row{display:flex; gap:10px; padding:14px 16px 4px;}
   .btn-row > *{flex:1;}
 
@@ -379,7 +366,7 @@
   .field label .req{color:var(--negative);}
   .field select, .field input[type=text], .field input[type=number], .field input[type=date], .field textarea{
     width:100%; padding:12px 12px; border-radius:10px; border:1.5px solid var(--border); font-size:14px;
-    font-family:'Inter',sans-serif; background:#fff; color:var(--text); appearance:none;
+    font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif; background:#fff; color:var(--text); appearance:none;
   }
   .field select{
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235C6B65' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
@@ -392,10 +379,11 @@
   .field-static{ background:var(--bg); border-radius:10px; padding:12px; font-weight:700; font-size:15px; color:var(--brand); }
   .helper{font-size:11.5px; color:var(--text-3); margin-top:5px;}
 
+  .native-time{width:100%; font:inherit; font-size:15px; padding:11px 12px; border-radius:10px; border:1.5px solid var(--border); background:#EFEFF4; color:var(--text);}
   .time-picker-btn{
     width:100%; display:flex; align-items:center; justify-content:space-between; padding:12px 14px;
     border-radius:10px; border:1.5px solid var(--border); background:#fff; font-size:14px; font-weight:700;
-    color:var(--text); cursor:pointer; font-family:'Inter',sans-serif;
+    color:var(--text); cursor:pointer; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;
   }
   .time-picker-btn svg{color:var(--text-3);}
   .time-picker-btn:active{background:var(--brand-tint); border-color:var(--brand);}
@@ -406,7 +394,7 @@
   .time-picker-btn.locked-field svg{color:var(--text-3);}
 
   .segmented{display:flex; background:var(--bg); border-radius:10px; padding:3px; margin:0 16px 14px;}
-  .segmented button{ flex:1; padding:9px; border:none; background:transparent; border-radius:8px; font-weight:700; font-size:13px; color:var(--text-2); cursor:pointer; font-family:'Inter',sans-serif; }
+  .segmented button{ flex:1; padding:9px; border:none; background:transparent; border-radius:8px; font-weight:700; font-size:13px; color:var(--text-2); cursor:pointer; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif; }
   .segmented button.active{background:#fff; color:var(--text); box-shadow:var(--shadow-1);}
 
   .subtabs{display:flex; gap:6px; padding:12px 16px 0;}
@@ -414,12 +402,12 @@
   .subtab.active{background:var(--brand); color:#fff; border-color:var(--brand);}
 
   .month-nav{display:flex; align-items:center; justify-content:space-between; padding:14px 16px 8px;}
-  .month-nav .mn-label{font-size:16px; font-weight:800; font-family:'Poppins',sans-serif;}
+  .month-nav .mn-label{font-size:16px; font-weight:800; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .actions-pill{
     display:inline-flex; align-items:center; gap:6px; flex:0 0 auto;
     background:var(--card); border:1px solid var(--border); border-radius:20px;
     padding:7px 13px; font-size:12.5px; font-weight:700; color:var(--brand);
-    cursor:pointer; font-family:'Inter',sans-serif; white-space:nowrap;
+    cursor:pointer; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif; white-space:nowrap;
   }
   .actions-pill:active{background:var(--brand-tint); border-color:var(--brand);}
 
@@ -427,7 +415,7 @@
   .ts-controls{display:flex; align-items:center; gap:8px; margin-bottom:12px;}
   .ts-controls select{
     flex:1; padding:9px 10px; border-radius:9px; border:1.5px solid var(--border);
-    font-family:'Inter',sans-serif; font-size:13px; font-weight:700; background:#fff; color:var(--text);
+    font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif; font-size:13px; font-weight:700; background:#fff; color:var(--text);
     appearance:none; cursor:pointer; padding-right:28px;
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235C6B65' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
     background-repeat:no-repeat; background-position:right 9px center; background-size:14px;
@@ -459,7 +447,7 @@
   /* Circular styling belongs to the prev/next arrows only. Scoping this to
      `.month-nav button` also caught the Actions pill and squashed it to 30x30. */
   .month-nav-btns button{background:var(--card); border:1px solid var(--border); width:30px; height:30px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; flex:0 0 auto; color:var(--text);}
-  .month-nav .mn-label{font-size:16px; font-weight:800; font-family:'Poppins',sans-serif;}
+  .month-nav .mn-label{font-size:16px; font-weight:800; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .cal-grid{padding:0 12px;}
   .cal-dow-row{display:grid; grid-template-columns:repeat(7,1fr); text-align:center; margin-bottom:6px;}
   .cal-dow-row div{font-size:10.5px; font-weight:700; color:var(--text-3);}
@@ -471,7 +459,7 @@
   .cal-day.sentback .num-wrap{background:var(--critical-bg); color:var(--critical); border:1.5px solid var(--critical);}
   .cal-day.awaiting .num-wrap{border:1.5px dashed var(--neutral); color:var(--text-2);}
   .cal-day.picked .num-wrap{background:var(--brand); color:#fff;}
-  .cal-day .infodot{position:absolute; bottom:2px; left:50%; transform:translateX(-50%); width:6px; height:6px; border-radius:50%; background:var(--info-dot); z-index:2;}
+  .cal-day .infodot{position:absolute; bottom:1px; width:5px; height:5px; border-radius:50%; background:var(--info-dot);}
   .cal-day.today .num-wrap{box-shadow:0 0 0 1.5px var(--brand) inset;}
 
   .legend{display:flex; flex-wrap:wrap; gap:10px 14px; padding:10px 16px 4px;}
@@ -483,7 +471,7 @@
   .legend-swatch.info{background:var(--info-dot); border:none; width:6px; height:6px;}
 
   .link-row{display:flex; justify-content:space-between; padding:10px 16px 14px;}
-  .link-btn{display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; color:var(--brand); background:none; border:none; cursor:pointer; font-family:'Inter',sans-serif;}
+  .link-btn{display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; color:var(--brand); background:none; border:none; cursor:pointer; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;}
 
   .sheet-overlay{ position:absolute; inset:0; background:rgba(20,28,24,.45); z-index:60; opacity:0; pointer-events:none; transition:opacity .22s ease; display:flex; align-items:flex-end; }
   .sheet-overlay.open{opacity:1; pointer-events:auto;}
@@ -491,9 +479,9 @@
   .sheet-overlay.open .sheet{transform:translateY(0%);}
   .sheet-handle{width:36px; height:4px; background:#D5DBD8; border-radius:3px; margin:10px auto 2px;}
   .sheet-header{ display:flex; align-items:center; justify-content:space-between; padding:10px 16px 12px; background:var(--bg); border-bottom:1px solid var(--border); }
-  .sheet-header h3{font-size:16px; font-weight:700; font-family:'Poppins',sans-serif;}
+  .sheet-header h3{font-size:16px; font-weight:700; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .sheet-header button{background:var(--card); border:1px solid var(--border); width:30px; height:30px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-2);}
-  .sheet-body{padding:16px; overflow-y:auto; font-family:'Inter',sans-serif;}
+  .sheet-body{padding:16px; overflow-y:auto; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;}
   .sheet-footer{padding:12px 16px 18px; background:var(--card); border-top:1px solid var(--border);}
 
   .balance-pill-row{display:flex; justify-content:space-between; align-items:center; padding:11px 0;}
@@ -514,7 +502,7 @@
   .day-chip .dc-left .dc-meta{font-size:11.5px; color:var(--text-3); margin-top:1px;}
   .day-chip .dc-chevron{color:var(--text-3);}
 
-  .toast{ position:absolute; left:16px; right:16px; bottom:96px; background:#1E2A26; color:#fff; padding:13px 16px; border-radius:12px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:10px; box-shadow:0 8px 20px rgba(0,0,0,.25); z-index:90; transform:translateY(20px); opacity:0; pointer-events:none; transition:all .25s ease; font-family:'Inter',sans-serif; }
+  .toast{ position:absolute; left:16px; right:16px; bottom:96px; background:#1E2A26; color:#fff; padding:13px 16px; border-radius:12px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:10px; box-shadow:0 8px 20px rgba(0,0,0,.25); z-index:90; transform:translateY(20px); opacity:0; pointer-events:none; transition:all .25s ease; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif; }
   .toast.show{transform:translateY(0); opacity:1;}
   .toast svg{flex:0 0 auto; color:#7CFFA0;}
 
@@ -532,7 +520,7 @@
   .nav-dot{
     position:absolute; top:-5px; right:-9px; min-width:15px; height:15px; padding:0 4px;
     background:var(--negative); color:#fff; border-radius:8px; font-size:9.5px; font-weight:800;
-    display:flex; align-items:center; justify-content:center; border:1.5px solid #fff; font-family:'Inter',sans-serif;
+    display:flex; align-items:center; justify-content:center; border:1.5px solid #fff; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;
   }
   .req-actions{display:flex; gap:8px; margin-top:12px;}
   /* Request cards run a touch smaller than default list rows */
@@ -544,7 +532,7 @@
   .req-card .sentback-note{font-size:10.5px; padding:7px 9px;}
   .req-act{
     flex:1; padding:9px; border-radius:9px; border:1.5px solid var(--border); background:#fff;
-    color:var(--text); font-weight:700; font-size:12.5px; cursor:pointer; font-family:'Inter',sans-serif;
+    color:var(--text); font-weight:700; font-size:12.5px; cursor:pointer; font-family:-apple-system,'SF Pro Text',BlinkMacSystemFont,'Segoe UI',sans-serif;
     display:flex; align-items:center; justify-content:center; gap:5px;
   }
   .req-act.primary{background:var(--brand); color:#fff; border-color:var(--brand);}
@@ -557,17 +545,6 @@
   .req-tab{flex:1; text-align:center; padding:8px; border-radius:9px; font-size:12px; font-weight:700; background:var(--card); border:1px solid var(--border); color:var(--text-2); cursor:pointer;}
   .req-tab.active{background:var(--text); color:#fff; border-color:var(--text);}
 
-  /* Android-style spinner time picker */
-  .spinner-wrap{padding:10px 0 4px;}
-  .spinner-title{font-size:13.5px; font-weight:700; text-align:center; margin-bottom:16px; font-family:'Poppins',sans-serif;}
-  .spinner-cols{display:flex; justify-content:center; align-items:center; gap:8px; position:relative; height:160px;}
-  .spinner-highlight{position:absolute; left:6px; right:6px; top:60px; height:40px; background:var(--brand-tint); border-radius:10px; pointer-events:none; z-index:0; border-top:1.5px solid var(--brand); border-bottom:1.5px solid var(--brand);}
-  .spinner-col{width:62px; height:160px; overflow-y:scroll; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; position:relative; z-index:1;}
-  .spinner-col::-webkit-scrollbar{display:none;}
-  .spinner-col-pad{height:60px;}
-  .spinner-item{height:40px; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; color:var(--text-3); scroll-snap-align:center; font-variant-numeric:tabular-nums;}
-  .spinner-colon{font-size:20px; font-weight:800; color:var(--text); z-index:1;}
-  .spinner-ampm{width:54px;}
 
   /* ============================================================
      On a real phone, drop the mock device chrome and fill the
@@ -606,7 +583,7 @@
 <body>
 
 <div class="rig-label">
-  <h1>SLB · Time &amp; Attendance Tracking — Manager App</h1>
+  <h1>SLB · Time &amp; Attendance Tracking — Employee App</h1>
 </div>
 
 <div class="phone">
@@ -788,7 +765,7 @@ function requestIsPast(r){ return r.end < fmtISO(TODAY); }
       } else if(dow===mgrDow){
         entries[d] = [{id:cuid(), type:'Overtime', in:'08:00', out:'18:00',
           outReason:'Site Change', hours:10, costCenter:COST_CENTERS[0], jobDiff:'None', source:'manual', fromPunch:false,
-          mgrEdit:{by:'Sarah Whitfield', when:'before submitting', note:'Approved 2h overtime for the shift extension.', from:{type:'Regular Hours Worked', in:'08:00', out:'16:30', hours:8}}}];
+          mgrEdit:{by:'Daniel Okafor', when:'before submitting', note:'Approved 2h overtime for the shift extension.', from:{type:'Regular Hours Worked', in:'08:00', out:'16:30', hours:8}}}];
       } else if(dow===shortDow){
         // A short day — the reason a week was sent back (e.g. an afternoon shift not logged)
         entries[d] = [{id:cuid(), type:'Regular Hours Worked', in:'08:00', out:'12:00',
@@ -811,9 +788,9 @@ function requestIsPast(r){ return r.end < fmtISO(TODAY); }
   fillWeek(-3);
   fillWeek(-4, {missedDows:[2,4]});
 
-  weekSubs[wk(-1)] = {status:'approved',  submittedLabel:'submitted last week',    decidedLabel:'approved by Sarah Whitfield', managerComment:'', snapshot:snapshotWeekAt(-1)};
-  weekSubs[wk(-2)] = {status:'sentback',  submittedLabel:'submitted 2 weeks ago',  decidedLabel:'sent back by Sarah Whitfield', managerComment:'Correct the leave reason for Jul 9–10.', snapshot:snapshotWeekAt(-2)};
-  weekSubs[wk(-3)] = {status:'denied',    submittedLabel:'submitted 3 weeks ago',  decidedLabel:'denied by Sarah Whitfield', managerComment:'Overtime not pre-approved for this week.', snapshot:snapshotWeekAt(-3)};
+  weekSubs[wk(-1)] = {status:'approved',  submittedLabel:'submitted last week',    decidedLabel:'approved by Daniel Okafor', managerComment:'', snapshot:snapshotWeekAt(-1)};
+  weekSubs[wk(-2)] = {status:'sentback',  submittedLabel:'submitted 2 weeks ago',  decidedLabel:'sent back by Daniel Okafor', managerComment:'Correct the leave reason for Jul 9–10.', snapshot:snapshotWeekAt(-2)};
+  weekSubs[wk(-3)] = {status:'denied',    submittedLabel:'submitted 3 weeks ago',  decidedLabel:'denied by Daniel Okafor', managerComment:'Overtime not pre-approved for this week.', snapshot:snapshotWeekAt(-3)};
   // -4 is NOT submitted — it has unresolved missed checkouts to fix first.
 })();
 /* snapshot of a given past week, used as the submitted baseline */
@@ -824,9 +801,9 @@ function snapshotWeekAt(offset){
   return snap;
 }
 function mkRequest(start,end,type,dailyHours,status,comment){
-  const days=[]; let cur=new Date(start);
   // Weekends are excluded — the prototype works on a 5-day week, so Sat/Sun
   // never count toward time-off days (e.g. Fri + Mon = 2 days, not 4).
+  const days=[]; let cur=new Date(start);
   while(cur<=end){
     const dow=cur.getDay();
     if(dow!==0 && dow!==6) days.push({date:fmtISO(cur), type, hours:dailyHours});
@@ -849,8 +826,7 @@ const BALANCES = [
   {plan:'Sick', hours:40},
   {plan:'Personal', hours:16},
 ];
-// Daniel is a manager, but he's also an employee — his own time routes up to his approver.
-const MANAGER = {name:'Sarah Whitfield', title:'Regional Director', initials:'SW', email:'s.whitfield@slb.com'};
+const MANAGER = {name:'Daniel Okafor', title:'Retail Operations Manager', initials:'DO', email:'d.okafor@slb.com'};
 const TEAM = [
   // start/end are ISO; the view shows only entries ending today or later.
   {name:'Jordan Alvarez', start:'2026-07-02', end:'2026-07-03', type:'Vacation'},          // PAST — filtered out
@@ -858,211 +834,6 @@ const TEAM = [
   {name:'Priya Nair',     start:'2026-07-23', end:'2026-07-23', type:'Floating Holiday'},  // Thu
   {name:'Sam Whitfield',  start:'2026-07-27', end:'2026-07-28', type:'Vacation'},          // Mon–Tue
 ];
-
-/* ============================================================
-   MANAGER-ONLY DATA — Daniel's direct reports.
-   Kept separate from the employee-self `entries`/`toRequests` store
-   (which are keyed only by date and represent Daniel's own time)
-   so five people's timesheets don't collide on the same date keys.
-   ============================================================ */
-/* Real dates for each member's "current week" / "last week" / etc. demo data,
-   computed relative to today so nothing drifts into the future or goes stale. */
-const _realMon = addDays(startOfWeek(TODAY), 1); // Monday of the real current week
-function wd(offsetWeeks, dayIdx){ // dayIdx: 0=Mon,1=Tue,2=Wed,3=Thu,4=Fri
-  const d = addDays(_realMon, offsetWeeks*7 + dayIdx);
-  const names=['Mon','Tue','Wed','Thu','Fri'];
-  return `${names[dayIdx]} ${d.getMonth()+1}/${d.getDate()}`;
-}
-const TEAM_MEMBERS = [
-  {
-    id:'w1', name:'Maria Chen', role:'Sales Associate', initials:'MC', costCenter:'CC-100 Retail Ops',
-    balance:96,
-    timesheet:{
-      status:'submitted', weekLabel:'This week', submittedAt:new Date(Date.now()-19*1000), total:37,
-      days:[
-        {date:'Mon', full:wd(0,0), type:'Regular Hours Worked', in:'08:00', out:'17:00', hours:9, jobDiff:'None', source:'punched'},
-        {date:'Tue', full:wd(0,1), type:'Regular Hours Worked', in:'08:00', out:'17:00', hours:9, jobDiff:'None', source:'punched'},
-        {date:'Wed', full:wd(0,2), type:'Regular Hours Worked', in:'08:00', out:'17:00', hours:9, jobDiff:'Night Differential', source:'punched'},
-        {date:'Thu', full:wd(0,3), type:'Regular Hours Worked', in:'08:00', out:'17:00', hours:9, jobDiff:'None', source:'punched'},
-        {date:'Fri', full:wd(0,4), type:'Overtime', in:'08:00', out:'18:00', hours:1, jobDiff:'None', source:'manual'},
-      ]
-    },
-    timeOff:[
-      {id:'to1', type:'Vacation',
-        start:fmtISO(addDays(startOfWeek(TODAY),15)), end:fmtISO(addDays(startOfWeek(TODAY),17)),
-        dailyHours:8, status:'awaiting', comment:'Family trip booked in advance — flexible on exact dates if needed.', submittedAt:addDays(TODAY,-1),
-        days:[
-          {date:fmtHuman(addDays(startOfWeek(TODAY),15)), type:'Vacation', hours:8},
-          {date:fmtHuman(addDays(startOfWeek(TODAY),16)), type:'Vacation', hours:8},
-          {date:fmtHuman(addDays(startOfWeek(TODAY),17)), type:'Vacation', hours:8},
-        ]},
-      {id:'to3', type:'Personal', start:fmtISO(addDays(TODAY,-16)), end:fmtISO(addDays(TODAY,-16)), dailyHours:8, status:'approved', comment:'', submittedAt:addDays(TODAY,-20),
-        days:[{date:fmtHuman(addDays(TODAY,-16)), type:'Personal', hours:8}]},
-    ]
-  },
-  {
-    id:'w2', name:'James Okoro', role:'Warehouse Associate', initials:'JO', costCenter:'CC-210 Distribution',
-    balance:64,
-    timesheet:{
-      status:'flagged', weekLabel:'This week', submittedAt:null, total:16,
-      days:[
-        {date:'Mon', full:wd(0,0), type:'Regular Hours Worked', in:'06:00', out:'14:00', hours:8, jobDiff:'Weekend Differential', source:'punched'},
-        {date:'Tue', full:wd(0,1), type:'Regular Hours Worked', in:'06:00', out:'14:00', hours:8, jobDiff:'None', source:'manual'},
-        {date:'Wed', full:wd(0,2), type:'Regular Hours Worked', in:'06:04', out:null, hours:0, jobDiff:'None', missed:true},
-      ]
-    },
-    timeOff:[
-      {id:'to7', type:'Sick', start:fmtISO(addDays(TODAY,-35)), end:fmtISO(addDays(TODAY,-34)),
-        dailyHours:8, status:'approved', comment:'', submittedAt:addDays(TODAY,-35),
-        days:[
-          {date:fmtHuman(addDays(TODAY,-35)), type:'Sick', hours:8},
-          {date:fmtHuman(addDays(TODAY,-34)), type:'Sick', hours:8},
-        ]},
-    ]
-  },
-  {
-    id:'w3', name:'Fatima Al-Sayed', role:'Cashier', initials:'FA', costCenter:'CC-100 Retail Ops',
-    balance:96,
-    timesheet:{
-      status:'approved', weekLabel:'Last week', submittedAt:addDays(TODAY,-6), total:40,
-      days:[
-        {date:'Mon', full:wd(-1,0), type:'Regular Hours Worked', in:'09:00', out:'17:00', hours:8, jobDiff:'None'},
-        {date:'Tue', full:wd(-1,1), type:'Regular Hours Worked', in:'09:00', out:'17:00', hours:8, jobDiff:'None'},
-        {date:'Wed', full:wd(-1,2), type:'Regular Hours Worked', in:'09:00', out:'17:00', hours:8, jobDiff:'None'},
-        {date:'Thu', full:wd(-1,3), type:'Regular Hours Worked', in:'09:00', out:'17:00', hours:8, jobDiff:'None'},
-        {date:'Fri', full:wd(-1,4), type:'Regular Hours Worked', in:'09:00', out:'17:00', hours:8, jobDiff:'None'},
-      ]
-    },
-    timeOff:[
-      {id:'to5', type:'Vacation', start:fmtISO(addDays(startOfWeek(TODAY),-18)), end:fmtISO(addDays(startOfWeek(TODAY),-17)),
-        dailyHours:8, status:'approved', comment:'', submittedAt:addDays(TODAY,-25),
-        days:[
-          {date:fmtHuman(addDays(startOfWeek(TODAY),-18)), type:'Vacation', hours:8},
-          {date:fmtHuman(addDays(startOfWeek(TODAY),-17)), type:'Vacation', hours:8},
-        ]},
-    ]
-  },
-  {
-    id:'w4', name:'Liam Novak', role:'Stock Clerk', initials:'LN', costCenter:'CC-210 Distribution',
-    balance:40,
-    timesheet:{
-      status:'submitted', weekLabel:'This week', submittedAt:new Date(Date.now()-2*3600*1000), total:32,
-      days:[
-        {date:'Mon', full:wd(0,0), type:'Regular Hours Worked', in:'07:00', out:'15:00', hours:8, jobDiff:'None'},
-        {date:'Tue', full:wd(0,1), type:'Regular Hours Worked', in:'07:00', out:'15:00', hours:8, jobDiff:'None'},
-        {date:'Wed', full:wd(0,2), type:'Sick', in:'—', out:'—', hours:8, jobDiff:'None'},
-        {date:'Thu', full:wd(0,3), type:'Regular Hours Worked', in:'07:00', out:'15:00', hours:8, jobDiff:'None'},
-      ]
-    },
-    timeOff:[
-      {id:'to6', type:'Vacation', start:fmtISO(addDays(startOfWeek(TODAY),22)), end:fmtISO(addDays(startOfWeek(TODAY),23)),
-        dailyHours:8, status:'approved', comment:'', submittedAt:addDays(TODAY,-4),
-        days:[
-          {date:fmtHuman(addDays(startOfWeek(TODAY),22)), type:'Vacation', hours:8},
-          {date:fmtHuman(addDays(startOfWeek(TODAY),23)), type:'Vacation', hours:8},
-        ]},
-    ]
-  },
-  {
-    id:'w5', name:'Priya Nair', role:'Team Lead', initials:'PN', costCenter:'CC-100 Retail Ops',
-    balance:112,
-    timesheet:{
-      status:'none', weekLabel:'This week', submittedAt:null, total:16,
-      days:[
-        {date:'Mon', full:wd(0,0), type:'Regular Hours Worked', in:'08:00', out:'16:00', hours:8, jobDiff:'None', mgrEdit:{by:'Daniel Okafor', note:'Corrected checkout time per phone confirmation.'}},
-        {date:'Tue', full:wd(0,1), type:'Regular Hours Worked', in:'08:00', out:'16:00', hours:8, jobDiff:'None'},
-      ]
-    },
-    timeOff:[
-      {id:'to4', type:'Personal',
-        start:fmtISO(addDays(startOfWeek(TODAY),22)), end:fmtISO(addDays(startOfWeek(TODAY),26)),
-        dailyHours:8, status:'awaiting', comment:'Splitting this around a family event mid-week — only need Monday and Thu/Fri off.', submittedAt:addDays(TODAY,-2),
-        days:[
-          {date:fmtHuman(addDays(startOfWeek(TODAY),22)), type:'Personal', hours:8},
-          {date:fmtHuman(addDays(startOfWeek(TODAY),25)), type:'Personal', hours:8},
-          {date:fmtHuman(addDays(startOfWeek(TODAY),26)), type:'Personal', hours:8},
-        ]},
-    ]
-  },
-  {
-    id:'w6', name:'Marcus Webb', role:'Sales Associate', initials:'MW', costCenter:'CC-100 Retail Ops',
-    balance:80,
-    timesheet:{
-      status:'submitted', weekLabel:'Two weeks ago', submittedAt:addDays(TODAY,-11), total:40,
-      days:[
-        {date:'Mon', full:wd(-2,0), type:'Regular Hours Worked', in:'08:00', out:'16:00', hours:8, jobDiff:'None'},
-        {date:'Tue', full:wd(-2,1), type:'Regular Hours Worked', in:'08:00', out:'16:00', hours:8, jobDiff:'None'},
-        {date:'Wed', full:wd(-2,2), type:'Regular Hours Worked', in:'08:00', out:'16:00', hours:8, jobDiff:'None'},
-        {date:'Thu', full:wd(-2,3), type:'Regular Hours Worked', in:'08:00', out:'16:00', hours:8, jobDiff:'None'},
-        {date:'Fri', full:wd(-2,4), type:'Regular Hours Worked', in:'08:00', out:'16:00', hours:8, jobDiff:'None'},
-      ]
-    },
-    timeOff:[
-      {id:'to2', type:'Personal', start:fmtISO(addDays(TODAY,-9)), end:fmtISO(addDays(TODAY,-9)), dailyHours:8, status:'awaiting', comment:'', submittedAt:addDays(TODAY,-9)},
-    ]
-  },
-];
-function teamMember(id){ return TEAM_MEMBERS.find(m=>m.id===id); }
-function teamMemberWeekTotal(m){ return m.timesheet.days.reduce((s,d)=>s+(d.hours||0),0); }
-
-/* Historical weeks — genuinely editable, distinct from the active m.timesheet week.
-   Real dates are assigned (relative to each member's current week) so the UI can
-   show an actual date range like "Jul 12 – 18, 2026" instead of a vague label. */
-function genPastWeek(curMonday, weeksAgo, status, inT, outT, managerComment, submittedAt){
-  const monday = curMonday ? addDays(curMonday, -7*weeksAgo) : null;
-  const dowNames = ['Mon','Tue','Wed','Thu','Fri'];
-  const days = dowNames.map((dn,idx)=>{
-    const d = monday ? addDays(monday, idx) : null;
-    const full = d ? `${dn} ${d.getMonth()+1}/${d.getDate()}` : dn;
-    return {date:dn, full, type:'Regular Hours Worked', in:inT, out:outT,
-      hours: Math.round((timeToMin(outT)-timeToMin(inT))/60*100)/100, jobDiff:'None'};
-  });
-  return {weekLabel:`${weeksAgo} week${weeksAgo>1?'s':''} ago`, status, days, managerComment:managerComment||'', submittedAt:submittedAt||null};
-}
-TEAM_MEMBERS.forEach((m,i)=>{
-  const curMonday = parseFullDate((m.timesheet.days.find(d=>d.date==='Mon')||{}).full || '');
-  // Rotate through sentback / denied / approved so the overview and history
-  // both show real examples of each outcome, not just approved weeks.
-  const weekAgo2Status = ['sentback','denied','approved'][i%3];
-  const isRejected = weekAgo2Status!=='approved';
-  m.pastWeeks = [
-    genPastWeek(curMonday, 1, 'approved', '08:00','16:00'),
-    genPastWeek(curMonday, 2, weekAgo2Status, '08:00', isRejected?'15:00':'16:00',
-      weekAgo2Status==='sentback' ? 'Please add the missing Friday hours before resubmitting.'
-      : weekAgo2Status==='denied' ? 'Hours don\'t match the posted schedule for this week — please discuss with me before resubmitting.'
-      : '', addDays(TODAY,-20)),
-    genPastWeek(curMonday, 3, 'approved', '08:00','16:00', '', addDays(TODAY,-27)),
-    genPastWeek(curMonday, 4, i%2===0 ? 'approved' : 'sentback', '08:00', i%2===0?'16:00':'15:00',
-      i%2===0 ? '' : 'Missing lunch break deduction — please correct and resubmit.', addDays(TODAY,-34)),
-  ];
-});
-/* Resolve which week a member's Entry tab / edit sheet is currently pointed at.
-   offset 0 = the active/current week (m.timesheet); offset>0 = m.pastWeeks[offset-1]. */
-function resolveWeek(m, offset){
-  if(!offset) return m.timesheet;
-  return (m.pastWeeks && m.pastWeeks[offset-1]) || null;
-}
-function weekOffsetLabel(m, offset){
-  const w = resolveWeek(m, offset);
-  return w ? weekRangeLabel(w.days) : `${offset} week${offset>1?'s':''} ago`;
-}
-/* "Jul 12 – 18, 2026" style range, computed from a week's day dates */
-function weekRangeLabel(days){
-  const withDates = (days||[]).map(d=>parseFullDate(d.full)).filter(Boolean);
-  if(!withDates.length) return '';
-  const first = withDates[0], last = withDates[withDates.length-1];
-  if(first.getMonth()===last.getMonth()){
-    return `${MON[first.getMonth()].slice(0,3)} ${first.getDate()} – ${last.getDate()}, ${first.getFullYear()}`;
-  }
-  return `${MON[first.getMonth()].slice(0,3)} ${first.getDate()} – ${MON[last.getMonth()].slice(0,3)} ${last.getDate()}, ${last.getFullYear()}`;
-}
-function isOnLeave(m, iso){
-  for(const r of m.timeOff){
-    if(r.status==='denied') continue;
-    if(iso>=r.start && iso<=r.end) return r;
-  }
-  return null;
-}
 
 /* ---------------- App state ---------------- */
 const state = {
@@ -1085,23 +856,12 @@ const state = {
   todRangeStart:'', todRangeEnd:'',
   reqTabFilter:'past',
   reqInbox:false,
-  apprTab:'pending',
-  selectedMemberId:null,
-  teamMemberTab:'entry',
-  teamLeaveView:'list',
-  teamCalMonthOffset:0,
-  teamEntryView:'weekly',
-  teamWeekOffset:0,
-  apprTypeFilter:'all',
-  apprDateFilter:'all',
-  apprStatusFilter:'all',
   sheet:null,
   sheetCtx:{}
 };
 
 /* draft state for the Add/Edit Time Entry sheet + its spinner picker */
 let entryDraft = null;
-let spinnerWhich = null;
 
 /* draft state for Time Off Details */
 let todDraft = {type:TIMEOFF_TYPES[6], dailyHours:8, duration:'full', halfPeriod:'first', comment:'', perDay:{}, showBalance:false};
@@ -1182,15 +942,14 @@ function renderBottomNav(){
     {id:'home', label:'Home', icon:'home'},
     {id:'time', label:'Time', icon:'clock'},
     {id:'timeoff', label:'Time Off', icon:'calendar'},
-    {id:'approvals', label:'Approvals', icon:'inbox'},
-    {id:'team', label:'Team', icon:'users'},
+    {id:'requests', label:'Requests', icon:'inbox'},
   ];
-  const pendingApprovals = teamApprovalItems().filter(i=>i.status==='pending').length;
+  const sentBack = inboxItems().length;
   document.getElementById('bottomNav').innerHTML = items.map(it=>`
     <button class="nav-item ${state.tab===it.id?'active':''}" onclick="setTab('${it.id}')">
       <span style="position:relative; display:inline-flex;">
         ${svg(it.icon,22)}
-        ${it.id==='approvals' && pendingApprovals>0 ? `<span class="nav-dot">${pendingApprovals}</span>` : ''}
+        ${it.id==='requests' && sentBack>0 ? `<span class="nav-dot">${sentBack}</span>` : ''}
       </span>
       <span>${it.label}</span>
     </button>`).join('');
@@ -1199,24 +958,22 @@ function setTab(t){ state.tab=t; render(); }
 
 function renderHeader(){
   const titles = {
-    home:{eyebrow:'', title:'Welcome, Daniel'},
-    time:{eyebrow:'Time Tracking', title:'Enter Time'},
+    home:{eyebrow:'', title:'Welcome, Sarah'},
+    time:{eyebrow:'Time Tracking', title:'Weekly Timesheet'},
     timeoff:{eyebrow:'Personal', title: state.todSubtab==='request' ? 'Request Time Off':'Manage Time Off'},
-    approvals:{eyebrow:'Team', title: state.apprTab==='history' ? 'Approval History' : 'Approvals'},
-    team:{eyebrow:'Team', title:'My Team'},
-    teamMember:{eyebrow:'Team Member', title: teamMember(state.selectedMemberId)?.name || '', back:true, backTo:'team'},
+    requests:{eyebrow:'Personal', title: state.reqInbox ? 'Inbox' : 'My Requests'},
     profile:{eyebrow:'Account', title:'Profile', back:true}
   };
   const t = titles[state.tab];
   document.getElementById('appHeader').innerHTML = `
     ${t.back
-      ? `<div class="slb-mark" onclick="setTab('${t.backTo||'home'}')" style="cursor:pointer;" title="Back">${svg('chevronLeft',20)}</div>`
+      ? `<div class="slb-mark" onclick="setTab('home')" style="cursor:pointer;" title="Back">${svg('chevronLeft',20)}</div>`
       : `<div class="slb-mark" title="SLB"><img src="${SLB_LOGO}" alt="SLB" /></div>`}
     <div class="htitle">
       ${t.eyebrow ? `<div class="h-eyebrow">${t.eyebrow}</div>` : ''}
       <h2>${t.title}</h2>
     </div>
-    ${t.back ? `<div style="width:38px;"></div>` : `<div class="avatar" onclick="setTab('profile')" style="cursor:pointer;" title="View profile">DO</div>`}
+    ${t.back ? `<div style="width:38px;"></div>` : `<div class="avatar" onclick="setTab('profile')" style="cursor:pointer;" title="View profile">SM</div>`}
   `;
 }
 
@@ -1225,9 +982,7 @@ function renderScreen(){
   if(state.tab==='home') el.innerHTML = screenHome();
   else if(state.tab==='time') el.innerHTML = screenTime();
   else if(state.tab==='timeoff') el.innerHTML = screenTimeOff();
-  else if(state.tab==='approvals') el.innerHTML = screenApprovals();
-  else if(state.tab==='team') el.innerHTML = screenTeam();
-  else if(state.tab==='teamMember') el.innerHTML = screenTeamMember();
+  else if(state.tab==='requests') el.innerHTML = screenRequests();
   else el.innerHTML = screenProfile();
   el.scrollTop = 0;
 }
@@ -1277,8 +1032,10 @@ function screenHome(){
   const ctaText = phase==='in' ? 'Total Time Today'
                 : phase==='out' ? 'Total Time Today'
                 : 'Tap to Check In';
+  const manualToday = phase==='none' && manualEntriesToday();
   const subText = phase==='in' ? 'Checked in at '+state.checkInTime
                 : phase==='out' ? `Checked in ${state.checkInTime} · Checked out ${state.checkOutTime}`
+                : manualToday ? 'Time entered manually for today — punch in/out disabled'
                 : "Start tracking today's hours";
   return `
     <div class="attend-card" style="margin-top:16px;">
@@ -1350,8 +1107,8 @@ function homeAfterCard(){
     <div class="tile-grid">
       ${tile('clock','Enter Time', '#0014DC', ()=>{setTab('time');})}
       ${tile('calendar','Request Time Off', '#3D8BFF', ()=>{state.todSubtab='request'; setTab('timeoff');})}
-      ${tile('inbox','Approve Time', '#FF7A45', ()=>{state.apprTab='pending'; setTab('approvals');})}
-      ${tile('users','My Team', '#0E7C86', ()=>{setTab('team');})}
+      ${tile('calendarOff','Manage Time Off', '#8A4FD1', ()=>{state.todSubtab='manage'; setTab('timeoff');})}
+      ${tile('inbox','Requests', '#FF7A45', ()=>{state.reqInbox=false; setTab('requests');})}
     </div>
 
     <div class="section" style="padding-top:0;">
@@ -1383,7 +1140,7 @@ function homeAfterCard(){
           for(const [iso,label] of Object.entries(HOLIDAYS)){
             if(iso >= todayISO) items.push({iso, title:label, sub:'Company holiday', kind:'holiday'});
           }
-          // Daniel's own planned time off ahead
+          // the employee's own planned time off ahead
           for(const r of toRequests){
             if(r.status==='denied' || r.status==='closed') continue;
             if(r.end < todayISO) continue;
@@ -1430,7 +1187,15 @@ function activityRow(icon,color,title,sub){
     <div class="lr-body"><div class="lr-title">${title}</div><div class="lr-sub">${sub}</div></div>
   </div>`;
 }
+function manualEntriesToday(){
+  return (entries[fmtISO(TODAY)]||[]).some(e=>e.source==='manual');
+}
 function doCheckIn(){
+  // If today's time was entered manually, punch in/out is not allowed
+  if(manualEntriesToday()){
+    toast("You have manually entered your check in and check out time for today",'warn');
+    return;
+  }
   const now = new Date();
   state.checkedIn = true;
   state.checkedOut = false;
@@ -1536,14 +1301,6 @@ function screenTime(){
   const timeOffToday = timeOffForDate(dISO);
   const isFuture = new Date(dISO+'T00:00:00') > new Date(fmtISO(TODAY)+'T00:00:00');
   return `
-    <div style="padding:14px 16px 0; display:flex; gap:8px;">
-      <button class="btn-secondary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; color:var(--brand); border-color:var(--brand);" onclick="openWeekEntry()">
-        ${svg('clock',16)} Weekly Timesheet
-      </button>
-      <button class="btn-secondary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="openMonthlyTimesheet()">
-        ${svg('calendar',16)} Monthly Timesheet
-      </button>
-    </div>
     <div class="week-nav">
       <button onclick="shiftWeek(-1)">${svg('chevronLeft',16)}</button>
       <div class="wn-label">${wkLabel}</div>
@@ -1989,18 +1746,18 @@ function sheetAddEntry(ctx){
         <label>In <span class="req">*</span></label>
         ${lockIn
           ? `<div class="time-picker-btn locked-field"><span>${to12(entryDraft.in)}</span>${svg('lock',14)}</div>`
-          : `<button type="button" class="time-picker-btn" onclick="openTimeSpinner('in')"><span>${to12(entryDraft.in)}</span>${svg('clock',16)}</button>`}
+          : `<input type="time" class="native-time" value="${entryDraft.in}" onchange="entryDraft.in=this.value; sheetAddEntry({dateISO:entryDraft.dateISO, entryId:entryDraft.entryId, fromWeek:entryDraft.fromWeek})">`}
       </div>
       <div class="field">
         <label>Out <span class="req">*</span></label>
-        <button type="button" class="time-picker-btn" onclick="openTimeSpinner('out')"><span>${to12(entryDraft.out)}</span>${svg('clock',16)}</button>
+        <input type="time" class="native-time" value="${entryDraft.out}" onchange="entryDraft.out=this.value; sheetAddEntry({dateISO:entryDraft.dateISO, entryId:entryDraft.entryId, fromWeek:entryDraft.fromWeek})">
       </div>
     </div>
     ${badOrder
       ? `<div class="helper" style="margin:-8px 0 14px; color:var(--negative); font-weight:700;">${svg('info',12)} Out time must be after In time</div>`
       : lockIn
         ? `<div class="helper" style="margin:-8px 0 14px;">${svg('lock',11)} The recorded check-in time can't be changed${entryDraft.resolving?' — set the Out time only':''}.</div>`
-        : `<div class="helper" style="margin:-8px 0 14px;">Tap a time to open the spinner picker</div>`}
+        : `<div class="helper" style="margin:-8px 0 14px;">System time picker (iOS DatePicker · 1-minute precision)</div>`}
     <div class="field">
       <label>Reason</label>
       <select onchange="entryDraft.outReason=this.value">${OUT_REASONS.map(r=>`<option ${r===entryDraft.outReason?'selected':''}>${r}</option>`).join('')}</select>
@@ -2049,13 +1806,11 @@ function saveEntryFromDraft(){
   }
   const hours = calcHours(entryDraft.in, entryDraft.out);
   // Guard: entries for a single day must not total more than MAX_DAY_HOURS.
-  // Exclude the entry being edited so an edit doesn't count its own old value.
   const otherHours = (entries[dISO]||[]).reduce((s,e)=> e.id===entryDraft.entryId ? s : s+e.hours, 0);
   if(otherHours + hours > MAX_DAY_HOURS + 1e-9){
     toast(`Day total would be ${(otherHours+hours).toFixed(2)} hrs · max ${MAX_DAY_HOURS} hrs per day`,'warn');
     return;
   }
-  // Guard: an entry may not sit on top of time already logged that day
   const clash = findOverlap(dISO, entryDraft.in, entryDraft.out, entryDraft.entryId);
   if(clash){
     toast(`Overlaps ${to12(clash.in)} – ${to12(clash.out)} · start at or after ${to12(clash.out)}`,'warn');
@@ -2065,7 +1820,6 @@ function saveEntryFromDraft(){
   if(!entries[dISO]) entries[dISO]=[];
   if(entryDraft.entryId){
     const idx = entries[dISO].findIndex(e=>e.id===entryDraft.entryId);
-    // Resolving a missed check out is a manual correction, so record it as such
     const src = entryDraft.resolving ? 'manual' : entries[dISO][idx].source;
     entries[dISO][idx] = {...entries[dISO][idx], type:entryDraft.type, in:entryDraft.in, out:entryDraft.out, outReason:entryDraft.outReason, hours, costCenter:entryDraft.costCenter, jobDiff:entryDraft.jobDiff, source:src};
   } else {
@@ -2092,73 +1846,8 @@ function deleteEntry(dISO, entryId){
   toast('Entry deleted','success');
 }
 
-/* ---- Android spinner-mode time picker ---- */
-function buildSpinnerCol(id, items){
-  return `<div class="spinner-col" id="${id}">
-    <div class="spinner-col-pad"></div>
-    ${items.map(it=>`<div class="spinner-item">${it}</div>`).join('')}
-    <div class="spinner-col-pad"></div>
-  </div>`;
-}
-function setSpinnerScroll(id, index){ document.getElementById(id).scrollTop = index*40; }
-function readSpinnerIndex(id){ return Math.round(document.getElementById(id).scrollTop/40); }
-function openTimeSpinner(which){
-  // A recorded check-in cannot be edited — only the missing Out may be set
-  if(which === 'in' && entryDraft.fromPunch){
-    toast("The recorded check-in time can't be changed",'info');
-    return;
-  }
-  spinnerWhich = which;
-  const val = entryDraft[which] || '08:00';
-  const [h24,m] = val.split(':').map(Number);
-  const ampm = h24>=12 ? 'PM':'AM';
-  let h12 = h24%12; if(h12===0) h12=12;
-  const hourIdx = h12-1;
-  const minIdx = m; // 1-minute resolution
-  const ampmIdx = ampm==='AM'?0:1;
-  document.getElementById('sheetTitle').textContent = which==='in' ? 'Set Time In' : 'Set Time Out';
-  document.getElementById('sheetBody').innerHTML = `
-    <div class="spinner-wrap">
-      <div class="spinner-title">Scroll to select time</div>
-      <div class="spinner-cols">
-        <div class="spinner-highlight"></div>
-        ${buildSpinnerCol('sp_hour', Array.from({length:12},(_,i)=>i+1))}
-        <div class="spinner-colon">:</div>
-        ${buildSpinnerCol('sp_min', Array.from({length:60},(_,i)=>String(i).padStart(2,'0')))}
-        <div class="spinner-col spinner-ampm" id="sp_ampm">
-          <div class="spinner-col-pad"></div>
-          <div class="spinner-item">AM</div>
-          <div class="spinner-item">PM</div>
-          <div class="spinner-col-pad"></div>
-        </div>
-      </div>
-    </div>
-  `;
-  document.getElementById('sheetFooter').style.display='block';
-  document.getElementById('sheetFooter').innerHTML = `
-    <div class="btn-row" style="padding:0;">
-      <button class="btn-secondary" onclick="cancelTimeSpinner()">Cancel</button>
-      <button class="btn-primary" onclick="confirmTimeSpinner()">Done</button>
-    </div>
-  `;
-  requestAnimationFrame(()=>{
-    setSpinnerScroll('sp_hour', hourIdx);
-    setSpinnerScroll('sp_min', minIdx);
-    setSpinnerScroll('sp_ampm', ampmIdx);
-  });
-}
-function cancelTimeSpinner(){ sheetAddEntry({dateISO:entryDraft.dateISO, entryId:entryDraft.entryId}); }
-function confirmTimeSpinner(){
-  const hourIdx = Math.min(Math.max(readSpinnerIndex('sp_hour'),0),11);
-  const minIdx = Math.min(Math.max(readSpinnerIndex('sp_min'),0),59);
-  const ampmIdx = Math.min(Math.max(readSpinnerIndex('sp_ampm'),0),1);
-  const hour12 = hourIdx+1;
-  const minute = minIdx;
-  const ampm = ampmIdx>=1 ? 'PM':'AM';
-  let hour24 = hour12%12; if(ampm==='PM') hour24+=12;
-  entryDraft[spinnerWhich] = `${String(hour24).padStart(2,'0')}:${String(minute).padStart(2,'0')}`;
-  sheetAddEntry({dateISO:entryDraft.dateISO, entryId:entryDraft.entryId});
-}
+/* Time picking uses the SYSTEM control (input[type=time] ≈ iOS DatePicker);
+   the custom spinner from the original prototype was removed. */
 
 /* ---- Check out / meal sheet ---- */
 function sheetCheckoutMeal(){
@@ -2259,12 +1948,8 @@ function screenRequestTimeOff(){
     ${state.todSelMode==='calendar' && state.todSelectedDays.length ? `
     <div class="sel-days">
       <div class="sel-days-title">Selected days (${state.todSelectedDays.length})</div>
-      <div class="sel-days-chips">
-        ${[...state.todSelectedDays].sort().map(d=>{
-          const dd=new Date(d+'T00:00:00');
-          return `<span class="sel-chip" onclick="toggleDay('${d}')">${DOW[dd.getDay()]}, ${MON[dd.getMonth()].slice(0,3)} ${dd.getDate()} <b>&times;</b></span>`;
-        }).join('')}
-      </div>
+      <div style="font-size:13px; font-weight:700; color:var(--brand);">${selectedDatesLabel([...state.todSelectedDays])}</div>
+      <div class="helper" style="margin:4px 0 0;">Tap any selected day on the calendar to start over.</div>
     </div>` : ''}
     <div class="link-row">
       <button class="link-btn" onclick="openSheet('balances')">${svg('wallet',15)} View Balances</button>
@@ -2303,14 +1988,15 @@ function renderCalDay(d){
 function toggleDay(iso){
   const status = statusForDate(iso);
   if(status){ openManageEntryFromDate(iso); return; }
+  // Time off can only be requested for FUTURE dates
+  if(iso <= fmtISO(TODAY)){
+    toast("Past dates can't be selected — choose a future date",'warn');
+    return;
+  }
   const sel = state.todSelectedDays;
-  const i = sel.indexOf(iso);
-  if(i>-1){
-    // any selected day — including one in the middle of a range — can be unselected
-    sel.splice(i,1);
+  if(sel.includes(iso)){
+    state.todSelectedDays = [];
   } else if(sel.length===1){
-    // second pick fills every day in between (working days only, skipping
-    // days that already carry a request)
     let a=sel[0], b=iso; if(b<a){ const t=a; a=b; b=t; }
     let cur=new Date(a+'T00:00:00'); const end=new Date(b+'T00:00:00');
     const fill=[];
@@ -2320,6 +2006,8 @@ function toggleDay(iso){
       cur=addDays(cur,1);
     }
     state.todSelectedDays = fill;
+  } else if(sel.length>1){
+    state.todSelectedDays = [iso];
   } else {
     sel.push(iso);
   }
@@ -2346,6 +2034,15 @@ function selectedDatesList(){
   }
   return [...state.todSelectedDays].sort().filter(d=>{const w=new Date(d+'T00:00:00').getDay(); return w!==0 && w!==6;});
 }
+
+/* ---- Time Off Details sheet ---- */
+function openTimeOffDetails(){
+  const dates = selectedDatesList();
+  if(!dates.length) return;
+  todDraft = {type:TIMEOFF_TYPES[6], dailyHours:8, duration:'full', halfPeriod:'first', comment:'', perDay:{}, showBalance:false};
+  dates.forEach(d=>todDraft.perDay[d]={type:todDraft.type, hours:todDraft.dailyHours, duration:'full', halfPeriod:'first'});
+  openSheet('timeOffDetails', {dates});
+}
 /* Label for a set of selected dates: consecutive working days collapse into a
    range ("Aug 25 – Aug 27"); non-consecutive picks are listed separately
    ("Aug 25 – Aug 26 · Fri, Aug 28") so random selections show exactly. */
@@ -2366,15 +2063,6 @@ function selectedDatesLabel(dates){
   const fmtOne = iso => { const d=new Date(iso+'T00:00:00'); return `${DOW[d.getDay()]}, ${MON[d.getMonth()].slice(0,3)} ${d.getDate()}`; };
   const fmtShort = iso => { const d=new Date(iso+'T00:00:00'); return `${MON[d.getMonth()].slice(0,3)} ${d.getDate()}`; };
   return runs.map(r => r.length===1 ? fmtOne(r[0]) : `${fmtShort(r[0])} – ${fmtShort(r[r.length-1])}`).join(' · ');
-}
-
-/* ---- Time Off Details sheet ---- */
-function openTimeOffDetails(){
-  const dates = selectedDatesList();
-  if(!dates.length) return;
-  todDraft = {type:TIMEOFF_TYPES[6], dailyHours:8, duration:'full', halfPeriod:'first', comment:'', perDay:{}, showBalance:false};
-  dates.forEach(d=>todDraft.perDay[d]={type:todDraft.type, hours:todDraft.dailyHours, duration:'full', halfPeriod:'first'});
-  openSheet('timeOffDetails', {dates});
 }
 function sheetTimeOffDetails(ctx){
   const dates = ctx.dates;
@@ -2511,16 +2199,6 @@ function submitTimeOffRequest(dates){
 /* Actions the employee should take, most-urgent first. Each routes somewhere. */
 function pendingActions(){
   const acts = [];
-  // Manager notification: team submissions waiting on Daniel — surfaces first,
-  // taps straight through to the Approvals tab per the requested Home behavior.
-  const pendingCount = teamApprovalItems().filter(i=>i.status==='pending').length;
-  if(pendingCount>0){
-    const names = teamApprovalItems().filter(i=>i.status==='pending').map(i=>teamMember(i.workerId).name.split(' ')[0]);
-    const namesLabel = names.length<=2 ? names.join(' & ') : `${names[0]} & ${names.length-1} others`;
-    acts.push({icon:'inbox', color:'#0014DC',
-      title:`${pendingCount} approval${pendingCount===1?'':'s'} waiting on you`,
-      sub:`${namesLabel} · tap to review`, onclick:`setTab('approvals')`});
-  }
   for(const it of inboxItems()){
     if(it.kind==='timesheet'){
       acts.push({icon:'clock', color:'#C0362C',
@@ -2606,7 +2284,7 @@ function doCancelSick(id){
 function sheetBalances(){
   document.getElementById('sheetTitle').textContent='Balances';
   document.getElementById('sheetBody').innerHTML = `
-    <div class="field"><label>As of</label><input type="date" value="${fmtISO(TODAY)}"></div>
+    <div class="field"><label>As of</label><div class="field-static">${fmtHuman(TODAY)}</div></div>
     <div class="kv-card">
       ${BALANCES.map(b=>`<div class="balance-pill-row"><span class="bp-name">${b.plan}</span><span class="bp-val">${daysLabel(b.hours)}</span></div>`).join('')}
     </div>
@@ -2648,9 +2326,6 @@ function screenManageTimeOff(){
   return `
     <div class="month-nav" style="margin-top:2px;">
       <div class="mn-label">${MON[anchor.getMonth()]} ${anchor.getFullYear()}</div>
-      <button class="actions-pill" onclick="openSheet('actionsMenu')">
-        Actions ${svg('chevronDown',13)}
-      </button>
     </div>
     <div class="month-nav-btns" style="padding:0 16px 8px; justify-content:flex-end; display:flex;">
       <button onclick="shiftMonth(-1)">${svg('chevronLeft',14)}</button>
@@ -2869,10 +2544,10 @@ function screenProfile(){
   return `
     <div class="section">
       <div class="card" style="display:flex; align-items:center; gap:14px;">
-        <div class="avatar" style="width:52px; height:52px; font-size:17px;">DO</div>
+        <div class="avatar" style="width:52px; height:52px; font-size:17px;">SM</div>
         <div>
-          <div style="font-weight:800; font-size:15px;">Daniel Okafor</div>
-          <div style="font-size:12.5px; color:var(--text-3);">Retail Operations Manager · CC-100</div>
+          <div style="font-weight:800; font-size:15px;">Sarah Mitchell</div>
+          <div style="font-size:12.5px; color:var(--text-3);">Retail Associate · CC-100</div>
           <div style="font-size:12.5px; color:var(--text-3);">Signed in via SSO</div>
         </div>
       </div>
@@ -2910,6 +2585,7 @@ function profileRow(icon,label){
   </div>`;
 }
 
+/* ---- Monthly timesheet ---- */
 /* ---- Weekly Timesheet (per-day review + entry) ---- */
 let weekSheetDay = null; // ISO of the day open in the day editor, null = summary
 function openWeekEntry(){
@@ -2983,6 +2659,8 @@ function renderWeekDayEditor(){
   const idx = days.indexOf(iso);
   const list = entries[iso]||[];
   const dayH = list.reduce((s,e)=>s+e.hours,0);
+  const allDays = weekSheetDays();
+  const weekH = allDays.reduce((s,i)=> s + (entries[i]||[]).reduce((x,e)=>x+e.hours,0), 0);
   document.getElementById('sheetTitle').textContent = 'Weekly Timesheet';
   document.getElementById('sheetBody').innerHTML = `
     <div class="ws-daynav">
@@ -3002,7 +2680,7 @@ function renderWeekDayEditor(){
       return `
       <div class="entry-row ${e.source==='manual'?'manual':''} ${missed?'flagged':''}" style="margin:0 0 8px;" onclick="${editable?`editWeekDayEntry('${iso}','${e.id}')`:'lockedEntryTap()'}">
         <div style="flex:1; min-width:0;">
-          <div class="er-time">${to12(e.in)} – ${missed?'<span style=\\"color:var(--negative);\\">--:--</span>':to12(e.out)}</div>
+          <div class="er-time">${to12(e.in)} – ${missed?'<span style=\"color:var(--negative);\">--:--</span>':to12(e.out)}</div>
           <div class="er-type">${e.type}${e.outReason?' · '+e.outReason:''}</div>
         </div>
         <div class="er-hrs">${missed?svg('flag',15):fmtHrs(e.hours)+' h'}</div>
@@ -3037,7 +2715,6 @@ function editWeekDayEntry(iso, entryId){
   openSheet('addEntry', {dateISO:iso, entryId, fromWeek:true});
 }
 
-/* ---- Monthly timesheet ---- */
 function openMonthlyTimesheet(){
   // open on the month the user is currently looking at
   const wd = weekDates();
@@ -3084,11 +2761,11 @@ function sheetMonthlyTimesheet(){
     <div class="kv-card" style="display:flex; justify-content:space-between; align-items:center;">
       <div>
         <div style="font-size:11.5px; color:var(--text-3); font-weight:700;">${MON[state.tsMonth]} ${state.tsYear} total</div>
-        <div style="font-size:19px; font-weight:800; color:var(--brand); font-family:'Poppins',sans-serif;">${fmtHrs(monthHours)} hrs</div>
+        <div style="font-size:19px; font-weight:800; color:var(--brand); font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;">${fmtHrs(monthHours)} hrs</div>
       </div>
       <div style="text-align:right;">
         <div style="font-size:11.5px; color:var(--text-3); font-weight:700;">Days worked</div>
-        <div style="font-size:19px; font-weight:800; font-family:'Poppins',sans-serif;">${daysWorked}</div>
+        <div style="font-size:19px; font-weight:800; font-family:-apple-system,'SF Pro Display',BlinkMacSystemFont,'Segoe UI',sans-serif;">${daysWorked}</div>
       </div>
     </div>
 
@@ -3344,1294 +3021,10 @@ function sheetConfirmCancelSick(ctx){
     </div>
   `;
 }
-/* ================================================================
-   APPROVALS — team timesheets + time off awaiting Daniel's decision
-   ================================================================ */
-function daysCountInclusive(startISO,endISO){
-  const s=new Date(startISO+'T00:00:00'), e=new Date(endISO+'T00:00:00');
-  return Math.round((e-s)/86400000)+1;
-}
-function ageLabel(date){
-  if(!date) return '';
-  const ms = Date.now() - date.getTime();
-  const mins = Math.floor(ms/60000);
-  if(mins<1) return 'just now';
-  if(mins<60) return `${mins} minute${mins===1?'':'s'} ago`;
-  const hrs = Math.floor(mins/60);
-  if(hrs<24) return `${hrs} hour${hrs===1?'':'s'} ago`;
-  const days = Math.floor(hrs/24);
-  if(days<7) return `${days} day${days===1?'':'s'} ago`;
-  const weeks = Math.floor(days/7);
-  return `${weeks} week${weeks===1?'':'s'} ago`;
-}
-function daysSince(date){ if(!date) return 0; return Math.floor((Date.now()-date.getTime())/86400000); }
-function teamApprovalItems(){
-  const items = [];
-  for(const m of TEAM_MEMBERS){
-    const st = m.timesheet.status;
-    if(st==='submitted' || st==='approved' || st==='sentback' || st==='denied'){
-      items.push({
-        kind:'timesheet', workerId:m.id, reqId:null, weekOffset:0,
-        title:'Weekly Timesheet',
-        subLabel: weekRangeLabel(m.timesheet.days),
-        submittedAt: m.timesheet.submittedAt,
-        hours: teamMemberWeekTotal(m),
-        status: st==='submitted' ? 'pending' : st,
-        stale: st==='submitted' && daysSince(m.timesheet.submittedAt) >= 7,
-      });
-    }
-    // Decided past weeks — this is what populates History with real
-    // Approved / Sent Back / Denied examples (never pending, already resolved).
-    (m.pastWeeks||[]).forEach((pw,idx)=>{
-      items.push({
-        kind:'timesheet', workerId:m.id, reqId:null, weekOffset:idx+1,
-        title:'Weekly Timesheet',
-        subLabel: weekRangeLabel(pw.days),
-        submittedAt: pw.submittedAt,
-        hours: pw.days.reduce((s,d)=>s+(d.hours||0),0),
-        status: pw.status,
-        stale: false,
-      });
-    });
-    for(const r of m.timeOff){
-      const dCount = r.days ? r.days.length : daysCountInclusive(r.start,r.end);
-      const hrs = r.days ? r.days.reduce((s,d)=>s+d.hours,0) : dCount*r.dailyHours;
-      items.push({
-        kind:'timeoff', workerId:m.id, reqId:r.id, weekOffset:0,
-        title:r.type+' Time Off',
-        subLabel: fmtRange(new Date(r.start+'T00:00:00'), new Date(r.end+'T00:00:00')) + ' · ' + daysLabel(hrs),
-        submittedAt: r.submittedAt,
-        hours: hrs,
-        status: r.status==='awaiting' ? 'pending' : r.status,
-        stale: r.status==='awaiting' && daysSince(r.submittedAt) >= 7,
-      });
-    }
-  }
-  return items;
-}
-function screenApprovals(){
-  const items = teamApprovalItems();
-  let pending = items.filter(i=>i.status==='pending');
-  let history = items.filter(i=>i.status!=='pending');
-
-  // Type filter (shared by both tabs)
-  const typeF = state.apprTypeFilter || 'all';
-  if(typeF!=='all'){ pending = pending.filter(i=>i.kind===typeF); history = history.filter(i=>i.kind===typeF); }
-
-  // Pending: stale (>=1 week old) first, then newest-submitted first
-  pending.sort((a,b)=>{
-    if(a.stale !== b.stale) return a.stale ? -1 : 1;
-    const at=a.submittedAt?a.submittedAt.getTime():0, bt=b.submittedAt?b.submittedAt.getTime():0;
-    return a.stale ? at-bt : bt-at; // oldest-first among stale, newest-first among fresh
-  });
-
-  // History: date + status filters
-  const dateF = state.apprDateFilter || 'all';
-  if(dateF!=='all'){
-    const cutoffDays = {7:7, 14:14, 30:30}[dateF];
-    history = history.filter(i => i.submittedAt && daysSince(i.submittedAt) <= cutoffDays);
-  }
-  const statusF = state.apprStatusFilter || 'all';
-  if(statusF!=='all') history = history.filter(i=>i.status===statusF);
-  history.sort((a,b)=>{ const at=a.submittedAt?a.submittedAt.getTime():0, bt=b.submittedAt?b.submittedAt.getTime():0; return bt-at; });
-
-  const list = state.apprTab==='pending' ? pending : history;
-  const staleCount = pending.filter(i=>i.stale).length;
-
-  return `
-    <div class="subtabs">
-      <div class="subtab ${state.apprTab==='pending'?'active':''}" onclick="setApprTab('pending')">Pending${items.filter(i=>i.status==='pending').length?` (${items.filter(i=>i.status==='pending').length})`:''}</div>
-      <div class="subtab ${state.apprTab==='history'?'active':''}" onclick="setApprTab('history')">History</div>
-    </div>
-    <div class="section" style="padding:12px 16px 0;">
-      <div style="display:flex; gap:8px; ${state.apprTab==='history'?'margin-bottom:8px;':''}">
-        <select class="filter-select" style="flex:1;" onchange="state.apprTypeFilter=this.value; document.getElementById('screenContent').innerHTML=screenApprovals();">
-          <option value="all" ${typeF==='all'?'selected':''}>All types</option>
-          <option value="timesheet" ${typeF==='timesheet'?'selected':''}>Time Entry</option>
-          <option value="timeoff" ${typeF==='timeoff'?'selected':''}>Time Off</option>
-        </select>
-        ${state.apprTab==='pending' ? '' : `
-        <select class="filter-select" style="flex:1;" onchange="state.apprDateFilter=this.value; document.getElementById('screenContent').innerHTML=screenApprovals();">
-          <option value="all" ${dateF==='all'?'selected':''}>All dates</option>
-          <option value="7" ${dateF==='7'?'selected':''}>Last 7 days</option>
-          <option value="14" ${dateF==='14'?'selected':''}>Last 14 days</option>
-          <option value="30" ${dateF==='30'?'selected':''}>Last 30 days</option>
-        </select>`}
-      </div>
-      ${state.apprTab==='history' ? `
-      <select class="filter-select" style="width:100%;" onchange="state.apprStatusFilter=this.value; document.getElementById('screenContent').innerHTML=screenApprovals();">
-        <option value="all" ${statusF==='all'?'selected':''}>All statuses</option>
-        <option value="approved" ${statusF==='approved'?'selected':''}>Approved</option>
-        <option value="sentback" ${statusF==='sentback'?'selected':''}>Sent Back</option>
-        <option value="denied" ${statusF==='denied'?'selected':''}>Denied</option>
-      </select>` : ''}
-    </div>
-    ${state.apprTab==='pending' && staleCount>0 ? `
-      <div class="section" style="padding:10px 16px 0;">
-        <div class="helper" style="margin:0; color:var(--negative); font-weight:700;">${svg('flag',13)} ${staleCount} request${staleCount>1?'s':''} waiting a week or more — shown first in red</div>
-      </div>` : ''}
-    ${state.apprTab==='pending' && pending.length ? `
-      <div class="section" style="padding:8px 16px 0;">
-        <div class="helper" style="margin:0;">${svg('inbox',13)} Tap a card to review details before deciding, or act directly below.</div>
-      </div>` : ''}
-    <div class="section" style="padding-top:12px;">
-      ${list.length ? list.map(it=>apprCard(it)).join('') : `
-        <div class="empty-state">
-          ${svg(state.apprTab==='pending'?'checkCircle':'inbox',36)}
-          <p>${state.apprTab==='pending' ? "You're all caught up — nothing waiting" : 'No matching history'}</p>
-        </div>`}
-    </div>
-  `;
-}
-function setApprTab(t){ state.apprTab=t; renderHeader(); document.getElementById('screenContent').innerHTML = screenApprovals(); }
-function apprStatusMeta(s){
-  return {
-    pending:  {label:'Pending',   cls:'pending'},
-    approved: {label:'Approved',  cls:'approved'},
-    sentback: {label:'Sent Back', cls:'sentback'},
-    denied:   {label:'Denied',    cls:'denied'},
-  }[s] || {label:s, cls:'awaiting'};
-}
-function apprCard(it){
-  const m = teamMember(it.workerId);
-  const meta = apprStatusMeta(it.status);
-  const stamp = it.submittedAt ? `Submitted ${fmtHuman(it.submittedAt)} at ${it.submittedAt.toTimeString().slice(0,5)} · ${ageLabel(it.submittedAt)}` : '';
-  const cardStyle = it.status==='pending' ? 'border-left:4px solid var(--brand);' : '';
-  const kindBadge = it.kind==='timesheet'
-    ? `<span class="pill" style="background:var(--info-tint,#EAF1FE); color:var(--info,#2F6FE0); font-size:10px; font-weight:800; padding:3px 9px; border-radius:20px; display:inline-flex; align-items:center; gap:4px;">${svg('clock',11)} TIME ENTRY</span>`
-    : `<span class="pill" style="background:var(--mgr-bg); color:var(--mgr); font-size:10px; font-weight:800; padding:3px 9px; border-radius:20px; display:inline-flex; align-items:center; gap:4px;">${svg('calendar',11)} TIME OFF</span>`;
-  return `
-    <div class="card req-card" style="padding:13px; margin-bottom:10px; cursor:pointer; ${cardStyle}" onclick="openApprovalDetail('${it.kind}','${it.workerId}','${it.reqId||''}',${it.weekOffset||0})">
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-        ${kindBadge}
-        ${it.stale ? `<span class="pill" style="background:var(--negative-tint,#FDECEC); color:var(--negative); display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:800; padding:2px 8px; border-radius:20px;">${svg('flag',10)} OVERDUE · ${ageLabel(it.submittedAt).toUpperCase()}</span>` : ''}
-      </div>
-      <div style="display:flex; align-items:flex-start; gap:12px;">
-        <div class="t-avatar" style="flex:0 0 auto;">${m.initials}</div>
-        <div style="flex:1; min-width:0;">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-            <div class="lr-title">${m.name}</div>
-            <span class="badge ${meta.cls}">${meta.label}</span>
-          </div>
-          <div class="lr-sub">${it.title} · ${it.subLabel}</div>
-          <div class="lr-sub" style="margin-top:2px; font-weight:700; color:var(--text-2);">${daysLabel(it.hours)} · ${fmtHrs(it.hours)} hrs</div>
-          ${stamp ? `<div class="lr-sub" style="margin-top:2px; color:var(--text-3);">${stamp}</div>` : ''}
-        </div>
-      </div>
-      ${it.status==='pending' ? `
-      <div class="req-actions" onclick="event.stopPropagation();">
-        <button class="req-act primary" onclick="decideApproval('${it.kind}','${it.workerId}','${it.reqId||''}','approved',${it.weekOffset||0})">${svg('check',13)} Approve</button>
-        <button class="req-act" onclick="decideApproval('${it.kind}','${it.workerId}','${it.reqId||''}','sentback',${it.weekOffset||0})">${svg('edit',13)} Send back</button>
-        <button class="req-act danger" onclick="decideApproval('${it.kind}','${it.workerId}','${it.reqId||''}','denied',${it.weekOffset||0})">Deny</button>
-      </div>` : `
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-        ${(()=>{
-          const cmt = it.kind==='timesheet' ? (resolveWeek(m, it.weekOffset||0)||{}).managerComment : (m.timeOff.find(r=>r.id===it.reqId)||{}).comment;
-          return cmt ? `<div class="sentback-note" style="margin:0; flex:1;">${svg('info',12)} "${cmt}"</div>` : '<div></div>';
-        })()}
-        <span class="link-btn" style="text-transform:none; letter-spacing:0; flex:0 0 auto;" onclick="event.stopPropagation(); openApprovalDetail('${it.kind}','${it.workerId}','${it.reqId||''}',${it.weekOffset||0})">${svg('edit',13)} Edit</span>
-      </div>`}
-    </div>`;
-}
-
-/* ---- Approve / Send back / Deny decision sheet ---- */
-function decideApproval(kind, workerId, reqId, decision, weekOffset){
-  openSheet('approvalDecision', {kind, workerId, reqId, decision, weekOffset: weekOffset||0});
-}
-function sheetApprovalDecision(ctx){
-  const m = teamMember(ctx.workerId);
-  const week = ctx.kind==='timesheet' ? resolveWeek(m, ctx.weekOffset||0) : null;
-  const label = ctx.decision==='approved'?'Approve':ctx.decision==='sentback'?'Send Back':'Deny';
-  document.getElementById('sheetTitle').textContent = `${label} — ${ctx.kind==='timesheet'?'Timesheet':'Time Off'}`;
-  document.getElementById('sheetBody').innerHTML = `
-    <div class="helper" style="margin-bottom:14px;">${m.name} · ${ctx.kind==='timesheet' && week ? weekRangeLabel(week.days) : 'Time off request'}</div>
-    ${ctx.decision==='approved' ? `<div class="helper" style="margin-bottom:14px;">This finalizes the ${ctx.kind==='timesheet'?'timesheet':'request'} and routes it for processing.</div>` : ''}
-    <div class="field">
-      <label>Comment ${ctx.decision!=='approved'?'<span class="req">* required</span>':'<span style="font-weight:500; color:var(--text-3);">(optional)</span>'}</label>
-      <textarea id="apprNote" placeholder="${ctx.decision==='sentback'?'Explain what needs to change…':ctx.decision==='denied'?'Explain why this is being denied…':'Add a note (optional)…'}"></textarea>
-    </div>
-  `;
-  document.getElementById('sheetFooter').style.display='block';
-  document.getElementById('sheetFooter').innerHTML = `
-    <div class="btn-row" style="padding:0;">
-      <button class="btn-secondary" onclick="closeSheet()">Cancel</button>
-      <button class="${ctx.decision==='approved'?'btn-primary':'btn-danger-outline'}" style="flex:1;" onclick="confirmApprovalDecision()">Confirm</button>
-    </div>
-  `;
-}
-function confirmApprovalDecision(){
-  const ctx = state.sheetCtx;
-  const m = teamMember(ctx.workerId);
-  const noteEl = document.getElementById('apprNote');
-  const note = noteEl ? noteEl.value.trim() : '';
-  if((ctx.decision==='sentback' || ctx.decision==='denied') && !note){
-    toast(`A comment is required to ${ctx.decision==='sentback'?'send back':'deny'} this request`,'warn');
-    return;
-  }
-  if(ctx.kind==='timesheet'){
-    const week = resolveWeek(m, ctx.weekOffset||0);
-    if(week){ week.status = ctx.decision; week.managerComment = note; }
-  } else {
-    const r = m.timeOff.find(x=>x.id===ctx.reqId);
-    if(r){
-      const wasApproved = r.status==='approved';
-      r.status = ctx.decision;
-      r.comment = note;
-      const nowApproved = r.status==='approved';
-      if(wasApproved !== nowApproved){
-        const hrs = r.days ? r.days.reduce((s,d)=>s+d.hours,0) : daysCountInclusive(r.start,r.end)*r.dailyHours;
-        m.balance += nowApproved ? -hrs : hrs; // deduct on approval, restore if un-approved later
-      }
-    }
-  }
-  closeSheet();
-  const msg = ctx.decision==='approved' ? `${ctx.kind==='timesheet'?'Timesheet':'Request'} approved` : ctx.decision==='sentback' ? `Sent back to ${m.name.split(' ')[0]}` : 'Denied';
-  toast(msg,'success');
-  renderBottomNav();
-  if(state.tab==='approvals') document.getElementById('screenContent').innerHTML = screenApprovals();
-  if(state.tab==='home') document.getElementById('screenContent').innerHTML = screenHome();
-  if(state.tab==='teamMember') document.getElementById('screenContent').innerHTML = screenTeamMember();
-  if(state.tab==='team') document.getElementById('screenContent').innerHTML = screenTeam();
-}
-
-/* ---- Approval detail — day-by-day, editable before deciding ---- */
-let apprDraft = null;
-function openApprovalDetail(kind, workerId, reqId, weekOffset){
-  apprDraft = null;
-  openSheet('approvalDetail', {kind, workerId, reqId, weekOffset: weekOffset||0});
-}
-function sheetApprovalDetail(ctx){
-  const m = teamMember(ctx.workerId);
-  document.getElementById('sheetFooter').style.display='none';
-  if(ctx.kind==='timesheet'){
-    const week = resolveWeek(m, ctx.weekOffset||0);
-    if(!week){ document.getElementById('sheetBody').innerHTML = `<div class="helper">Not found.</div>`; return; }
-    if(!apprDraft) apprDraft = week.days.map(d=>({...d}));
-    document.getElementById('sheetTitle').textContent = 'Weekly Timesheet';
-    document.getElementById('sheetBody').innerHTML = `
-      <div class="helper" style="margin-bottom:12px;">${m.name} · ${weekRangeLabel(week.days)}${week.submittedAt?' · submitted '+ageLabel(week.submittedAt):''}</div>
-      <div class="week-total-bar" style="margin:0 0 14px;">
-        <div><div class="wt-label">Week total</div><div class="wt-val">${fmtHrs(apprDraft.reduce((s,d)=>s+(d.hours||0),0))} hrs</div></div>
-      </div>
-      ${apprDraft.map((d,i)=>{
-        const isOff = TIMEOFF_TYPES.includes(d.type);
-        return `
-        <div class="kv-card" style="margin-bottom:10px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-            <span style="font-size:12px; font-weight:800;">${dayDisplayLabel(d)}</span>
-            ${!isOff ? `<span class="pill" style="background:${d.source==='manual'?'var(--info-tint,#EAF1FE)':'var(--bg)'}; color:${d.source==='manual'?'var(--info,#2F6FE0)':'var(--text-3)'}; font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px;">${d.source==='manual'?svg('edit',9):svg('clock',9)} ${d.source==='manual'?'Manual':'Punched'}</span>` : ''}
-          </div>
-          <div class="field" style="margin-bottom:10px;">
-            <label>Time Type</label>
-            <select onchange="apprDraftEdit(${i},'type',this.value)">
-              ${TIME_TYPES.map(t=>`<option ${t===d.type?'selected':''}>${t}</option>`).join('')}
-            </select>
-          </div>
-          ${!isOff ? `
-          <div class="field-row" style="margin-bottom:6px;">
-            <div class="field" style="margin-bottom:0;">
-              <label>In</label>
-              <button type="button" class="time-picker-btn" onclick="openApprTimeSpinner(${i},'in')"><span>${d.in&&d.in!=='—'?to12(d.in):'--:--'}</span>${svg('clock',16)}</button>
-            </div>
-            <div class="field" style="margin-bottom:0;">
-              <label>Out</label>
-              <button type="button" class="time-picker-btn" onclick="openApprTimeSpinner(${i},'out')"><span>${d.out&&d.out!=='—'?to12(d.out):'--:--'}</span>${svg('clock',16)}</button>
-            </div>
-          </div>
-          <div class="field" style="margin-bottom:0;"><label>Job Differential</label>
-            <select onchange="apprDraftEdit(${i},'jobDiff',this.value)">${JOB_DIFFS.map(j=>`<option ${j===d.jobDiff?'selected':''}>${j}</option>`).join('')}</select>
-          </div>` : `
-          <div class="field" style="margin-bottom:0;"><label>Hours</label><input type="number" step="0.5" value="${d.hours}" onchange="apprDraftEdit(${i},'hours',parseFloat(this.value)||0)"></div>`}
-        </div>`;
-      }).join('')}
-    `;
-    document.getElementById('sheetFooter').style.display='block';
-    document.getElementById('sheetFooter').innerHTML = `
-      <button class="btn-secondary" style="margin-bottom:8px; color:var(--mgr); border-color:var(--mgr); background:var(--mgr-bg);" onclick="saveApprDraft('${ctx.workerId}', null, ${ctx.weekOffset||0})">${svg('edit',15)} Save edits</button>
-      ${week.status!=='submitted' ? `<div class="helper" style="margin-bottom:8px;">Current status: <strong>${teamStatusMeta(week.status).label}</strong> — you can change the decision below.</div>` : ''}
-      <div class="btn-row" style="padding:0 0 8px;">
-        <button class="req-act" onclick="decideApproval('timesheet','${ctx.workerId}',null,'sentback',${ctx.weekOffset||0})">Send back</button>
-        <button class="req-act danger" onclick="decideApproval('timesheet','${ctx.workerId}',null,'denied',${ctx.weekOffset||0})">Deny</button>
-      </div>
-      <button class="btn-primary" onclick="decideApproval('timesheet','${ctx.workerId}',null,'approved',${ctx.weekOffset||0})">${week.status==='approved'?'Re-approve':'Approve'} timesheet</button>
-    `;
-  } else {
-    const r = m.timeOff.find(x=>x.id===ctx.reqId);
-    if(!r){ document.getElementById('sheetBody').innerHTML = `<div class="helper">Not found.</div>`; return; }
-    if(!r.days) r.days = [{date:fmtHuman(new Date(r.start+'T00:00:00')), type:r.type, hours:r.dailyHours}];
-    if(!apprDraft) apprDraft = r.days.map(d=>({...d}));
-    const total = apprDraft.reduce((s,d)=>s+d.hours,0);
-    document.getElementById('sheetTitle').textContent = r.type+' Time Off';
-    document.getElementById('sheetBody').innerHTML = `
-      <div class="helper" style="margin-bottom:12px;">${m.name} · ${fmtRange(new Date(r.start+'T00:00:00'), new Date(r.end+'T00:00:00'))}</div>
-      ${r.comment ? `<div class="sentback-note" style="background:var(--brand-tint); color:var(--brand-dark,var(--brand));">${svg('info',12)} "${r.comment}"</div>` : ''}
-      <div class="kv-card" style="margin-bottom:10px;">
-        <div style="font-size:11px; font-weight:800; color:var(--text-3); text-transform:uppercase; letter-spacing:.03em; margin-bottom:8px;">Dates</div>
-        <div class="field-row">
-          <div class="field" style="margin-bottom:0;"><label>Start date</label><input type="date" id="cto_start" value="${r.start}"></div>
-          <div class="field" style="margin-bottom:0;"><label>End date</label><input type="date" id="cto_end" min="${r.start}" value="${r.end}"></div>
-        </div>
-        <button class="req-act" style="width:100%; margin-top:8px;" onclick="apprDraftRegenerateDays('${ctx.workerId}','${ctx.reqId}')">${svg('calendar',13)} Update dates</button>
-      </div>
-      ${apprDraft.map((d,i)=>`
-        <div class="kv-card" style="margin-bottom:10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <span style="font-size:12px; font-weight:800;">${d.date}</span>
-            <button class="req-act danger" style="flex:0 0 auto; padding:5px 9px;" onclick="apprDraftRemoveDay(${i})">${svg('trash',12)}</button>
-          </div>
-          <div class="field-row">
-            <div class="field" style="margin-bottom:0;"><label>Type</label>
-              <select onchange="apprDraftEdit(${i},'type',this.value)">${TIMEOFF_TYPES.map(t=>`<option ${t===d.type?'selected':''}>${t}</option>`).join('')}</select>
-            </div>
-            <div class="field" style="margin-bottom:0;"><label>Hours</label><input type="number" step="0.5" value="${d.hours}" onchange="apprDraftEdit(${i},'hours',parseFloat(this.value)||0)"></div>
-          </div>
-        </div>`).join('')}
-      <div class="kv-card">
-        <div class="kv-row"><span class="kl">Total requested</span><span class="kv">${daysLabel(total)} · ${fmtHrs(total)} hrs</span></div>
-        <div class="kv-row"><span class="kl">Available balance</span><span class="kv" style="color:var(--positive);">${daysLabel(m.balance)}</span></div>
-        <div class="kv-row"><span class="kl">Balance after request</span><span class="kv">${daysLabel(Math.max(m.balance-total,0))}</span></div>
-      </div>
-    `;
-    document.getElementById('sheetFooter').style.display='block';
-    document.getElementById('sheetFooter').innerHTML = `
-      <button class="btn-secondary" style="margin-bottom:8px; color:var(--mgr); border-color:var(--mgr); background:var(--mgr-bg);" onclick="saveApprDraft('${ctx.workerId}','${ctx.reqId}')">${svg('edit',15)} Save edits</button>
-      ${r.status!=='awaiting' ? `<div class="helper" style="margin-bottom:8px;">Current status: <strong>${apprStatusMeta(r.status).label}</strong> — you can change the decision below.</div>` : ''}
-      <div class="btn-row" style="padding:0 0 8px;">
-        <button class="req-act" onclick="decideApproval('timeoff','${ctx.workerId}','${ctx.reqId}','sentback')">Send back</button>
-        <button class="req-act danger" onclick="decideApproval('timeoff','${ctx.workerId}','${ctx.reqId}','denied')">Deny</button>
-      </div>
-      <button class="btn-primary" onclick="decideApproval('timeoff','${ctx.workerId}','${ctx.reqId}','approved')">${r.status==='approved'?'Re-approve':'Approve'} request</button>
-    `;
-  }
-}
-function apprDraftEdit(i,key,val){ apprDraft[i][key]=val; }
-function apprDraftRegenerateDays(workerId, reqId){
-  const m = teamMember(workerId);
-  const r = m.timeOff.find(x=>x.id===reqId);
-  const start = document.getElementById('cto_start').value;
-  const end = document.getElementById('cto_end').value;
-  if(!start || !end){ toast('Choose both a start and end date','warn'); return; }
-  if(end<start){ toast('End date must be on or after the start date','warn'); return; }
-  const defaultType = apprDraft[0] ? apprDraft[0].type : r.type;
-  const defaultHours = apprDraft[0] ? apprDraft[0].hours : r.dailyHours;
-  const days = [];
-  let cur = new Date(start+'T00:00:00'); const endD = new Date(end+'T00:00:00');
-  while(cur<=endD){ const dow=cur.getDay(); if(dow!==0 && dow!==6) days.push({date: fmtHuman(cur), type:defaultType, hours:defaultHours}); cur=addDays(cur,1); }
-  if(!days.length){ toast('Selected range has no working days','warn'); return; }
-  r.start = start; r.end = end;
-  apprDraft = days;
-  toast('Dates updated — review the days below','success');
-  sheetApprovalDetail(state.sheetCtx);
-}
-/* Team-context edit that live re-renders so the before/after comparison updates immediately */
-function teamDraftEdit(i,key,val){
-  apprDraft[i][key]=val;
-  sheetTeamEnterTime(state.sheetCtx);
-}
-/* ---- Hour/minute spinner picker for team time entries (same control as employee Time tab) ---- */
-let apprSpinnerCtx = null; // {dayIdx, which, returnSheet}
-function openApprTimeSpinner(dayIdx, which){
-  apprSpinnerCtx = {dayIdx, which, returnSheet: state.sheet, returnCtx: state.sheetCtx};
-  const val = apprDraft[dayIdx][which] || '08:00';
-  const [h24,m] = val.split(':').map(Number);
-  const ampm = h24>=12 ? 'PM':'AM';
-  let h12 = h24%12; if(h12===0) h12=12;
-  const hourIdx = h12-1;
-  const minIdx = m;
-  const ampmIdx = ampm==='AM'?0:1;
-  document.getElementById('sheetTitle').textContent = which==='in' ? 'Set Time In' : 'Set Time Out';
-  document.getElementById('sheetBody').innerHTML = `
-    <div class="spinner-wrap">
-      <div class="spinner-title">Scroll to select time</div>
-      <div class="spinner-cols">
-        <div class="spinner-highlight"></div>
-        ${buildSpinnerCol('sp_hour', Array.from({length:12},(_,i)=>i+1))}
-        <div class="spinner-colon">:</div>
-        ${buildSpinnerCol('sp_min', Array.from({length:60},(_,i)=>String(i).padStart(2,'0')))}
-        <div class="spinner-col spinner-ampm" id="sp_ampm">
-          <div class="spinner-col-pad"></div>
-          <div class="spinner-item">AM</div>
-          <div class="spinner-item">PM</div>
-          <div class="spinner-col-pad"></div>
-        </div>
-      </div>
-    </div>
-  `;
-  document.getElementById('sheetFooter').style.display='block';
-  document.getElementById('sheetFooter').innerHTML = `
-    <div class="btn-row" style="padding:0;">
-      <button class="btn-secondary" onclick="cancelApprTimeSpinner()">Cancel</button>
-      <button class="btn-primary" onclick="confirmApprTimeSpinner()">Done</button>
-    </div>
-  `;
-  requestAnimationFrame(()=>{
-    setSpinnerScroll('sp_hour', hourIdx);
-    setSpinnerScroll('sp_min', minIdx);
-    setSpinnerScroll('sp_ampm', ampmIdx);
-  });
-}
-function cancelApprTimeSpinner(){
-  const {returnSheet, returnCtx} = apprSpinnerCtx;
-  apprSpinnerCtx = null;
-  openSheet(returnSheet, returnCtx);
-}
-function confirmApprTimeSpinner(){
-  const hourIdx = Math.min(Math.max(readSpinnerIndex('sp_hour'),0),11);
-  const minIdx = Math.min(Math.max(readSpinnerIndex('sp_min'),0),59);
-  const ampmIdx = Math.min(Math.max(readSpinnerIndex('sp_ampm'),0),1);
-  const hour12 = hourIdx+1;
-  const minute = minIdx;
-  const ampm = ampmIdx>=1 ? 'PM':'AM';
-  let hour24 = hour12%12; if(ampm==='PM') hour24+=12;
-  const {dayIdx, which, returnSheet, returnCtx} = apprSpinnerCtx;
-  apprDraft[dayIdx][which] = `${String(hour24).padStart(2,'0')}:${String(minute).padStart(2,'0')}`;
-  // Recompute hours if both in/out are set on a worked entry
-  const d = apprDraft[dayIdx];
-  if(d.in && d.out && !TIMEOFF_TYPES.includes(d.type)){
-    const mins = timeToMin(d.out) - timeToMin(d.in);
-    if(mins>0) d.hours = Math.round((mins/60)*100)/100;
-  }
-  apprSpinnerCtx = null;
-  openSheet(returnSheet, returnCtx);
-}
-function apprDraftRemoveDay(i){
-  apprDraft.splice(i,1);
-  if(state.sheet==='teamEnterTime') sheetTeamEnterTime(state.sheetCtx);
-  else sheetApprovalDetail(state.sheetCtx);
-}
-function saveApprDraft(workerId, reqId, weekOffset){
-  const m = teamMember(workerId);
-  if(reqId){
-    const r = m.timeOff.find(x=>x.id===reqId);
-    const before = r.days.reduce((s,d)=>s+d.hours,0);
-    r.days = apprDraft.map(d=>({...d}));
-    if(r.status==='approved'){
-      const after = r.days.reduce((s,d)=>s+d.hours,0);
-      if(after!==before) m.balance += (before - after); // more days off = balance drops further
-    }
-  } else {
-    const week = resolveWeek(m, weekOffset||0);
-    if(week) week.days = apprDraft.map(d=>({...d}));
-  }
-  toast('Changes saved','success');
-  if(state.tab==='approvals') document.getElementById('screenContent').innerHTML = screenApprovals();
-  if(state.tab==='teamMember') document.getElementById('screenContent').innerHTML = screenTeamMember();
-}
-
-/* ================================================================
-   TEAM — Daniel's direct reports
-   ================================================================ */
-function teamStatusMeta(st){
-  return {
-    submitted:{label:'Submitted', cls:'pending'},
-    approved: {label:'Approved',  cls:'approved'},
-    sentback: {label:'Sent Back', cls:'sentback'},
-    denied:   {label:'Denied',    cls:'denied'},
-    flagged:  {label:'Not Submitted', cls:'awaiting'},
-    none:     {label:'Not Submitted', cls:'awaiting'},
-  }[st] || {label:st, cls:'awaiting'};
-}
-function teamUpcomingLeave(){
-  const todayISO = fmtISO(TODAY);
-  const items = [];
-  for(const m of TEAM_MEMBERS){
-    for(const r of m.timeOff){
-      if(r.status!=='approved') continue;
-      if(r.end < todayISO) continue;
-      items.push({member:m, req:r});
-    }
-  }
-  return items.sort((a,b)=> a.req.start < b.req.start ? -1 : 1);
-}
-function hoursColorStyle(hrs){
-  if(hrs>=40) return 'color:var(--positive); font-weight:800;';
-  if(hrs>=20) return 'color:#B8860B; font-weight:800;';
-  if(hrs>0) return 'color:var(--negative); font-weight:800;';
-  return 'color:var(--text-3); font-weight:700;';
-}
-function screenTeam(){
-  const leave = teamUpcomingLeave();
-  const leaveByMember = {};
-  leave.forEach(({member,req})=>{ (leaveByMember[member.id]=leaveByMember[member.id]||[]).push(req); });
-  return `
-    <div class="section" style="padding-top:14px;">
-      <button class="btn-secondary" style="display:flex; align-items:center; justify-content:center; gap:7px; color:var(--brand); border-color:var(--brand);" onclick="openTeamWeeklyOverview()">
-        ${svg('clock',16)} View Team's Weekly Time Entries
-      </button>
-    </div>
-    <div class="section" style="padding-top:0;">
-      <div class="section-title" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>${TEAM_MEMBERS.length} direct reports</span>
-        <span style="display:flex; align-items:center; gap:10px; text-transform:none; letter-spacing:0; font-weight:600; font-size:11px;">
-          <span style="display:flex; align-items:center; gap:3px; color:var(--positive);">${svg('checkCircle',11)} 40+h</span>
-          <span style="display:flex; align-items:center; gap:3px; color:#B8860B;">${svg('clock',11)} partial</span>
-          <span style="display:flex; align-items:center; gap:3px; color:var(--negative);">${svg('flag',11)} low</span>
-        </span>
-      </div>
-      <div class="card" style="padding:6px 16px;">
-        ${TEAM_MEMBERS.map(m=>{
-          const hrs = teamMemberWeekTotal(m);
-          const upcoming = leaveByMember[m.id];
-          const pending = teamMemberPendingCount(m);
-          return `<div class="list-row" style="cursor:pointer;" onclick="openTeamMember('${m.id}')">
-            <div class="t-avatar" style="flex:0 0 auto;">${m.initials}</div>
-            <div class="lr-body">
-              <div class="lr-title">${m.name} <span style="font-weight:600; color:var(--text-3); font-size:12px;">· ${m.role}</span></div>
-              <div class="lr-sub"><span style="${hoursColorStyle(hrs)}">${fmtHrs(hrs)} hrs</span> this week</div>
-              ${upcoming ? `<div class="lr-sub" style="margin-top:2px; color:var(--brand); font-weight:700;">${svg('calendar',11)} Upcoming: ${upcoming[0].type} · ${fmtRange(new Date(upcoming[0].start+'T00:00:00'), new Date(upcoming[0].end+'T00:00:00'))}${upcoming.length>1?` (+${upcoming.length-1} more)`:''}</div>` : ''}
-            </div>
-            ${pending>0 ? `<span class="badge pending">${pending} submitted</span>` : ''}
-            ${svg('chevronRight',16)}
-          </div>`;
-        }).join('')}
-      </div>
-    </div>
-    <div class="section" style="padding-top:0;">
-      <div class="section-title" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>Team Leave Details</span>
-        <span style="display:flex; gap:4px;">
-          <button class="icon-toggle-btn ${state.teamLeaveView==='list'?'active':''}" onclick="setTeamLeaveView('list')" title="List view">${svg('inbox',15)}</button>
-          <button class="icon-toggle-btn ${state.teamLeaveView==='calendar'?'active':''}" onclick="setTeamLeaveView('calendar')" title="Calendar view">${svg('calendar',15)}</button>
-        </span>
-      </div>
-      ${state.teamLeaveView==='list' ? renderTeamLeaveList(leave) : renderTeamLeaveCalendar()}
-      <div class="helper" style="text-align:center; margin-top:6px;">${state.teamLeaveView==='list' ? 'Showing upcoming approved leave only' : 'Showing past and upcoming leave'}</div>
-    </div>
-  `;
-}
-function setTeamLeaveView(v){ state.teamLeaveView=v; document.getElementById('screenContent').innerHTML = screenTeam(); }
-function renderTeamLeaveList(leave){
-  return `
-    <div class="card" style="padding:0 16px;">
-      ${leave.length ? leave.map(({member,req})=>{
-        return `<div class="list-row" style="cursor:pointer;" onclick="openTeamMember('${member.id}')">
-          <div class="t-avatar" style="flex:0 0 auto;">${member.initials}</div>
-          <div class="lr-body">
-            <div class="lr-title">${member.name}</div>
-            <div class="lr-sub">${req.type} · ${fmtRange(new Date(req.start+'T00:00:00'), new Date(req.end+'T00:00:00'))}</div>
-          </div>
-        </div>`;
-      }).join('') : `<div class="empty-state" style="padding:20px 8px;"><div class="es-sub">No upcoming approved time off across your team.</div></div>`}
-    </div>`;
-}
-/* Time-off day objects store a human label like "Sun, Jul 5" (from fmtHuman) —
-   parse it back to a real date so calendar views can index by ISO correctly. */
-function parseHumanDate(str){
-  const m = (str||'').match(/([A-Za-z]+)\s+(\d+)$/);
-  if(!m) return null;
-  const monIdx = MON.findIndex(mn=>mn.slice(0,3)===m[1]);
-  if(monIdx<0) return null;
-  return new Date(TODAY.getFullYear(), monIdx, parseInt(m[2]));
-}
-function timeOffDaysISO(r){
-  if(r.days) return r.days.map(d=>{ const dt=parseHumanDate(d.date); return dt?fmtISO(dt):null; }).filter(Boolean);
-  const list=[]; let cur=new Date(r.start+'T00:00:00'); const end=new Date(r.end+'T00:00:00');
-  while(cur<=end){ list.push(fmtISO(cur)); cur=addDays(cur,1); }
-  return list;
-}
-function renderTeamLeaveCalendar(){
-  const anchor = new Date(TODAY.getFullYear(), TODAY.getMonth()+state.teamCalMonthOffset, 1);
-  const weeks = monthMatrix(anchor);
-  const monthStart = fmtISO(new Date(anchor.getFullYear(), anchor.getMonth(), 1));
-  const monthEnd = fmtISO(new Date(anchor.getFullYear(), anchor.getMonth()+1, 0));
-  const byDate = {};
-  const monthItems = [];
-  const seen = new Set();
-  for(const m of TEAM_MEMBERS){
-    for(const r of m.timeOff){
-      if(r.status==='denied') continue;
-      const days = timeOffDaysISO(r);
-      for(const iso of days){ (byDate[iso]=byDate[iso]||[]).push({member:m, req:r}); }
-      const key = m.id+'_'+r.id;
-      if(!seen.has(key) && days.some(iso=>iso>=monthStart && iso<=monthEnd)){ seen.add(key); monthItems.push({member:m, req:r}); }
-    }
-  }
-  monthItems.sort((a,b)=> a.req.start < b.req.start ? -1 : 1);
-  return `
-    <div class="card">
-      <div class="month-nav" style="margin:0 0 8px;">
-        <div class="mn-label">${MON[anchor.getMonth()]} ${anchor.getFullYear()}</div>
-        <div class="month-nav-btns">
-          <button onclick="state.teamCalMonthOffset--; document.getElementById('screenContent').innerHTML=screenTeam();">${svg('chevronLeft',14)}</button>
-          <button onclick="state.teamCalMonthOffset++; document.getElementById('screenContent').innerHTML=screenTeam();">${svg('chevronRight',14)}</button>
-        </div>
-      </div>
-      <div class="cal-grid">
-        <div class="cal-dow-row">${DOW.map(d=>`<div>${d[0]}</div>`).join('')}</div>
-        ${weeks.map(w=>`<div class="cal-week">${w.map(d=>{
-          if(!d) return `<div class="cal-day"></div>`;
-          const iso = fmtISO(d);
-          const who = byDate[iso];
-          const isToday = iso===fmtISO(TODAY);
-          return `<div class="cal-day ${isToday?'today':''}" style="cursor:${who?'pointer':'default'};" onclick="${who?`openTeamLeaveDay('${iso}')`:''}" title="${who?who.map(w=>w.member.name).join(', '):''}">
-            <div class="num-wrap" style="${who?'background:var(--info-tint,#EAF1FE); color:var(--brand); font-weight:800;':''}">${d.getDate()}</div>
-            ${who?`<div class="infodot"></div>`:''}
-          </div>`;
-        }).join('')}</div>`).join('')}
-      </div>
-      <div class="helper" style="margin-top:10px; text-align:center;">Tap a highlighted day to see who's off</div>
-    </div>
-    <div class="section-title" style="padding:14px 0 8px 2px;">${MON[anchor.getMonth()].slice(0,3)} leave — by employee</div>
-    <div class="card" style="padding:0 16px;">
-      ${monthItems.length ? monthItems.map(({member,req})=>{
-        const meta = apprStatusMeta(req.status==='awaiting'?'pending':req.status);
-        return `<div class="list-row" style="cursor:pointer;" onclick="openTeamMember('${member.id}')">
-          <div class="t-avatar" style="flex:0 0 auto;">${member.initials}</div>
-          <div class="lr-body">
-            <div class="lr-title">${member.name}</div>
-            <div class="lr-sub">${req.type} · ${fmtRange(new Date(req.start+'T00:00:00'), new Date(req.end+'T00:00:00'))}</div>
-          </div>
-          <span class="badge ${meta.cls}">${meta.label}</span>
-        </div>`;
-      }).join('') : `<div class="empty-state" style="padding:16px 8px;"><div class="es-sub">No leave in ${MON[anchor.getMonth()]}.</div></div>`}
-    </div>`;
-}
-function openTeamLeaveDay(iso){
-  const who = [];
-  for(const m of TEAM_MEMBERS){
-    for(const r of m.timeOff){
-      if(r.status==='denied') continue;
-      const days = timeOffDaysISO(r);
-      if(days.includes(iso)) who.push({member:m, req:r});
-    }
-  }
-  const d = new Date(iso+'T00:00:00');
-  openSheet('teamLeaveDay', {iso, who, dateLabel:`${DOW[d.getDay()]}, ${MON[d.getMonth()]} ${d.getDate()}`});
-}
-function sheetTeamLeaveDay(ctx){
-  document.getElementById('sheetTitle').textContent = ctx.dateLabel;
-  document.getElementById('sheetBody').innerHTML = `
-    <div class="kv-card">
-      ${ctx.who.map(({member,req})=>{
-        const meta = apprStatusMeta(req.status==='awaiting'?'pending':req.status);
-        return `<div class="team-row">
-          <div class="t-avatar">${member.initials}</div>
-          <div style="flex:1;"><div class="t-name">${member.name}</div><div class="t-dates">${req.type}</div></div>
-          <span class="badge ${meta.cls}">${meta.label}</span>
-        </div>`;
-      }).join('')}
-    </div>
-  `;
-  document.getElementById('sheetFooter').style.display='none';
-}
-function openTeamWeeklyOverview(){ state.teamOverviewWeekOffset = 0; openSheet('teamWeeklyOverview', {}); }
-function setTeamOverviewWeek(delta){
-  state.teamOverviewWeekOffset = Math.max(0, (state.teamOverviewWeekOffset||0)+delta);
-  sheetTeamWeeklyOverview({});
-}
-/* Real Sunday–Saturday dates for the overview, independent of each member's
-   demo "current week" dates — this is what makes the live week genuinely live. */
-function overviewWeekDates(offset){
-  const sunday = addDays(startOfWeek(TODAY), -7*offset);
-  return [0,1,2,3,4,5,6].map(i=>addDays(sunday,i));
-}
-function overviewRowData(m, offset, dates){
-  const dowNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const source = offset===0 ? m.timesheet : (m.pastWeeks && m.pastWeeks[offset-1]);
-  const byDow = {};
-  if(source) source.days.forEach(d=>{ byDow[d.date]=d; });
-  const todayISO = fmtISO(TODAY);
-  const cells = dates.map((dt,i)=>{
-    const dn = dowNames[i];
-    const iso = fmtISO(dt);
-    const isFuture = offset===0 && iso>todayISO;
-    const entry = (!isFuture && byDow[dn]) ? byDow[dn] : null;
-    return {dow:dn, entry};
-  });
-  const total = cells.reduce((s,c)=> s + (c.entry && !c.entry.missed ? (c.entry.hours||0) : 0), 0);
-  // The live current week is always still in progress — it can't already be
-  // Submitted/Approved, so its status is forced regardless of the underlying demo data.
-  const status = offset===0 ? 'none' : (source ? source.status : null);
-  return {cells, total, status, hasSource: !!source};
-}
-function sheetTeamWeeklyOverview(ctx){
-  const offset = state.teamOverviewWeekOffset||0;
-  const dates = overviewWeekDates(offset);
-  const first = dates[0], last = dates[6];
-  const rangeLabel = first.getMonth()===last.getMonth()
-    ? `${MON[first.getMonth()].slice(0,3)} ${first.getDate()} – ${last.getDate()}, ${first.getFullYear()}`
-    : `${MON[first.getMonth()].slice(0,3)} ${first.getDate()} – ${MON[last.getMonth()].slice(0,3)} ${last.getDate()}, ${last.getFullYear()}`;
-  document.getElementById('sheetTitle').textContent = "Team's Weekly Time Entries";
-  document.getElementById('sheetBody').innerHTML = `
-    <div class="helper" style="margin-bottom:10px;">Tap a name to open their full record.</div>
-    <div class="week-nav" style="margin:0 0 14px;">
-      <button onclick="setTeamOverviewWeek(1)" title="Previous week">${svg('chevronLeft',16)}</button>
-      <div class="wk-label">${rangeLabel}</div>
-      <button ${offset<=0?'disabled':''} onclick="setTeamOverviewWeek(-1)" title="Next week">${svg('chevronRight',16)}</button>
-    </div>
-    ${TEAM_MEMBERS.map(m=>{
-      const row = overviewRowData(m, offset, dates);
-      if(!row.hasSource){
-        return `<div class="kv-card" style="margin-bottom:10px;">
-          <div style="font-weight:800; font-size:13px; margin-bottom:4px;">${m.name}</div>
-          <div class="helper" style="margin:0;">No data for this week.</div>
-        </div>`;
-      }
-      const meta = teamStatusMeta(row.status);
-      return `
-      <div class="kv-card" style="margin-bottom:10px; cursor:pointer;" onclick="closeSheet(); openTeamMember('${m.id}'); state.teamWeekOffset=${offset}; document.getElementById('screenContent').innerHTML=screenTeamMember();">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:9px;">
-          <div>
-            <div style="font-weight:800; font-size:13px;">${m.name}</div>
-            <div style="font-size:11px; color:var(--text-3);">${m.role}</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-weight:800; color:var(--brand); font-size:14px;">${fmtHrs(row.total)} h</div>
-            <span class="badge ${meta.cls}" style="margin-top:2px;">${meta.label}</span>
-          </div>
-        </div>
-        <div style="display:flex; gap:4px; flex-wrap:wrap;">
-          ${row.cells.map(c=>{
-            const isOff = c.entry && TIMEOFF_TYPES.includes(c.entry.type);
-            const bg = isOff ? 'var(--mgr-bg)' : 'var(--bg)';
-            const valColor = isOff ? 'color:var(--mgr);' : (!c.entry||c.entry.missed?'color:var(--text-3);':'');
-            const val = !c.entry ? '–' : c.entry.missed ? '—' : isOff ? c.entry.type.slice(0,4) : fmtHrs(c.entry.hours);
-            return `<div style="flex:1; min-width:38px; text-align:center; background:${bg}; border-radius:8px; padding:6px 2px;" title="${isOff?c.entry.type:''}">
-              <div style="font-size:8.5px; color:var(--text-3); font-weight:700; text-transform:uppercase;">${c.dow}</div>
-              <div style="font-size:${isOff?'9px':'11px'}; font-weight:800; ${valColor}">${val}</div>
-            </div>`;
-          }).join('')}
-        </div>
-      </div>`;
-    }).join('')}
-  `;
-  document.getElementById('sheetFooter').style.display='none';
-}
-function openTeamMember(id){ state.selectedMemberId = id; state.teamMemberTab = 'entry'; state.teamEntryView='weekly'; state.teamCalMonthOffset=defaultCalMonthOffsetFor(teamMember(id)); state.teamWeekOffset=0; setTab('teamMember'); }
-function setTeamMemberTab(t){ state.teamMemberTab = t; document.getElementById('screenContent').innerHTML = screenTeamMember(); }
-function teamMemberPendingCount(m){
-  let c = m.timesheet.status==='submitted' ? 1 : 0;
-  c += m.timeOff.filter(r=>r.status==='awaiting').length;
-  return c;
-}
-function teamMemberPendingSummary(m){
-  const timesheetPending = m.timesheet.status==='submitted';
-  const timeOffCount = m.timeOff.filter(r=>r.status==='awaiting').length;
-  const parts = [];
-  if(timesheetPending) parts.push('1 time entry submission');
-  if(timeOffCount>0) parts.push(`${timeOffCount} time off request${timeOffCount>1?'s':''}`);
-  return parts.join(' and ');
-}
-function screenTeamMember(){
-  const m = teamMember(state.selectedMemberId);
-  if(!m) return `<div class="empty-state"><p>Not found</p></div>`;
-  const pending = teamMemberPendingCount(m);
-  const tab = state.teamMemberTab || 'entry';
-  return `
-    <div class="section">
-      <div class="card" style="display:flex; align-items:center; gap:14px;">
-        <div class="avatar" style="width:52px; height:52px; font-size:17px;">${m.initials}</div>
-        <div style="flex:1; min-width:0;">
-          <div style="font-weight:800; font-size:15px;">${m.name}</div>
-          <div style="font-size:12.5px; color:var(--text-3);">${m.role} · ${m.costCenter}</div>
-        </div>
-      </div>
-    </div>
-    ${pending>0 ? `
-    <div class="section" style="padding-top:0;">
-      <div class="mgr-comment-bar" style="background:var(--brand-tint); border-color:var(--brand); color:var(--brand-dark,var(--brand)); cursor:pointer;" onclick="setTeamMemberTab('${m.timesheet.status==='submitted'?'entry':'timeoff'}')">
-        ${svg('inbox',13)}
-        <div><b>${teamMemberPendingSummary(m)} pending your approval</b> for ${m.name.split(' ')[0]} — review below</div>
-      </div>
-    </div>` : ''}
-    <div class="subtabs">
-      <div class="subtab ${tab==='entry'?'active':''}" onclick="setTeamMemberTab('entry')">Time Entry</div>
-      <div class="subtab ${tab==='timeoff'?'active':''}" onclick="setTeamMemberTab('timeoff')">Time Off</div>
-    </div>
-    ${tab==='entry' ? screenTeamMemberEntryTab(m) : screenTeamMemberTimeOffTab(m)}
-  `;
-}
-function parseFullDate(full){
-  const mm = (full||'').match(/(\d+)\/(\d+)/);
-  if(!mm) return null;
-  return new Date(TODAY.getFullYear(), parseInt(mm[1])-1, parseInt(mm[2]));
-}
-/* Item 10: show dates the same way the employee persona does ("Mon, Jun 29") */
-function dayDisplayLabel(d){
-  const dt = parseFullDate(d.full);
-  return dt ? fmtHuman(dt) : (d.full || d.date);
-}
-function calClsForStatus(cls){
-  return {pending:'awaiting', approved:'approved', sentback:'sentback', denied:'sentback', awaiting:'awaiting'}[cls] || '';
-}
-function defaultCalMonthOffsetFor(m){
-  const curMonday = parseFullDate((m.timesheet.days.find(d=>d.date==='Mon')||{}).full || '');
-  if(!curMonday) return 0;
-  return (curMonday.getFullYear()-TODAY.getFullYear())*12 + (curMonday.getMonth()-TODAY.getMonth());
-}
-function setTeamEntryView(v){
-  state.teamEntryView=v;
-  if(v==='monthly') state.teamCalMonthOffset = defaultCalMonthOffsetFor(teamMember(state.selectedMemberId));
-  document.getElementById('screenContent').innerHTML = screenTeamMember();
-}
-function renderTeamMemberMonthCalendar(m){
-  const anchor = new Date(TODAY.getFullYear(), TODAY.getMonth()+state.teamCalMonthOffset, 1);
-  const weeks = monthMatrix(anchor);
-  const byDate = {};
-  m.timesheet.days.forEach(d=>{ const dt=parseFullDate(d.full); if(dt) byDate[fmtISO(dt)]={entry:d, status:m.timesheet.status}; });
-  (m.pastWeeks||[]).forEach(pw=>{
-    pw.days.forEach(d=>{ const dt=parseFullDate(d.full); if(dt) byDate[fmtISO(dt)]={entry:d, status:pw.status}; });
-  });
-  const curMonday = parseFullDate((m.timesheet.days.find(d=>d.date==='Mon')||{}).full || '');
-  const rowBg = {approved:'var(--positive-bg)', sentback:'var(--critical-bg)', denied:'var(--critical-bg)', submitted:'var(--brand-tint)', pending:'var(--brand-tint)'};
-  function weekInfoForOffset(offset){
-    if(offset===0) return {status:m.timesheet.status, label:weekRangeLabel(m.timesheet.days)};
-    const pw = m.pastWeeks && m.pastWeeks[offset-1];
-    return pw ? {status:pw.status, label:weekRangeLabel(pw.days)} : null;
-  }
-  return `
-    <div class="card">
-      <div class="month-nav" style="margin:0 0 8px;">
-        <div class="mn-label">${MON[anchor.getMonth()]} ${anchor.getFullYear()}</div>
-        <div class="month-nav-btns">
-          <button onclick="state.teamCalMonthOffset--; document.getElementById('screenContent').innerHTML=screenTeamMember();">${svg('chevronLeft',14)}</button>
-          <button onclick="state.teamCalMonthOffset++; document.getElementById('screenContent').innerHTML=screenTeamMember();">${svg('chevronRight',14)}</button>
-        </div>
-      </div>
-      <div class="cal-grid">
-        <div class="cal-dow-row">${DOW.map(d=>`<div>${d[0]}</div>`).join('')}</div>
-        ${weeks.map(w=>{
-          const mondayCell = w[1];
-          let rowOffset=null, info=null;
-          if(mondayCell && curMonday){
-            rowOffset = Math.round((curMonday - mondayCell)/86400000/7);
-            info = weekInfoForOffset(rowOffset);
-          }
-          const bg = info ? (rowBg[info.status]||'') : '';
-          const clickable = info && rowOffset>=0;
-          return `<div class="cal-week" style="${bg?`background:${bg}; border-radius:8px;`:''} cursor:${clickable?'pointer':'default'};" onclick="${clickable?`jumpToTeamWeek('${m.id}',${rowOffset})`:''}" title="${info?info.label+' · '+teamStatusMeta(info.status).label:''}">${w.map(d=>{
-            if(!d) return `<div class="cal-day"></div>`;
-            const iso = fmtISO(d);
-            const dayInfo = byDate[iso];
-            const entry = dayInfo ? dayInfo.entry : null;
-            const calCls = dayInfo ? calClsForStatus(teamStatusMeta(dayInfo.status).cls) : '';
-            const isToday = iso===fmtISO(TODAY);
-            const leave = isOnLeave(m, iso);
-            return `<div class="cal-day ${entry?calCls:''} ${isToday?'today':''}" title="${entry?entry.type+' · '+fmtHrs(entry.hours)+' h':(leave?leave.type+' (leave)':'')}">
-              <div class="num-wrap" style="${leave?'box-shadow:0 0 0 1.5px var(--mgr) inset;':''}">${d.getDate()}</div>
-              ${leave?`<div class="infodot" style="background:var(--mgr);"></div>`:''}
-            </div>`;
-          }).join('')}</div>`;
-        }).join('')}
-      </div>
-      <div class="legend">
-        <div class="legend-item"><span class="legend-swatch approved"></span>Approved week</div>
-        <div class="legend-item"><span class="legend-swatch sentback"></span>Sent back / Denied</div>
-        <div class="legend-item"><span class="legend-swatch awaiting"></span>Pending / Not submitted</div>
-        <div class="legend-item"><span style="width:6px; height:6px; border-radius:50%; background:var(--mgr); display:inline-block;"></span>Leave day</div>
-      </div>
-      <div class="helper" style="margin-top:8px; text-align:center;">Tap a highlighted week to view or edit that week's entries.</div>
-    </div>`;
-}
-function jumpToTeamWeek(workerId, offset){
-  state.teamWeekOffset = Math.max(0, offset);
-  state.teamEntryView = 'weekly';
-  document.getElementById('screenContent').innerHTML = screenTeamMember();
-}
-function setTeamWeekOffset(delta){
-  state.teamWeekOffset = Math.max(0, (state.teamWeekOffset||0)+delta);
-  document.getElementById('screenContent').innerHTML = screenTeamMember();
-}
-function screenTeamMemberEntryTab(m){
-  const offset = state.teamWeekOffset||0;
-  const week = resolveWeek(m, offset);
-  const isCurrent = offset===0;
-  const meta = week ? teamStatusMeta(week.status) : {label:'No data', cls:'awaiting'};
-  const isSubmitted = isCurrent && week && week.status==='submitted';
-  const view = state.teamEntryView || 'weekly';
-  const maxOffset = 1 + (m.pastWeeks ? m.pastWeeks.length : 0);
-  return `
-    <div class="section" style="padding-top:12px;">
-      <div class="week-nav" style="margin:0 0 10px;">
-        <button ${offset>=maxOffset-1?'disabled':''} onclick="setTeamWeekOffset(1)" title="Previous week">${svg('chevronLeft',16)}</button>
-        <div class="wk-label">${week ? weekRangeLabel(week.days) : weekOffsetLabel(m,offset)}</div>
-        <button ${offset<=0?'disabled':''} onclick="setTeamWeekOffset(-1)" title="Next week">${svg('chevronRight',16)}</button>
-      </div>
-      <div class="week-total-bar" style="margin:0;">
-        <div><div class="wt-label">Total Time Entry</div><div class="wt-val">${week?fmtHrs(week.days.reduce((s,d)=>s+(d.hours||0),0)):'—'} hrs</div></div>
-        <span class="badge ${meta.cls}">${meta.label}</span>
-      </div>
-    </div>
-    <div class="section" style="padding-top:0;">
-      <div class="section-title" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>Entries</span>
-        <span style="display:flex; gap:8px; align-items:center;">
-          <span style="display:flex; gap:4px;">
-            <button class="icon-toggle-btn ${view==='weekly'?'active':''}" style="width:auto; padding:0 9px; font-size:11px; font-weight:700;" onclick="setTeamEntryView('weekly')">Weekly</button>
-            <button class="icon-toggle-btn ${view==='monthly'?'active':''}" style="width:auto; padding:0 9px; font-size:11px; font-weight:700;" onclick="setTeamEntryView('monthly')">Monthly</button>
-          </span>
-          <span class="link-btn" style="text-transform:none; letter-spacing:0;" onclick="apprDraft=null; openSheet('teamEnterTime',{workerId:'${m.id}'});">${svg('plus',13)} Enter Time</span>
-        </span>
-      </div>
-      ${view==='monthly' ? renderTeamMemberMonthCalendar(m) : (week ? `
-      <div class="card" style="padding:0 16px;">
-        ${week.days.length ? week.days.map((d,i)=>{
-          const isOff = TIMEOFF_TYPES.includes(d.type);
-          const timeLabel = d.missed ? 'Not submitted yet' : isOff ? 'Days worked' : `${to12(d.in)} – ${d.out?to12(d.out):'--:--'}`;
-          const editedStyle = d.mgrEdit ? 'border-left-color:var(--mgr); background:var(--mgr-bg);' : '';
-          return `
-          <div class="entry-row" style="cursor:pointer; margin-bottom:8px; align-items:flex-start; ${editedStyle}" onclick="apprDraft=null; openSheet('teamEnterTime',{workerId:'${m.id}'});">
-            <div style="flex:1; min-width:0;">
-              <div class="er-time">${dayDisplayLabel(d)}</div>
-              <div class="er-type">${d.type} · ${timeLabel}${d.mgrEdit?` · <span style="color:var(--mgr); font-weight:700;">Manager edited</span>`:''}</div>
-              ${!d.missed ? `<div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;">
-                <span class="pill" style="background:${d.source==='manual'?'var(--info-tint,#EAF1FE)':'var(--bg)'}; color:${d.source==='manual'?'var(--info,#2F6FE0)':'var(--text-3)'}; font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; display:inline-flex; align-items:center; gap:3px; line-height:1;">${d.source==='manual'?svg('edit',9):svg('clock',9)} ${d.source==='manual'?'Manual':'Punched'}</span>
-                ${d.jobDiff && d.jobDiff!=='None' ? `<span class="pill" style="background:var(--mgr-bg); color:var(--mgr); font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; line-height:1.4;">${d.jobDiff}</span>` : ''}
-              </div>` : ''}
-            </div>
-            <div class="er-hrs" style="flex:0 0 auto; padding-top:1px; ${d.missed?'color:var(--text-3); font-weight:600; font-size:11.5px;':''}">${d.missed?'—':fmtHrs(d.hours)+' h'}</div>
-          </div>`;
-        }).join('') : `<div class="empty-state" style="padding:18px 0;">${svg('calendarOff',30)}<p>No time entries yet this week</p></div>`}
-      </div>
-      <div class="helper" style="margin-top:8px;">Tap any entry to edit it, or use Enter Time to add a new one.</div>` : `
-      <div class="empty-state" style="padding:24px 0;">${svg('calendarOff',30)}<p>No time entry data for this week.</p></div>`)}
-    </div>
-    ${isSubmitted ? `
-    <div class="section" style="padding-top:0;">
-      <div class="section-title">Submitted — Awaiting Your Decision</div>
-      <div class="checkbox-row" style="background:var(--brand-tint); align-items:flex-start; gap:8px; border-radius:12px; padding:11px 13px; margin-bottom:12px;">
-        ${svg('info',14)}
-        <div style="font-size:12px; color:var(--brand-dark,var(--brand)); line-height:1.45;">${m.name.split(' ')[0]} submitted this timesheet for approval.</div>
-      </div>
-      <div class="btn-row" style="padding:0 0 8px;">
-        <button class="req-act" onclick="decideApproval('timesheet','${m.id}',null,'sentback')">Send back</button>
-        <button class="req-act danger" onclick="decideApproval('timesheet','${m.id}',null,'denied')">Deny</button>
-      </div>
-      <button class="btn-primary" onclick="decideApproval('timesheet','${m.id}',null,'approved')">${svg('check',15)} Approve timesheet</button>
-    </div>` : ''}
-  `;
-}
-function screenTeamMemberTimeOffTab(m){
-  const today = fmtISO(TODAY);
-  const pendingReqs = m.timeOff.filter(r=>r.status==='awaiting');
-  const upcoming = m.timeOff.filter(r=> r.status!=='awaiting' && r.end >= today).sort((a,b)=> a.start<b.start?-1:1);
-  const past = m.timeOff.filter(r=> r.status!=='awaiting' && r.end < today).sort((a,b)=> a.start<b.start?1:-1);
-  const rowFor = r => {
-    const meta = apprStatusMeta(r.status==='awaiting'?'pending':r.status);
-    return `<div class="list-row" style="cursor:pointer;" onclick="openApprovalDetail('timeoff','${m.id}','${r.id}')">
-      <div class="lr-icon" style="background:var(--brand-tint); color:var(--brand);">${svg('calendar',16)}</div>
-      <div class="lr-body"><div class="lr-title">${r.type}</div><div class="lr-sub">${fmtRange(new Date(r.start+'T00:00:00'), new Date(r.end+'T00:00:00'))}</div></div>
-      <span class="badge ${meta.cls}">${meta.label}</span>
-    </div>`;
-  };
-  return `
-    <div class="section" style="padding-top:12px;">
-      <div class="card" style="display:flex; align-items:center; justify-content:space-between;">
-        <div>
-          <div style="font-size:20px; font-weight:800; font-family:'Poppins',sans-serif; color:var(--brand);">${daysLabel(m.balance)}</div>
-          <div style="font-size:11.5px; color:var(--text-3); margin-top:1px;">Available across all plans</div>
-        </div>
-      </div>
-    </div>
-    ${pendingReqs.length ? `
-    <div class="section" style="padding-top:0;">
-      <div class="section-title">Awaiting Your Decision</div>
-      ${pendingReqs.map(r=>{
-        const hrs = r.days ? r.days.reduce((s,d)=>s+d.hours,0) : daysCountInclusive(r.start,r.end)*r.dailyHours;
-        return `
-        <div class="card req-card" style="padding:13px; margin-bottom:10px; border-left:4px solid var(--brand); cursor:pointer;" onclick="openApprovalDetail('timeoff','${m.id}','${r.id}')">
-          <div style="display:flex; align-items:flex-start; gap:12px;">
-            <div class="lr-icon" style="background:var(--brand-tint); color:var(--brand);">${svg('calendar',16)}</div>
-            <div style="flex:1; min-width:0;">
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                <div class="lr-title">${r.type}</div>
-                <span class="badge pending">Pending</span>
-              </div>
-              <div class="lr-sub">${fmtRange(new Date(r.start+'T00:00:00'), new Date(r.end+'T00:00:00'))} · ${daysLabel(hrs)}</div>
-              ${r.comment ? `<div class="sentback-note" style="background:var(--brand-tint); color:var(--brand);">${svg('info',12)} "${r.comment}"</div>` : ''}
-            </div>
-          </div>
-          <div class="req-actions" onclick="event.stopPropagation();">
-            <button class="req-act primary" onclick="decideApproval('timeoff','${m.id}','${r.id}','approved')">${svg('check',13)} Approve</button>
-            <button class="req-act" onclick="decideApproval('timeoff','${m.id}','${r.id}','sentback')">${svg('edit',13)} Send back</button>
-            <button class="req-act danger" onclick="decideApproval('timeoff','${m.id}','${r.id}','denied')">Deny</button>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>` : ''}
-    <div class="section" style="padding-top:0;">
-      <div class="section-title">Upcoming</div>
-      <div class="card" style="padding:0 16px;">
-        ${upcoming.length ? upcoming.map(rowFor).join('') : `<div class="helper" style="text-align:center; padding:14px 0;">No upcoming time off.</div>`}
-      </div>
-    </div>
-    <div class="section" style="padding-top:0;">
-      <div class="section-title">Past</div>
-      <div class="card" style="padding:0 16px;">
-        ${past.length ? past.map(rowFor).join('') : `<div class="helper" style="text-align:center; padding:14px 0;">No past time off on file.</div>`}
-      </div>
-    </div>
-    <div class="section" style="padding-top:0;">
-      <div class="section-title">Actions</div>
-      <div class="card" style="padding:6px 16px;">
-        <div class="list-row" style="cursor:pointer;" onclick="openSheet('teamRequestTimeOff',{workerId:'${m.id}'})">
-          <div class="lr-icon" style="background:var(--brand-tint); color:var(--brand);">${svg('calendar',16)}</div>
-          <div class="lr-body"><div class="lr-title">Enter Time Off</div><div class="lr-sub">Submit a request on their behalf</div></div>
-          ${svg('chevronRight',16)}
-        </div>
-        <div class="list-row" style="cursor:pointer;" onclick="openSheet('teamCorrectTimeOff',{workerId:'${m.id}'})">
-          <div class="lr-icon" style="background:var(--brand-tint); color:var(--brand);">${svg('edit',16)}</div>
-          <div class="lr-body"><div class="lr-title">Correct Time Off</div><div class="lr-sub">Adjust an existing request</div></div>
-          ${svg('chevronRight',16)}
-        </div>
-        <div class="list-row" style="cursor:pointer;" onclick="openSheet('teamViewTimeOff',{workerId:'${m.id}'})">
-          <div class="lr-icon" style="background:var(--brand-tint); color:var(--brand);">${svg('calendarOff',16)}</div>
-          <div class="lr-body"><div class="lr-title">View Time Off</div><div class="lr-sub">Balance and full history</div></div>
-          ${svg('chevronRight',16)}
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-/* ---- Enter Time for a team member ---- */
-let apprDraftOriginal = null;
-function sheetTeamEnterTime(ctx){
-  const m = teamMember(ctx.workerId);
-  const week = resolveWeek(m, state.teamWeekOffset||0);
-  if(!week){
-    document.getElementById('sheetTitle').textContent = 'Enter Time — '+m.name.split(' ')[0];
-    document.getElementById('sheetBody').innerHTML = `<div class="empty-state" style="padding:26px 10px;">${svg('calendarOff',30)}<p>No time entry data for this week yet.</p></div>`;
-    document.getElementById('sheetFooter').style.display='none';
-    return;
-  }
-  if(!apprDraft){
-    apprDraft = week.days.map(d=>({...d}));
-    apprDraftOriginal = week.days.map(d=>({...d}));
-  }
-  const origFor = d => apprDraftOriginal.find(o=>(o.full||o.date)===(d.full||d.date));
-  document.getElementById('sheetTitle').textContent = 'Enter Time — '+m.name.split(' ')[0];
-  document.getElementById('sheetBody').innerHTML = `
-    <div class="helper" style="margin-bottom:12px;">${weekRangeLabel(week.days)} · tap a field to edit</div>
-    ${apprDraft.map((d,i)=>{
-      const isOff = TIMEOFF_TYPES.includes(d.type);
-      const orig = origFor(d);
-      const changed = orig && (orig.type!==d.type || orig.in!==d.in || orig.out!==d.out || orig.hours!==d.hours);
-      return `
-      <div class="kv-card" style="margin-bottom:10px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <span style="font-size:12px; font-weight:800;">${dayDisplayLabel(d)}</span>
-          <button class="req-act danger" style="flex:0 0 auto; padding:5px 9px;" onclick="apprDraftRemoveDay(${i}); "><span style="display:none">x</span>${svg('trash',12)}</button>
-        </div>
-        <div class="field" style="margin-bottom:10px;">
-          <label>Time Type</label>
-          <select onchange="teamDraftEdit(${i},'type',this.value)">
-            ${TIME_TYPES.map(t=>`<option ${t===d.type?'selected':''}>${t}</option>`).join('')}
-          </select>
-        </div>
-        ${!isOff ? `
-        <div class="field-row">
-          <div class="field" style="margin-bottom:0;">
-            <label>In</label>
-            <button type="button" class="time-picker-btn" onclick="openApprTimeSpinner(${i},'in')"><span>${d.in&&d.in!=='—'?to12(d.in):'--:--'}</span>${svg('clock',16)}</button>
-          </div>
-          <div class="field" style="margin-bottom:0;">
-            <label>Out</label>
-            <button type="button" class="time-picker-btn" onclick="openApprTimeSpinner(${i},'out')"><span>${d.out&&d.out!=='—'?to12(d.out):'--:--'}</span>${svg('clock',16)}</button>
-          </div>
-        </div>
-        <div class="helper" style="margin:8px 0 0;">Hours: <strong>${fmtHrs(d.hours)} h</strong> · tap a time to open the spinner picker</div>` : `
-        <div class="field" style="margin-bottom:0;"><label>Hours</label><input type="number" step="0.5" value="${d.hours}" onchange="teamDraftEdit(${i},'hours',parseFloat(this.value)||0)"></div>`}
-        ${changed ? `
-        <div class="kv-card" style="background:var(--mgr-bg); border-color:var(--mgr); margin-top:10px; margin-bottom:0;">
-          <div style="font-size:11px; font-weight:800; color:var(--mgr); text-transform:uppercase; letter-spacing:.03em; margin-bottom:6px;">${svg('user',12)} Previous → Updated</div>
-          ${cmpRow('Time Type', orig.type, d.type)}
-          ${!isOff ? cmpRow('Time In', orig.in?to12(orig.in):'—', d.in?to12(d.in):'—') : ''}
-          ${!isOff ? cmpRow('Time Out', orig.out?to12(orig.out):'—', d.out?to12(d.out):'—') : ''}
-          ${cmpRow('Hours', fmtHrs(orig.hours), fmtHrs(d.hours))}
-        </div>` : ''}
-      </div>`;
-    }).join('')}
-    <button class="req-act" style="width:100%; margin-bottom:10px;" onclick="apprDraftAddDay('${ctx.workerId}')">${svg('plus',13)} Add day</button>
-    <div class="week-total-bar" style="margin:0;">
-      <div><div class="wt-label">Week total</div><div class="wt-val">${fmtHrs(apprDraft.reduce((s,d)=>s+(d.hours||0),0))} hrs</div></div>
-    </div>
-  `;
-  document.getElementById('sheetFooter').style.display='block';
-  document.getElementById('sheetFooter').innerHTML = `
-    <button class="btn-primary" onclick="openTeamReviewEntries('${ctx.workerId}')">${svg('check',15)} Review &amp; Submit</button>
-  `;
-}
-/* ---- Weekly hours breakdown by category + review before saving ---- */
-function categorizeHours(days){
-  const cat = {regular:0, overtime:0, double:0, holiday:0, timeoff:0, other:0};
-  for(const d of days){
-    const h = d.hours||0;
-    if(d.type==='Regular Hours Worked') cat.regular+=h;
-    else if(d.type==='Overtime') cat.overtime+=h;
-    else if(d.type==='Double Time') cat.double+=h;
-    else if(d.type==='Holiday') cat.holiday+=h;
-    else if(TIMEOFF_TYPES.includes(d.type)) cat.timeoff+=h;
-    else cat.other+=h;
-  }
-  cat.total = cat.regular+cat.overtime+cat.double+cat.holiday+cat.timeoff+cat.other;
-  return cat;
-}
-function openTeamReviewEntries(workerId){ openSheet('teamReviewEntries', {workerId}); }
-function sheetTeamReviewEntries(ctx){
-  const m = teamMember(ctx.workerId);
-  const week = resolveWeek(m, state.teamWeekOffset||0);
-  const cat = categorizeHours(apprDraft);
-  const origFor = d => apprDraftOriginal.find(o=>(o.full||o.date)===(d.full||d.date));
-  const changedDays = apprDraft.filter(d=>{ const o=origFor(d); return !o || o.type!==d.type || o.in!==d.in || o.out!==d.out || o.hours!==d.hours; });
-  document.getElementById('sheetTitle').textContent = 'Review & Submit';
-  document.getElementById('sheetBody').innerHTML = `
-    <div class="helper" style="margin-bottom:12px;">${m.name} · ${week?weekRangeLabel(week.days):''}</div>
-    <div class="section-title" style="padding:0 0 8px;">Weekly Hours Breakdown</div>
-    <div class="kv-card" style="margin-bottom:14px;">
-      <div class="kv-row"><span class="kl">Regular</span><span class="kv">${fmtHrs(cat.regular)} h</span></div>
-      <div class="kv-row"><span class="kl">Overtime</span><span class="kv">${fmtHrs(cat.overtime)} h</span></div>
-      <div class="kv-row"><span class="kl">Double Time</span><span class="kv">${fmtHrs(cat.double)} h</span></div>
-      <div class="kv-row"><span class="kl">Holiday</span><span class="kv">${fmtHrs(cat.holiday)} h</span></div>
-      <div class="kv-row"><span class="kl">Time Off</span><span class="kv">${fmtHrs(cat.timeoff)} h</span></div>
-      <div class="kv-row"><span class="kl">Other</span><span class="kv">${fmtHrs(cat.other)} h</span></div>
-      <div class="kv-row" style="border-top:1px solid var(--border); margin-top:6px; padding-top:8px;"><span class="kl" style="font-weight:800;">Total</span><span class="kv" style="font-weight:800; color:var(--brand);">${fmtHrs(cat.total)} h</span></div>
-    </div>
-    ${changedDays.length ? `
-    <div class="section-title" style="padding:0 0 8px;">Changes (${changedDays.length})</div>
-    ${changedDays.map(d=>{
-      const o = origFor(d);
-      const isOff = TIMEOFF_TYPES.includes(d.type);
-      return `<div class="kv-card" style="margin-bottom:8px; background:var(--mgr-bg); border-color:var(--mgr);">
-        <div style="font-size:12px; font-weight:800; margin-bottom:6px;">${dayDisplayLabel(d)}${!o?' <span style="font-weight:600; color:var(--brand);">(new entry)</span>':''}</div>
-        ${o ? cmpRow('Type', o.type, d.type) : `<div class="kv-row"><span class="kl">Type</span><span class="kv">${d.type}</span></div>`}
-        ${!isOff && o ? cmpRow('In', o.in?to12(o.in):'—', d.in?to12(d.in):'—') : ''}
-        ${!isOff && o ? cmpRow('Out', o.out?to12(o.out):'—', d.out?to12(d.out):'—') : ''}
-        ${o ? cmpRow('Hours', fmtHrs(o.hours), fmtHrs(d.hours)) : `<div class="kv-row"><span class="kl">Hours</span><span class="kv">${fmtHrs(d.hours)} h</span></div>`}
-      </div>`;
-    }).join('')}` : `<div class="helper">No changes from the current entries.</div>`}
-  `;
-  document.getElementById('sheetFooter').style.display='block';
-  document.getElementById('sheetFooter').innerHTML = `
-    <button class="btn-secondary" style="margin-bottom:8px;" onclick="sheetTeamEnterTime({workerId:'${ctx.workerId}'})">${svg('chevronLeft',14)} Back to edit</button>
-    <button class="btn-primary" onclick="saveTeamEnterTime('${ctx.workerId}')">${svg('check',15)} Confirm &amp; Save</button>
-  `;
-}
-function apprDraftAddDay(workerId){
-  const dows=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  const next = dows[apprDraft.length % 7];
-  apprDraft.push({date:next, full:next, type:'Regular Hours Worked', in:'08:00', out:'17:00', hours:9, jobDiff:'None'});
-  sheetTeamEnterTime({workerId});
-}
-function saveTeamEnterTime(workerId){
-  const m = teamMember(workerId);
-  const week = resolveWeek(m, state.teamWeekOffset||0);
-  if(week) week.days = apprDraft.map(d=>({...d}));
-  apprDraftOriginal = null;
-  toast(`Saved time for ${m.name.split(' ')[0]}`,'success');
-  closeSheet();
-  if(state.tab==='team') document.getElementById('screenContent').innerHTML = screenTeam();
-  if(state.tab==='teamMember') document.getElementById('screenContent').innerHTML = screenTeamMember();
-}
-
-/* ---- Enter Time Off on behalf of a team member ---- */
-function sheetTeamRequestTimeOff(ctx){
-  const m = teamMember(ctx.workerId);
-  const defStart = fmtISO(addDays(TODAY,7));
-  document.getElementById('sheetTitle').textContent = 'Enter Time Off — '+m.name.split(' ')[0];
-  document.getElementById('sheetBody').innerHTML = `
-    <div class="helper" style="margin-bottom:14px;">Balance available: ${daysLabel(m.balance)}</div>
-    <div class="field"><label>Type</label><select id="tto_type">${TIMEOFF_TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div>
-    <div class="field-row">
-      <div class="field"><label>Start date</label><input type="date" id="tto_start" value="${defStart}" onchange="document.getElementById('tto_end').min=this.value;"></div>
-      <div class="field"><label>End date</label><input type="date" id="tto_end" min="${defStart}" value="${defStart}"></div>
-    </div>
-    <div class="field"><label>Daily hours</label><input type="number" id="tto_hrs" value="8" step="0.5"></div>
-    <div class="field"><label>Comment <span style="font-weight:500; color:var(--text-3);">(optional)</span></label><textarea id="tto_comment" placeholder="Add context…"></textarea></div>
-  `;
-  document.getElementById('sheetFooter').style.display='block';
-  document.getElementById('sheetFooter').innerHTML = `<button class="btn-primary" onclick="reviewTeamTimeOff('${ctx.workerId}')">${svg('check',15)} Review &amp; Submit</button>`;
-}
-let teamTimeOffDraft = null;
-function reviewTeamTimeOff(workerId){
-  const type = document.getElementById('tto_type').value;
-  const start = document.getElementById('tto_start').value;
-  const end = document.getElementById('tto_end').value || start;
-  const hrs = parseFloat(document.getElementById('tto_hrs').value)||8;
-  const comment = document.getElementById('tto_comment').value;
-  if(!start){ toast('Choose a start date','warn'); return; }
-  if(end<start){ toast('End date must be on or after the start date','warn'); return; }
-  const days = [];
-  let cur = new Date(start+'T00:00:00'); const endD = new Date(end+'T00:00:00');
-  while(cur<=endD){ const dow=cur.getDay(); if(dow!==0 && dow!==6) days.push({date: fmtHuman(cur), type, hours:hrs}); cur = addDays(cur,1); }
-  if(!days.length){ toast('Selected range has no working days','warn'); return; }
-  teamTimeOffDraft = {workerId, type, start, end, hrs, comment, days};
-  openSheet('teamTimeOffReview', {workerId});
-}
-function sheetTeamTimeOffReview(ctx){
-  const m = teamMember(ctx.workerId);
-  const d = teamTimeOffDraft;
-  const total = d.days.reduce((s,x)=>s+x.hours,0);
-  document.getElementById('sheetTitle').textContent = 'Review & Submit';
-  document.getElementById('sheetBody').innerHTML = `
-    <div class="helper" style="margin-bottom:12px;">${m.name} · ${d.type}</div>
-    <div class="kv-card" style="margin-bottom:14px;">
-      <div class="kv-row"><span class="kl">Dates</span><span class="kv">${fmtRange(new Date(d.start+'T00:00:00'), new Date(d.end+'T00:00:00'))}</span></div>
-      <div class="kv-row"><span class="kl">Total requested</span><span class="kv">${daysLabel(total)} · ${fmtHrs(total)} hrs</span></div>
-      <div class="kv-row"><span class="kl">Available balance</span><span class="kv" style="color:var(--positive);">${daysLabel(m.balance)}</span></div>
-      <div class="kv-row"><span class="kl">Balance after</span><span class="kv">${daysLabel(Math.max(m.balance-total,0))}</span></div>
-    </div>
-    <div class="section-title" style="padding:0 0 8px;">Days</div>
-    <div class="kv-card" style="margin-bottom:14px;">
-      ${d.days.map(x=>`<div class="kv-row"><span class="kl">${x.date}</span><span class="kv">${x.type} · ${fmtHrs(x.hours)} h</span></div>`).join('')}
-    </div>
-    ${d.comment ? `<div class="helper">Comment: "${d.comment}"</div>` : ''}
-  `;
-  document.getElementById('sheetFooter').style.display='block';
-  document.getElementById('sheetFooter').innerHTML = `
-    <button class="btn-secondary" style="margin-bottom:8px;" onclick="openSheet('teamRequestTimeOff',{workerId:'${ctx.workerId}'})">${svg('chevronLeft',14)} Back to edit</button>
-    <button class="btn-primary" onclick="confirmTeamTimeOff()">${svg('check',15)} Confirm &amp; Submit</button>
-  `;
-}
-function confirmTeamTimeOff(){
-  const d = teamTimeOffDraft;
-  const m = teamMember(d.workerId);
-  m.timeOff.unshift({id:'to_'+cuid(), type:d.type, start:d.start, end:d.end, dailyHours:d.hrs, status:'awaiting', comment:d.comment, days:d.days, submittedAt:new Date()});
-  teamTimeOffDraft = null;
-  toast(`Time off entered for ${m.name.split(' ')[0]}`,'success');
-  closeSheet();
-  if(state.tab==='teamMember') document.getElementById('screenContent').innerHTML = screenTeamMember();
-}
-
-/* ---- Correct an existing time off request ---- */
-function sheetTeamCorrectTimeOff(ctx){
-  const m = teamMember(ctx.workerId);
-  document.getElementById('sheetTitle').textContent = 'Correct Time Off — '+m.name.split(' ')[0];
-  document.getElementById('sheetBody').innerHTML = m.timeOff.length ? `
-    <div class="day-chip-list">
-      ${m.timeOff.map(r=>`
-        <div class="day-chip" onclick="closeSheet(); openApprovalDetail('timeoff','${m.id}','${r.id}');">
-          <div class="dc-left"><div class="dc-date">${r.type}</div><div class="dc-meta">${fmtRange(new Date(r.start+'T00:00:00'), new Date(r.end+'T00:00:00'))}</div></div>
-          <span class="badge ${apprStatusMeta(r.status==='awaiting'?'pending':r.status).cls}">${apprStatusMeta(r.status==='awaiting'?'pending':r.status).label}</span>
-        </div>`).join('')}
-    </div>` : `<div class="helper" style="text-align:center; padding:14px 0;">No time off requests on file for ${m.name.split(' ')[0]} yet.</div>`;
-  document.getElementById('sheetFooter').style.display='none';
-}
-
-/* ---- View time off balance + history (read-only) ---- */
-function sheetTeamViewTimeOff(ctx){
-  const m = teamMember(ctx.workerId);
-  document.getElementById('sheetTitle').textContent = 'Time Off — '+m.name.split(' ')[0];
-  document.getElementById('sheetBody').innerHTML = `
-    <div class="kv-card">
-      <div class="kv-row"><span class="kl">Available balance</span><span class="kv" style="color:var(--positive);">${daysLabel(m.balance)}</span></div>
-    </div>
-    <div class="section-title" style="padding:4px 0 8px;">Requests</div>
-    ${m.timeOff.length ? m.timeOff.map(r=>{
-      const meta = apprStatusMeta(r.status==='awaiting'?'pending':r.status);
-      return `<div class="list-row">
-        <div class="lr-icon" style="background:var(--brand-tint); color:var(--brand);">${svg('calendar',16)}</div>
-        <div class="lr-body"><div class="lr-title">${r.type}</div><div class="lr-sub">${fmtRange(new Date(r.start+'T00:00:00'), new Date(r.end+'T00:00:00'))}</div></div>
-        <span class="badge ${meta.cls}">${meta.label}</span>
-      </div>`;
-    }).join('') : `<div class="helper" style="text-align:center; padding:10px 0;">No requests on file.</div>`}
-  `;
-  document.getElementById('sheetFooter').style.display='none';
-}
-
 const SHEETS = {
   addEntry: sheetAddEntry,
   monthlyTimesheet: sheetMonthlyTimesheet,
+  weekEntry: sheetWeekEntry,
   checkoutMeal: sheetCheckoutMeal,
   timeOffDetails: sheetTimeOffDetails,
   balances: sheetBalances,
@@ -4641,17 +3034,6 @@ const SHEETS = {
   editIndividualDays: sheetEditIndividualDays,
   quickLeave: sheetQuickLeave,
   confirmCancelSick: sheetConfirmCancelSick,
-  approvalDecision: sheetApprovalDecision,
-  approvalDetail: sheetApprovalDetail,
-  teamEnterTime: sheetTeamEnterTime,
-  teamRequestTimeOff: sheetTeamRequestTimeOff,
-  teamCorrectTimeOff: sheetTeamCorrectTimeOff,
-  teamViewTimeOff: sheetTeamViewTimeOff,
-  teamLeaveDay: sheetTeamLeaveDay,
-  teamReviewEntries: sheetTeamReviewEntries,
-  teamTimeOffReview: sheetTeamTimeOffReview,
-  teamWeeklyOverview: sheetTeamWeeklyOverview,
-  weekEntry: sheetWeekEntry,
 };
 function openSheet(name, ctx={}){
   state.sheet = name; state.sheetCtx = ctx;
@@ -4671,8 +3053,6 @@ function closeSheet(){
   document.getElementById('sheetOverlay').classList.remove('open');
   state.sheet=null;
   entryDraft=null;
-  apprDraft=null;
-  apprDraftOriginal=null;
 }
 document.getElementById('sheetOverlay').addEventListener('click', (e)=>{ if(e.target.id==='sheetOverlay') closeSheet(); });
 
